@@ -16,4 +16,11 @@ public class CoapReader implements IReader {
 		
 	}
 
+
+	@Override
+	public String read(String endpoint) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
