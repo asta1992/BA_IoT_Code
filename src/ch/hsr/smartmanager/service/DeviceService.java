@@ -5,22 +5,36 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ch.hsr.smartmanager.data.Credential;
 import ch.hsr.smartmanager.data.Device;
+import ch.hsr.smartmanager.data.Type;
+import ch.hsr.smartmanager.data.repository.CredentialRepository;
 import ch.hsr.smartmanager.data.repository.DeviceRepository;
+import ch.hsr.smartmanager.data.repository.TypeRepository;
 
 @Service("deviceService")
 public class DeviceService {
-	
-	private DeviceRepository repository;
-		
+
 	@Autowired
-	public void setRepository(DeviceRepository repository) {
-		this.repository = repository;
+	private DeviceRepository repository;
+	@Autowired
+	private TypeRepository typeRepository;
+	@Autowired
+	private CredentialRepository credentialRepository;
+
+	
+	public Device createDevice(Device device) {
+		return repository.insert(device);
 	}
 	
-	public void createDevice(Device device) {
-		repository.insert(device);
+	public Type createType(Type type) {
+		return typeRepository.insert(type);
 	}
+
+	public Credential createCredential(Credential credential) {
+		return credentialRepository.insert(credential);
+	}
+	
 	
 	public Device getDevice(String id) {
 		return repository.findOne(id);

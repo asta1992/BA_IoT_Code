@@ -13,9 +13,10 @@
 Data <p/>
 
 <c:forEach var="row" items="${devices}">
-    ID: ${row.id}<br/>
-    Name: ${row.name}<br/>
-    Email: ${row.ipAddress}<br/>
+    Name: ${row.id}<br/>
+    Type: ${row.name}<br/>
+    ipAddress: ${row.ipAddress}<br/>
+    Credential    
 </c:forEach>
 <a href="/smartmanager/createDevice">Create a Device</a>
 <c:out value="${response}"></c:out>
