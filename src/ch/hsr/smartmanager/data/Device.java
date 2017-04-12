@@ -10,31 +10,33 @@ public class Device {
 	public String id;
 	
 	public String name;
+	public Type type;
 	public String ipAddress;
+	
 	
 	public Device() {};
 	
-	public Device(String name, String ipAddress) {
+	public Device(String name, Type type, String ipAddress) {
 		this.name = name;
+		this.type = type;
 		this.ipAddress = ipAddress;
 	}
+
 	
-	
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	public String getIpAddress() {
@@ -47,8 +49,13 @@ public class Device {
 
 	@Override
 	public String toString() {
-		return "Device [id=" + id + ", name=" + name + ", ipAddress=" + ipAddress + "]";
+		return "Device [id=" + id + ", name=" + name + ", type=" + type + ", ipAddress="
+				+ ipAddress + "]";
 	}
+
+
+	
+
 	
 	
 	

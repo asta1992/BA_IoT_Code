@@ -22,11 +22,13 @@ public class WebController {
 
 	@RequestMapping(value="/")
 	public String showIndex(Model model){	
-		
-		model.addAttribute("devices", deviceService.getAllDevice());
-
-		
 		return "index";
+	}
+	
+	@RequestMapping(value="/createDevice")
+	public String showCreateDevice(Model model){	
+				
+		return "createDevice";
 	}
 
 }
