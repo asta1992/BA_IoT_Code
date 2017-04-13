@@ -12,14 +12,16 @@ public class Device {
 	public String name;
 	public Type type;
 	public String ipAddress;
+	public Credential credential;
 	
 	
 	public Device() {};
 	
-	public Device(String name, Type type, String ipAddress) {
+	public Device(String name, Type type, String ipAddress, Credential credential) {
 		this.name = name;
 		this.type = type;
 		this.ipAddress = ipAddress;
+		this.credential = credential;
 	}
 
 	
@@ -47,11 +49,21 @@ public class Device {
 		this.ipAddress = ipAddress;
 	}
 
+	public Credential getCredential() {
+		return credential;
+	}
+
+	public void setCredential(Credential credential) {
+		this.credential = credential;
+	}
+
 	@Override
 	public String toString() {
-		return "Device [id=" + id + ", name=" + name + ", type=" + type + ", ipAddress="
-				+ ipAddress + "]";
+		return "Device [id=" + id + ", name=" + name + ", type=" + type + ", ipAddress=" + ipAddress + ", credential="
+				+ credential + "]";
 	}
+
+	
 
 
 	
