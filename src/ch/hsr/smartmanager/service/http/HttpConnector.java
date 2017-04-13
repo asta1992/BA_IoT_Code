@@ -10,8 +10,14 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 import ch.hsr.smartmanager.service.IConnector;
+import ch.hsr.smartmanager.service.IHandler;
 
 public class HttpConnector implements IConnector {
+
+	@Override
+	public IHandler connectToDevice() {
+		return new HttpHandler();
+	}
 
 	
 	
