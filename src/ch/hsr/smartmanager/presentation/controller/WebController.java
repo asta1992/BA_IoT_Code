@@ -1,8 +1,10 @@
 package ch.hsr.smartmanager.presentation.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +26,7 @@ public class WebController {
 
 	@RequestMapping(value = "/")
 	public String showIndex(Model model) {
+		model.addAttribute("devices", deviceService.getAllDevice());
 		return "index";
 	}
 
@@ -32,6 +35,16 @@ public class WebController {
 
 		return "createDevice";
 	}
+	
+
+	@RequestMapping(value = "/devices/{id}")
+	public String showDeviceDetails(Model model, @PathVariable("id") String id) {
+		
+		model.addAttribute("device", deviceService.getDevice(id));
+		
+		return "deviceDetails";
+	}
+
 
 	@RequestMapping(value = "/doCreate", method = RequestMethod.POST)
 	public String doCreate(@RequestParam("name") String name, @RequestParam("protocolType") String protocolType,

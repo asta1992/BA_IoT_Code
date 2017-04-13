@@ -7,12 +7,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Device {
 	
 	@Id
-	public String id;
+	private String id;
 	
-	public String name;
-	public Type type;
-	public String ipAddress;
-	public Credential credential;
+	private String name;
+	private Type type;
+	private String ipAddress;
+	private Credential credential;
 	
 	
 	public Device() {};
@@ -23,8 +23,12 @@ public class Device {
 		this.ipAddress = ipAddress;
 		this.credential = credential;
 	}
-
 	
+	
+	public String getId() {
+		return id;
+	}
+
 	public String getName() {
 		return name;
 	}
