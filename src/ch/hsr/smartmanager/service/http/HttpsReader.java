@@ -11,6 +11,7 @@ import ch.hsr.smartmanager.service.IReader;
 
 public class HttpsReader implements IReader{
 
+	
 	@Override
 	public String read(String url) {
 		try {
