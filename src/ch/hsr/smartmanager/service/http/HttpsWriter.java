@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import ch.hsr.smartmanager.service.IWriter;
 
-public class HttpWriter implements IWriter {
-	
+public class HttpsWriter implements IWriter {
+
 	private String userAgent = "Mozilla/5.0";
 	private String charset = "UTF-8";
 	
@@ -21,7 +22,7 @@ public class HttpWriter implements IWriter {
 		try {
 
 			URL obj = new URL(url);
-			HttpURLConnection httpURLConnection = (HttpURLConnection) obj.openConnection();
+			HttpsURLConnection httpURLConnection = (HttpsURLConnection) obj.openConnection();
 
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setRequestProperty("User-Agent", userAgent);

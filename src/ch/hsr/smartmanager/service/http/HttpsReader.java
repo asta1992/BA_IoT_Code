@@ -3,20 +3,20 @@ package ch.hsr.smartmanager.service.http;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import ch.hsr.smartmanager.service.IReader;
 
-public class HttpReader implements IReader {
+public class HttpsReader implements IReader{
 
-	//Source: https://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/
 	
 	@Override
 	public String read(String url) {
 		try {
 			URL obj = new URL(url);
-			HttpURLConnection httpURLConnection = (HttpURLConnection) obj.openConnection();
+			HttpsURLConnection httpURLConnection = (HttpsURLConnection) obj.openConnection();
 
 			httpURLConnection.setRequestMethod("GET");
 
@@ -38,4 +38,5 @@ public class HttpReader implements IReader {
 		}
 		return null;
 	}
+
 }
