@@ -10,23 +10,32 @@ public class Device {
 	private String id;
 	
 	private String name;
-	private Type type;
-	private String ipAddress;
-	private Credential credential;
-	
+	private ProtocolType protocolType;
+	private AuthType authType;
+	private String endpoint;
+	private String username;
+	private String password;
 	
 	public Device() {};
-	
-	public Device(String name, Type type, String ipAddress, Credential credential) {
+
+	public Device(String name, ProtocolType protocolType, AuthType authType, String endpoint, String username,
+			String password) {
 		this.name = name;
-		this.type = type;
-		this.ipAddress = ipAddress;
-		this.credential = credential;
+		this.protocolType = protocolType;
+		this.authType = authType;
+		this.endpoint = endpoint;
+		this.username = username;
+		this.password = password;
 	}
-	
-	
+
+
 	public String getId() {
 		return id;
+	}
+	
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -35,44 +44,61 @@ public class Device {
 
 	public void setName(String name) {
 		this.name = name;
+	}	
+
+	public ProtocolType getProtocolType() {
+		return protocolType;
 	}
 
-	public Type getType() {
-		return type;
+	public void setProtocolType(ProtocolType protocolType) {
+		this.protocolType = protocolType;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
+	public AuthType getAuthType() {
+		return authType;
 	}
 
-	public String getIpAddress() {
-		return ipAddress;
+	public void setAuthType(AuthType authType) {
+		this.authType = authType;
 	}
 
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
 	}
 
-	public Credential getCredential() {
-		return credential;
+	public String getEndpoint() {
+		return endpoint;
 	}
 
-	public void setCredential(Credential credential) {
-		this.credential = credential;
+	public void setEntpoint(String endpoint) {
+		this.endpoint = endpoint;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override
 	public String toString() {
-		return "Device [id=" + id + ", name=" + name + ", type=" + type + ", ipAddress=" + ipAddress + ", credential="
-				+ credential + "]";
+		return "Device [id=" + id + ", name=" + name + ", protocolType=" + protocolType + ", authType=" + authType
+				+ ", endpoint=" + endpoint + ", username=" + username + ", password=" + password + "]";
 	}
-
 	
-
-
-	
-
-	
+	public boolean isNew() {
+		return (this.id == null);
+	}
 	
 	
 
