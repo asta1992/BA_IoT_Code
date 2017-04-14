@@ -9,6 +9,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.10.xsd">
 
+	
 
 	<mvc:annotation-driven></mvc:annotation-driven>
 	<bean id="jspViewResolver"
@@ -17,6 +18,8 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 
+    <mvc:resources mapping="/resources/**" location="/resources/"
+	cache-period="31556926"/>
 
 
 	<context:component-scan base-package="ch.hsr.smartmanager.presentation.controller">

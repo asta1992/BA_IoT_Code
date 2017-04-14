@@ -30,11 +30,18 @@ public class WebController {
 		return "index";
 	}
 
-	@RequestMapping(value = "/createDevice")
+	@RequestMapping(value = "/devices")
 	public String showCreateDevice(Model model) {
 
 		return "createDevice";
 	}
+	
+	@RequestMapping(value = {"/discovery", "/accountsettings", "/settings"})
+	public String showTodo(Model model) {
+
+		return "todo";
+	}
+	
 	
 
 	@RequestMapping(value = "/devices/{id}")
