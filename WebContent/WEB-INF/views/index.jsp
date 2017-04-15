@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -25,7 +26,7 @@
 						<div class="navbar-collapse collapse sidebar-navbar-collapse">
 							<ul class="nav navbar-nav">
 								<li class="col-lg-12 col-md-12"><a href="/smartmanager/">Home</a></li>
-								<li class="col-lg-12 col-md-12"><a href="/smartmanager/devices">Devices erfassen</a></li>
+								<li class="col-lg-12 col-md-12"><a href="/smartmanager/devices/add">Devices erfassen</a></li>
 								<li class="col-lg-12 col-md-12"><a href="/smartmanager/discovery" class="col-lg-12 col-md-12">Discovery <span class="badge">12</span></a></li>
 								<li class="col-lg-12 col-md-12"><a href="/smartmanager/settings" class="col-lg-12 col-md-12">Settings</a></li>
 								<li class="col-lg-12 col-md-12"><a href="/smartmanager/accountsettings" class="col-lg-12 col-md-12">Account Settings</a></li>
@@ -43,15 +44,24 @@
 						<tr>
 							<th>#</th>
 							<th>Devicename</th>
-							<th>IP-Adresse</th>
+							<th>Endpoint</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="row" items="${devices}">
 							<tr>
-								<td><a href="/smartmanager/devices/${row.id}"	>${row.id}</a></td>
+								<td><a href="/smartmanager/devices/${row.id}">${row.id}</a></td>
 								<td>${row.name}</td>
-								<td>${row.ipAddress}</td>
+								<td>${row.endpoint}</td>
+								<td>
+								<spring:url value="/devices/${row.id}" var="userUrl" />
+								<spring:url value="/devices/${row.id}/delete" var="deleteUrl" />
+								<spring:url value="/devices/${row.id}/update" var="updateUrl" />
+
+								<button class="btn btn-info" onclick="location.href='${userUrl}'">Show</button>
+								<button class="btn btn-primary" onclick="location.href='${updateUrl}'">Update</button>
+								<button class="btn btn-danger" onclick="this.disabled=true;post('${deleteUrl}')">Delete</button>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>

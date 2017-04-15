@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -36,37 +39,61 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="col-xs-12 col-xm-6 col-md-6 col-lg-7">
-				<h2>Create a new Device</h2>
-				<p />
-				<form class="form-horizontal method="POST" action="${pageContext.request.contextPath}/doCreate">
+				<c:choose>
+					<c:when test="${deviceForm['new']}">
+						<h2>Device erstellen</h2>
+					</c:when>
+					<c:otherwise>
+						<h2>Update Device</h2>
+					</c:otherwise>
+				</c:choose>
+				<br />
+
+				<spring:url value="/devices" var="deviceActionUrl" />
+
+				<form:form class="form-horizontal" modelAttribute="deviceForm" action="${userActionUrl}">
+
+					<form:hidden path="id" />
+
 					<div class="form-group">
-						<label class="control-label col-sm-2" for="name">Devicename:</label>
+						<label class="control-label col-sm-2" for="endpoint">Name:</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="name" placeholder="Devicename">
+							<input type="text" class="form-control" id="name" placeholder="Name">
 						</div>
 					</div>
+
+
 
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="protocolType">Protokoll Typ:</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="protocolType" placeholder="Protokoll Typ">
+							<select class="form-control" id="selectedProtocol" name="protocolType">
+								<c:forEach var="protocolType" items="${protocolType}">
+									<option value="${protocolType}">${protocolType}</option>
+								</c:forEach>
+							</select>
 						</div>
 					</div>
-
 
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="authType">Authentikation Typ:</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="authType" placeholder="Authentikation Typ">
+							<select class="form-control" id="selectedAuth" name="authType">
+								<c:forEach var="authType" items="${authType}">
+									<option value="${authType}">${authType}</option>
+								</c:forEach>
+							</select>
+
 						</div>
 					</div>
 
 
 					<div class="form-group">
-						<label class="control-label col-sm-2" for="ipAddress">IP-Adresse:</label>
+						<label class="control-label col-sm-2" for="endpoint">Endpoint:</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="ipAddress" placeholder="IP-Adresse">
+							<input type="text" class="form-control" id="endpoint" placeholder="Endpoint">
 						</div>
 					</div>
 
@@ -87,13 +114,38 @@
 						</div>
 					</div>
 
+
 					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="btn btn-default">Erfassen</button>
+						<div class="col-sm-10">
+							<c:choose>
+								<c:when test="${deviceForm['new']}">
+									<button type="submit" class="btn-lg btn-primary pull-right">Erstellen</button>
+								</c:when>
+								<c:otherwise>
+									<button type="submit" class="btn-lg btn-primary pull-right">Anpassen</button>
+								</c:otherwise>
+							</c:choose>
 							<button onclick="history.back();" class="btn btn-default">Abbrechen</button>
 						</div>
 					</div>
-				</form>
+				</form:form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 			</div>
