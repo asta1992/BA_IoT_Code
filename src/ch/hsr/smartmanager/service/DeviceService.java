@@ -37,7 +37,10 @@ public class DeviceService {
 	}
 
 	public void createOrUpdateDevice(Device device) {
-		repository.insert(device);
+		if(device.isNew()) {
+			repository.insert(device);
+		}
+		else repository.save(device);
 	}
 	
 }

@@ -3,12 +3,12 @@ package ch.hsr.smartmanager.data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="devices")
+@Document(collection = "devices")
 public class Device {
-	
+
 	@Id
 	private String id;
-	
+
 	private String name;
 	private ProtocolType protocolType;
 	private AuthType authType;
@@ -16,8 +16,6 @@ public class Device {
 	private String username;
 	private String password;
 	
-	public Device() {};
-
 	public Device(String name, ProtocolType protocolType, AuthType authType, String endpoint, String username,
 			String password) {
 		this.name = name;
@@ -28,12 +26,14 @@ public class Device {
 		this.password = password;
 	}
 
+	public Device() {
+	}
 
 	public String getId() {
 		return id;
 	}
 	
-
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -44,7 +44,7 @@ public class Device {
 
 	public void setName(String name) {
 		this.name = name;
-	}	
+	}
 
 	public ProtocolType getProtocolType() {
 		return protocolType;
@@ -95,11 +95,9 @@ public class Device {
 		return "Device [id=" + id + ", name=" + name + ", protocolType=" + protocolType + ", authType=" + authType
 				+ ", endpoint=" + endpoint + ", username=" + username + ", password=" + password + "]";
 	}
-	
+
 	public boolean isNew() {
 		return (this.id == null);
 	}
-	
-	
 
 }

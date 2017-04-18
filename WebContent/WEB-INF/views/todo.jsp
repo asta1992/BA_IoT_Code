@@ -25,7 +25,7 @@
 						<div class="navbar-collapse collapse sidebar-navbar-collapse">
 							<ul class="nav navbar-nav">
 								<li class="col-lg-12 col-md-12"><a href="/smartmanager/">Home</a></li>
-								<li class="col-lg-12 col-md-12"><a href="/smartmanager/devices">Devices erfassen</a></li>
+								<li class="col-lg-12 col-md-12"><a href="/smartmanager/devices/add">Devices erfassen</a></li>
 								<li class="col-lg-12 col-md-12"><a href="/smartmanager/discovery" class="col-lg-12 col-md-12">Discovery <span class="badge">12</span></a></li>
 								<li class="col-lg-12 col-md-12"><a href="/smartmanager/settings" class="col-lg-12 col-md-12">Settings</a></li>
 								<li class="col-lg-12 col-md-12"><a href="/smartmanager/accountsettings" class="col-lg-12 col-md-12">Account Settings</a></li>
