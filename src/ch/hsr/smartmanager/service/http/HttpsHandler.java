@@ -117,7 +117,6 @@ public class HttpsHandler implements IHandler {
 		private void loadCookies() {
 			
 			cookieManager = new CookieManager();
-//			CookieHandler.setDefault(cookieManager);
 			headerFields = loginConnection.getHeaderFields();
 			List<String> cookiesHeader = headerFields.get("Set-Cookie");
 			
