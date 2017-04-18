@@ -12,7 +12,7 @@ public class CoapHandler implements IHandler {
 
 	
 	@Override
-	public boolean login(String endpoint, Credential credential) throws Exception {
+	public boolean login(String endpoint,  credential) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}

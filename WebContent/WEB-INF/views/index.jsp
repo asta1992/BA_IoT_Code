@@ -54,11 +54,11 @@
 								<td>${row.name}</td>
 								<td>${row.endpoint}</td>
 								<td>
-								<spring:url value="/devices/${row.id}" var="userUrl" />
+								<spring:url value="/devices/${row.id}" var="deviceUrl" />
 								<spring:url value="/devices/${row.id}/delete" var="deleteUrl" />
 								<spring:url value="/devices/${row.id}/update" var="updateUrl" />
 
-								<button class="btn btn-info" onclick="location.href='${userUrl}'">Show</button>
+								<button class="btn btn-info" onclick="location.href='${deviceUrl}'">Show</button>
 								<button class="btn btn-primary" onclick="location.href='${updateUrl}'">Update</button>
 								<button class="btn btn-danger" onclick="this.disabled=true;post('${deleteUrl}')">Delete</button>
 								</td>

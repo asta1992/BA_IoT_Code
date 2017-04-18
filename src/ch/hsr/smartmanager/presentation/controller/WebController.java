@@ -29,10 +29,9 @@ public class WebController {
 
 	
 	@RequestMapping(value = "/devices", method = RequestMethod.POST)
-	public String saveOrUpdateUser(@ModelAttribute("userForm") @Validated Device device,
-			BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
+	public String saveOrUpdateUser(@ModelAttribute("userForm") @Validated Device device, BindingResult result, Model model) {
 		deviceService.createOrUpdateDevice(device);
-		return "redirect:/";
+		return "index";
 	}
 	
 	
@@ -55,7 +54,7 @@ public class WebController {
 	}
 	
 	@RequestMapping(value="/devices/{id}/delete", method=RequestMethod.POST)
-	public String deleteUser(@PathVariable("id") String id, final RedirectAttributes redirectionAttributes) {
+	public String deleteUser(@PathVariable("id") String id) {
 		deviceService.deleteDevice(id);
 		
 		return "redirect:/";
@@ -68,35 +67,9 @@ public class WebController {
 		return "deviceDetails";
 	}
 	
-	
-	
-	
-	
-	
-	
-
-
-
-	
 	@RequestMapping(value = { "/discovery", "/accountsettings", "/settings" })
 	public String showTodo(Model model) {
 
 		return "todo";
 	}
-
-	
-	/*
-	 * @RequestParam("name") String name, @RequestParam("protocolType") String
-	 * protocolType,
-	 * 
-	 * @RequestParam("authType") String authType, @RequestParam("ipAddress")
-	 * String ipAddress,
-	 * 
-	 * @RequestParam("username") String username, @RequestParam("password")
-	 * String password)
-	 * 
-	 */
-
-	
-
 }

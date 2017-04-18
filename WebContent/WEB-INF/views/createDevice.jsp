@@ -53,7 +53,7 @@
 
 				<spring:url value="/devices" var="deviceActionUrl" />
 
-				<form:form class="form-horizontal" modelAttribute="deviceForm" action="${userActionUrl}">
+				<form:form class="form-horizontal" modelAttribute="deviceForm" action="${deviceActionUrl}">
 
 					<form:hidden path="id" />
 

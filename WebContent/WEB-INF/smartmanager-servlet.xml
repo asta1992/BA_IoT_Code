@@ -28,7 +28,7 @@
 
 	<bean id="mongo"
 		class="org.springframework.data.mongodb.core.MongoClientFactoryBean">
-		<property name="host" value="localhost" />
+		<property name="host" value="127.0.0.1" />
 	</bean>
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
