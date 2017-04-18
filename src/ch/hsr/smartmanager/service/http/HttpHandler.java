@@ -29,7 +29,6 @@ public class HttpHandler implements IHandler {
 		this.device = device;
 	}
 	
-	@Override
 	public void setDevice(Device device) {
 		this.device= device;
 	}

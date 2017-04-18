@@ -9,51 +9,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Smartmanager - Create Device</</title>
+<title>Smartmanager - Create Device</title>
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel=stylesheet href="resources/css/menu.css">
 
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-xs-12 col-xm-3 col-md-2 col-lg-2"
-				style="padding: 0 0 0 0;">
-				<div class="sidebar-nav">
-					<div class="navbar navbar-default" role="navigation">
-						<div class="navbar-header">
-							<button type="button" class="navbar-toggle"
-								data-toggle="collapse" data-target=".sidebar-navbar-collapse">
-								<span class="sr-only">Toggle navigation</span> <span
-									class="icon-bar"></span> <span class="icon-bar"> </span> <span
-									class="icon-bar"></span>
-							</button>
-							<span class="visible-xs navbar-brand">Sidebar menu</span>
-						</div>
-						<div class="navbar-collapse collapse sidebar-navbar-collapse">
-							<ul class="nav navbar-nav">
-								<li class="col-lg-12 col-md-12"><a href="/smartmanager/">Home</a></li>
-								<li class="col-lg-12 col-md-12"><a
-									href="/smartmanager/devices/add">Devices erfassen</a></li>
-								<li class="col-lg-12 col-md-12"><a
-									href="/smartmanager/discovery" class="col-lg-12 col-md-12">Discovery
-										<span class="badge">12</span>
-								</a></li>
-								<li class="col-lg-12 col-md-12"><a
-									href="/smartmanager/settings" class="col-lg-12 col-md-12">Settings</a></li>
-								<li class="col-lg-12 col-md-12"><a
-									href="/smartmanager/accountsettings"
-									class="col-lg-12 col-md-12">Account Settings</a></li>
 
-							</ul>
-						</div>
-						<!--/.nav-collapse -->
-					</div>
-				</div>
-			</div>
+
+			<jsp:include page="../views/fragments/menu.jsp" />
+
+
 
 			<div class="col-xs-12 col-xm-6 col-md-6 col-lg-7">
 				<c:choose>
@@ -144,20 +113,24 @@
 
 
 					<div class="form-group">
-						<div class="col-sm-10">
+						<div>
 							<c:choose>
 								<c:when test="${device['new']}">
-									<button type="submit" class="btn btn-default">Erstellen</button>
+									<button type="submit" class="btn btn-default pull-right">Erstellen</button>
 								</c:when>
 								<c:otherwise>
-									<button type="submit" class="btn btn-default">Anpassen</button>
+									<button type="submit" class="btn btn-default pull-right">Anpassen</button>
 								</c:otherwise>
 							</c:choose>
-							<button onclick="history.back();" class="btn btn-default">Abbrechen</button>
+							<button onclick="history.back();"
+								class="btn btn-default pull-right">Abbrechen</button>
 						</div>
 					</div>
 				</form:form>
 			</div>
+
+
+
 			<div class="col-xs-12 col-xm-3 col-md-4 col-lg-3">
 				<div class="row">
 					<div style="height: 50%;">
