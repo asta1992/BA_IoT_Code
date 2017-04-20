@@ -94,8 +94,6 @@ public class LwM2MManagementServer {
 
 			@Override
 			public void registered(Registration registration) {
-				System.out.println("New Device");
-				System.out.println(registration);
 				deviceService.getAllDevice();
 				deviceService.createOrUpdateDevice(new Device(registration.getEndpoint(),registration.getId(), ProtocolType.LwM2M,
 						AuthType.NONE,
@@ -104,12 +102,10 @@ public class LwM2MManagementServer {
 
 			@Override
 			public void unregistered(Registration registration, Collection<Observation> observerColl) {
-				System.out.println("Bye");
 			}
 
 			@Override
 			public void updated(RegistrationUpdate registrationUpdate, Registration registration) {
-				System.out.println("Update");
 			}
 
 		};
