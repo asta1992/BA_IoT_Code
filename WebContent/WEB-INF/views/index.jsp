@@ -29,7 +29,7 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th>#</th>
+							<th>Registration Id</th>
 							<th>Devicename</th>
 							<th>Endpoint</th>
 						</tr>
@@ -37,10 +37,10 @@
 					<tbody>
 						<c:forEach var="row" items="${devices}">
 							<tr>
-								<td><a href="/smartmanager/devices/${row.id}">${row.id}</a></td>
+								<td><a href="/smartmanager/devices/${row.regId}">${row.regId}</a></td>
 								<td>${row.name}</td>
 								<td>${row.endpoint}</td>
-								<td><spring:url value="/devices/${row.id}" var="deviceUrl" />
+								<td><spring:url value="/devices/${row.regId}" var="deviceUrl" />
 									<spring:url value="/devices/${row.id}/delete" var="deleteUrl" />
 									<spring:url value="/devices/${row.id}/update" var="updateUrl" />
 

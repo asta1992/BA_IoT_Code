@@ -9,5 +9,6 @@
 	<context:component-scan
 		base-package="ch.hsr.smartmanager.service">
 	</context:component-scan>
+		
 	<context:annotation-config></context:annotation-config>
 </beans>

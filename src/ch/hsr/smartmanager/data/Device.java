@@ -10,6 +10,7 @@ public class Device {
 	private String id;
 
 	private String name;
+	private String regId;
 	private ProtocolType protocolType;
 	private AuthType authType;
 	private String endpoint;
@@ -19,6 +20,17 @@ public class Device {
 	public Device(String name, ProtocolType protocolType, AuthType authType, String endpoint, String username,
 			String password) {
 		this.name = name;
+		this.protocolType = protocolType;
+		this.authType = authType;
+		this.endpoint = endpoint;
+		this.username = username;
+		this.password = password;
+	}
+	
+	public Device(String name, String regId, ProtocolType protocolType, AuthType authType, String endpoint, String username,
+			String password) {
+		this.name = name;
+		this.regId = regId;
 		this.protocolType = protocolType;
 		this.authType = authType;
 		this.endpoint = endpoint;
@@ -88,6 +100,14 @@ public class Device {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getRegId() {
+		return regId;
+	}
+
+	public void setRegId(String regId) {
+		this.regId = regId;
 	}
 
 	@Override

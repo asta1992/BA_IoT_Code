@@ -62,11 +62,6 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.californium</groupId>
-			<artifactId>californium-core</artifactId>
-			<version>1.0.0-M2</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>1.10.1.RELEASE</version>
@@ -86,32 +81,12 @@
 			<artifactId>spring-data-commons</artifactId>
 			<version>1.13.1.RELEASE</version>
 		</dependency>
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery</artifactId>
-			<version>2.1.1</version>
-		</dependency>
 
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>bootstrap</artifactId>
-			<version>3.2.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.webjars</groupId>
-					<artifactId>jquery</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.leshan</groupId>
-			<artifactId>leshan-all</artifactId>
+			<artifactId>leshan-server-demo</artifactId>
 			<version>1.0.0-M1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-nop</artifactId>
-			<version>1.8.0-alpha0</version>
+			<classifier>jar-with-dependencies</classifier>
 		</dependency>
 	</dependencies>
 </project>

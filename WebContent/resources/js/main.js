@@ -19,3 +19,14 @@ function post(path, params, method) {
 	document.body.appendChild(form);
 	form.submit();
 }
+
+function getData(url) {
+	$.ajax({ 
+	    type: "GET",
+	    dataType: "jsonp",
+	    url: url,
+	    success: function(data) {
+	       console.log(data)
+	    }
+	}); 
+}

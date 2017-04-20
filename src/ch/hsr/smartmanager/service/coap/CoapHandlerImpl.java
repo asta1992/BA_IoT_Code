@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.service.IHandler;
 
-@Service
 public class CoapHandlerImpl implements IHandler {
 
 	private CoapClient coapClient;
@@ -25,20 +24,7 @@ public class CoapHandlerImpl implements IHandler {
 
 	@Override
 	public String read() {
-		
-		coapClient.get(new CoapHandler() {
-			
-			@Override
-			public void onLoad(CoapResponse res) {
-				response = res.getResponseText();
-			}
-			
-			@Override
-			public void onError() {
-				response = "Error";
-			}
-		});
-		
+
 		return response;
 		
 	}
