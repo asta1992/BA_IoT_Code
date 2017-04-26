@@ -2,6 +2,7 @@ package ch.hsr.smartmanager.service;
 
 import java.util.List;
 
+import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,16 +32,29 @@ public class DeviceService {
 	public List<Device> getAllDevice() {
 		return repository.findAll();
 	}
-
-	public void deleteDevice(String id) {
-		repository.delete(id);
-	}
-
-	public void createOrUpdateDevice(Device device) {
-		if(device.isNew()) {
-			repository.insert(device);
-		}
-		else repository.save(device);
+	
+	public boolean exists(String endpoint) {
+		return repository.endpointExists(endpoint);	
 	}
 	
+	public Device findOneEndpoint(String endpoint) {
+		return repository.findOneEndpoint(endpoint);
+	}
+	
+	
+	public void deleteDevice(String endpoint) {
+		repository.deleteEndpoint(endpoint);
+	}
+
+	public void updateDevice(Registration registration, Device device) {
+		if(exists(device.getEndpoint())) {
+			repository.deleteEndpoint(device.getEndpoint());
+			repository.save(device);
+		}
+	}
+	
+	public void createDevice(Device device) {
+			repository.insert(device);
+	}
+
 }

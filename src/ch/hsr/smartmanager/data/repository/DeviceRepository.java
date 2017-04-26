@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 import ch.hsr.smartmanager.data.Device;
 
 @Repository
-public interface DeviceRepository extends MongoRepository<Device, String>  {
+public interface DeviceRepository extends MongoRepository<Device, String>, DeviceRepositoryCustom {
 	
-}
+	
 
+}

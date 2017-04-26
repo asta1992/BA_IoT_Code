@@ -1,12 +1,19 @@
 package ch.hsr.smartmanager.presentation.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
-import org.eclipse.leshan.core.response.ReadResponse;
+import org.eclipse.leshan.core.observation.Observation;
+import org.eclipse.leshan.server.registration.Registration;
+import org.eclipse.leshan.server.registration.RegistrationListener;
+import org.eclipse.leshan.server.registration.RegistrationUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,13 +40,18 @@ public class WebController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model) {
-		model.addAttribute("devices", deviceService.getAllDevice());
+		Iterator<Registration> a = lwM2MManagementServer.getServer().getRegistrationService().getAllRegistrations();
+		List<Registration> devList = new ArrayList<>();
+		while(a.hasNext()) {
+			devList.add(a.next());
+		}
+		model.addAttribute("devices", devList);
 		return "index";
 	}
 	
 	@RequestMapping(value = "/devices", method = RequestMethod.POST)
 	public String saveOrUpdateUser(@ModelAttribute Device device, Model model, BindingResult result) {
-		deviceService.createOrUpdateDevice(device);
+		//deviceService.createOrUpdateDevice(device);
 		return "redirect:/";
 	}
 

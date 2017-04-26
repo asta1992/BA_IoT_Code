@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
@@ -8,8 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Smartmanager - Home</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="resources/js/main.js"></script>
 
@@ -20,8 +18,6 @@
 		<div class="row">
 
 			<jsp:include page="../views/fragments/menu.jsp" />
-
-
 
 			<div class="col-xs-12 col-xm-6 col-md-6 col-lg-7">
 				<h2>Devices</h2>
@@ -37,20 +33,14 @@
 					<tbody>
 						<c:forEach var="row" items="${devices}">
 							<tr>
-								<td><a href="/smartmanager/devices/${row.regId}">${row.regId}</a></td>
-								<td>${row.name}</td>
+								<td><a href="/smartmanager/devices/${row.id}">${row.id}</a></td>
 								<td>${row.endpoint}</td>
-								<td><spring:url value="/devices/${row.regId}" var="deviceUrl" />
-									<spring:url value="/devices/${row.id}/delete" var="deleteUrl" />
-									<spring:url value="/devices/${row.id}/update" var="updateUrl" />
+								<td>coap:/${row.address}:${row.port}</td>
+								<td><spring:url value="/devices/${row.id}" var="deviceUrl" /> <spring:url value="/devices/${row.id}/delete" var="deleteUrl" /> <spring:url value="/devices/${row.id}/update" var="updateUrl" />
 
-									<button class="btn btn-info"
-										onclick="location.href='${deviceUrl}'">Show</button>
-									<button class="btn btn-primary"
-										onclick="location.href='${updateUrl}'">Update</button>
-									<button class="btn btn-danger"
-										onclick="this.disabled=true;post('${deleteUrl}')">Delete</button>
-								</td>
+									<button class="btn btn-info" onclick="location.href='${deviceUrl}'">Show</button>
+									<button class="btn btn-primary" onclick="location.href='${updateUrl}'">Update</button>
+									<button class="btn btn-danger" onclick="this.disabled=true;post('${deleteUrl}')">Delete</button></td>
 							</tr>
 						</c:forEach>
 					</tbody>
