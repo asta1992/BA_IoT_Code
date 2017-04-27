@@ -13,25 +13,22 @@ import org.eclipse.leshan.server.californium.impl.LeshanServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.hsr.smartmanager.service.IHandler;
-
 @Service
-public class LwM2MHandler implements IHandler{
+public class LwM2MHandler {
 
-	
 	@Autowired
 	private LwM2MManagementServer lwM2MManagementServer;
-	
+
 	private LeshanServer server;
-	
-	public LwM2MHandler() {}
-	
-	
+
+	public LwM2MHandler() {
+	}
+
 	public WriteResponse write(String id, int objectId, int objectInstanceId, int resourceId, String value) {
 		WriteRequest req = new WriteRequest(objectId, objectInstanceId, resourceId, value);
 		WriteResponse res;
 		server = lwM2MManagementServer.getServer();
-		
+
 		try {
 			res = server.send(server.getRegistrationService().getById(id), req);
 		} catch (InterruptedException e) {
@@ -40,7 +37,7 @@ public class LwM2MHandler implements IHandler{
 		}
 		return res;
 	}
-	
+
 	public ReadResponse read(String id, int objectId, int objectInstanceId, int resourceId) {
 		ReadRequest req = new ReadRequest(objectId + "/" + objectInstanceId + "/" + resourceId);
 		ReadResponse res;
@@ -54,12 +51,12 @@ public class LwM2MHandler implements IHandler{
 		}
 		return res;
 	}
-	
+
 	public ExecuteResponse execute(String id, int objectId, int objectInstanceId, int resourceId) {
 		ExecuteRequest req = new ExecuteRequest(objectId, objectInstanceId, resourceId);
 		ExecuteResponse res;
 		server = lwM2MManagementServer.getServer();
-		
+
 		try {
 			res = server.send(server.getRegistrationService().getById(id), req);
 		} catch (InterruptedException e) {
@@ -67,27 +64,9 @@ public class LwM2MHandler implements IHandler{
 			e.printStackTrace();
 		}
 		return res;
-	}
+	}	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	@Override
-	public String read() {
-		return null;
-	}
-
-	@Override
-	public String write(String body) {
-		return null;
-	}
-	
-	public Link[] discovery(String path, String id) {
+	public Link[] ressourceDiscovery(String path, String id) {
 		DiscoverRequest disReq = new DiscoverRequest(path);
 		DiscoverResponse res;
 		server = lwM2MManagementServer.getServer();
@@ -99,9 +78,6 @@ public class LwM2MHandler implements IHandler{
 			e.printStackTrace();
 		}
 		return res.getObjectLinks();
-		
-	}
-	public String execute(String body) {
-		return null;
+
 	}
 }

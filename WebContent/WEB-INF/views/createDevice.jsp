@@ -57,34 +57,6 @@
 					</div>
 
 					<div class="form-group">
-						<label class="control-label col-sm-2" for="protocolType">Protokoll
-							Typ:</label>
-						<div class="col-sm-10">
-							<form:select class="form-control" path="protocolType"
-								id="selectedProtocol" name="protocolType">
-								<c:forEach var="protocolType" items="${protocolType}">
-									<form:option value="${protocolType}">${protocolType}</form:option>
-								</c:forEach>
-							</form:select>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-sm-2" for="authType">Authentikation
-							Typ:</label>
-						<div class="col-sm-10">
-							<form:select class="form-control" id="selectedAuth"
-								path="authType" name="authType">
-								<c:forEach var="authType" items="${authType}">
-									<form:option value="${authType}">${authType}</form:option>
-								</c:forEach>
-							</form:select>
-
-						</div>
-					</div>
-
-
-					<div class="form-group">
 						<label class="control-label col-sm-2" for="endpoint">Endpoint:</label>
 						<div class="col-sm-10">
 							<form:input type="text" class="form-control" path="endpoint"

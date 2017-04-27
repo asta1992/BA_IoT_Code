@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 
 @org.springframework.web.bind.annotation.RestController
@@ -17,6 +18,9 @@ public class RestController {
 
 	@Autowired
 	LwM2MHandler lwM2MHandler;
+	
+	@Autowired
+	DeviceService deviceService;
 	
 	@RequestMapping(value = "/devices/{id}/read/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
 	public ReadResponse read(Model model, 
@@ -48,6 +52,12 @@ public class RestController {
 		
 		return lwM2MHandler.execute(id, objectId, objectInstanceId, resourceId);
 	}
-
+	
+	@RequestMapping(value = "/countDiscoveredDevices", method = RequestMethod.GET)
+	public int countDevices(Model model){
+		
+		return deviceService.countDiscoveredDevices();
+	}
+	
 
 }

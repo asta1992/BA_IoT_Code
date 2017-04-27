@@ -3,7 +3,6 @@ package ch.hsr.smartmanager.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,38 +13,23 @@ public class Device implements DeviceComponent {
 	private String id;
 
 	private String name;
-	private Registration registration;
-	private AuthType authType;
+	private String regId;
 	private String endpoint;
 	private String username;
 	private String password;
-	List<DeviceComponent> parent = new ArrayList<DeviceComponent>();
-
-	public Device(String name, Registration registration, AuthType authType, String endpoint, String username,
-			String password) {
-		this.name = name;
-		this.registration = registration;
-		this.authType = authType;
-		this.endpoint = endpoint;
-		this.username = username;
-		this.password = password;
-	}
-
-	public Device(String name, Registration registration, ProtocolType protocolType, AuthType authType, String endpoint,
-			String username, String password) {
-		this.name = name;
-		this.registration = registration;
-		this.authType = authType;
-		this.endpoint = endpoint;
-		this.username = username;
-		this.password = password;
-	}
+	private boolean added;
+	private List<DeviceComponent> parent = new ArrayList<DeviceComponent>();
 
 	public Device() {
 	}
 
-	public Device(String name) {
+	public Device(String name, String regId, String endpoint, String username, String password, boolean added) {
 		this.name = name;
+		this.regId = regId;
+		this.endpoint = endpoint;
+		this.username = username;
+		this.password = password;
+		this.added = added;
 	}
 
 	public String getId() {
@@ -62,14 +46,6 @@ public class Device implements DeviceComponent {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public AuthType getAuthType() {
-		return authType;
-	}
-
-	public void setAuthType(AuthType authType) {
-		this.authType = authType;
 	}
 
 	public void setEndpoint(String endpoint) {
@@ -100,22 +76,28 @@ public class Device implements DeviceComponent {
 		this.password = password;
 	}
 
-	public Registration getRegistration() {
-		return registration;
+	public String getRegId() {
+		return regId;
 	}
 
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
+	public void setRegId(String regId) {
+		this.regId = regId;
 	}
 
-	@Override
-	public String toString() {
-		return "Device [id=" + id + ", name=" + name + ", registration=" + registration + ", authType=" + authType
-				+ ", endpoint=" + endpoint + ", username=" + username + ", password=" + password + "]";
+	public void addParent(DeviceComponent parentChild) {
+		this.parent.add(parentChild);
 	}
 
-	public boolean isNew() {
-		return (this.id == null);
+	public void removeParent(DeviceComponent parentChild) {
+		this.parent.remove(parentChild);
+	}
+
+	public boolean isAdded() {
+		return added;
+	}
+
+	public void setAdded(boolean added) {
+		this.added = added;
 	}
 
 	@Override
@@ -134,24 +116,26 @@ public class Device implements DeviceComponent {
 		return null;
 	}
 
+	public boolean isNew() {
+		return (this.id == null);
+	}
+
 	@Override
 	public void print(String abstand) {
 		String parentString = "None";
 		if (parent.size() > 0) {
 			parentString = "";
-			for(DeviceComponent s : parent) {
+			for (DeviceComponent s : parent) {
 				parentString += s.getName() + ", ";
 			}
 		}
 		System.out.println(abstand + toString() + " Parent: " + parentString);
 	}
 
-	public void addParent(DeviceComponent parentChild) {
-		this.parent.add(parentChild);
-	}
-
-	public void removeParent(DeviceComponent parentChild) {
-		this.parent.remove(parentChild);
+	@Override
+	public String toString() {
+		return "Device [id=" + id + ", name=" + name + ", regId=" + regId + ", endpoint=" + endpoint
+				+ ", username=" + username + ", password=" + password + "]";
 	}
 
 }

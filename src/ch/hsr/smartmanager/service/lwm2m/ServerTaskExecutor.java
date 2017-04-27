@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class ServerTaskExecutor {
 
 	private class StartTask implements Runnable {
-		
+
 		private final LeshanServer server;
 
 		public StartTask(LeshanServer server) {
