@@ -1,11 +1,14 @@
 package ch.hsr.smartmanager.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "devices")
-public class Device {
+public class Device implements DeviceComponent {
 
 	@Id
 	private String id;
@@ -16,7 +19,8 @@ public class Device {
 	private String endpoint;
 	private String username;
 	private String password;
-	
+	List<DeviceComponent> parent = new ArrayList<DeviceComponent>();
+
 	public Device(String name, Registration registration, AuthType authType, String endpoint, String username,
 			String password) {
 		this.name = name;
@@ -26,9 +30,9 @@ public class Device {
 		this.username = username;
 		this.password = password;
 	}
-	
-	public Device(String name, Registration registration, ProtocolType protocolType, AuthType authType, String endpoint, String username,
-			String password) {
+
+	public Device(String name, Registration registration, ProtocolType protocolType, AuthType authType, String endpoint,
+			String username, String password) {
 		this.name = name;
 		this.registration = registration;
 		this.authType = authType;
@@ -40,11 +44,14 @@ public class Device {
 	public Device() {
 	}
 
+	public Device(String name) {
+		this.name = name;
+	}
+
 	public String getId() {
 		return id;
 	}
-	
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -109,6 +116,42 @@ public class Device {
 
 	public boolean isNew() {
 		return (this.id == null);
+	}
+
+	@Override
+	public void add(DeviceComponent deviceComponent) {
+		// Leaf node. No Implementation needed
+	}
+
+	@Override
+	public void remove(DeviceComponent deviceComponent) {
+		// Leaf node. No Implementation needed
+	}
+
+	@Override
+	public DeviceComponent getChild(int index) {
+		// Leaf node. No Implementation needed
+		return null;
+	}
+
+	@Override
+	public void print(String abstand) {
+		String parentString = "None";
+		if (parent.size() > 0) {
+			parentString = "";
+			for(DeviceComponent s : parent) {
+				parentString += s.getName() + ", ";
+			}
+		}
+		System.out.println(abstand + toString() + " Parent: " + parentString);
+	}
+
+	public void addParent(DeviceComponent parentChild) {
+		this.parent.add(parentChild);
+	}
+
+	public void removeParent(DeviceComponent parentChild) {
+		this.parent.remove(parentChild);
 	}
 
 }
