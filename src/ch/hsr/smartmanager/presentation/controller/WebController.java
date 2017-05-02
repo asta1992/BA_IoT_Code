@@ -85,15 +85,7 @@ public class WebController {
 		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
 		return "discovery";
 	}
-
-	@RequestMapping(value = {"/accountsettings", "/settings" })
-	public String showTodo(Model model) {
-
-		return "todo";
-	}
-	
-	
-	
+		
 	 @RequestMapping(value = "/devices/{id}/summary", method = RequestMethod.GET)
 	    public ModelAndView deviceSummary(@PathVariable("id") String id) {
 	        ModelAndView model = new ModelAndView("deviceSummary");
@@ -123,4 +115,22 @@ public class WebController {
 		// deviceService.createOrUpdateDevice(device);
 		return "redirect:/";
 	}
+	
+	
+	
+	//Neu TEMP-----------------
+	
+//	@RequestMapping(value = "/", method = RequestMethod.GET)
+//	public String showIndex(Model model) {
+//		
+//		evtl ein Dashboard?!
+//		return "index";
+//	}
+	
+//	@RequestMapping(value = "/discovery")
+//	public String showDiscovery(Model model) {
+//		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
+//		return "discovery";
+//	}
+	
 }
