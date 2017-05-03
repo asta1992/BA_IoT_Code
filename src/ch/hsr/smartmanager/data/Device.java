@@ -1,7 +1,6 @@
 package ch.hsr.smartmanager.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,9 +17,13 @@ public class Device implements DeviceComponent {
 	private String username;
 	private String password;
 	private boolean added;
-	private List<DeviceComponent> parent = new ArrayList<DeviceComponent>();
+	private HashSet<DeviceComponent> parent = new HashSet<DeviceComponent>();
 
 	public Device() {
+	}
+
+	public Device(String name) {
+		this.name = name;
 	}
 
 	public Device(String name, String regId, String endpoint, String username, String password, boolean added) {
@@ -110,12 +113,6 @@ public class Device implements DeviceComponent {
 		// Leaf node. No Implementation needed
 	}
 
-	@Override
-	public DeviceComponent getChild(int index) {
-		// Leaf node. No Implementation needed
-		return null;
-	}
-
 	public boolean isNew() {
 		return (this.id == null);
 	}
@@ -134,8 +131,8 @@ public class Device implements DeviceComponent {
 
 	@Override
 	public String toString() {
-		return "Device [id=" + id + ", name=" + name + ", regId=" + regId + ", endpoint=" + endpoint
-				+ ", username=" + username + ", password=" + password + "]";
+		return "Device [id=" + id + ", name=" + name + ", regId=" + regId + ", endpoint=" + endpoint + ", username="
+				+ username + ", password=" + password + "]";
 	}
 
 }

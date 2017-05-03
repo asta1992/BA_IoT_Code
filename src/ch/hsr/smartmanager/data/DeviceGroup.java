@@ -1,14 +1,15 @@
 package ch.hsr.smartmanager.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 public class DeviceGroup implements DeviceComponent {
 
 	private String name;
 
-	List<DeviceComponent> deviceComponent = new ArrayList<DeviceComponent>();
-	List<DeviceComponent> parentComponent = new ArrayList<DeviceComponent>();
+	HashSet<DeviceComponent> deviceComponent = new HashSet<DeviceComponent>();
+	HashSet<DeviceComponent> parentComponent = new HashSet<DeviceComponent>();
+	
+	
 
 
 	public DeviceGroup(String name) {
@@ -28,26 +29,27 @@ public class DeviceGroup implements DeviceComponent {
 	}
 
 	@Override
-	public DeviceComponent getChild(int index) {
-		return deviceComponent.get(index);
-	}
-
-	@Override
 	public String getName() {
 		return name;
 	}
 
 	public void print(String abstand) {
 		String parent = "None";
+		
+		
 		if (parentComponent.size() > 0) {
 			parent = "";
+			
+			
 			for(DeviceComponent s : parentComponent) {
 				parent += s.getName() + ", ";
 			}
+			
+			
 		}
 		System.out.println(abstand + "Gruppe " + getName() + " Parent: " + parent);
 		for (DeviceComponent dc : deviceComponent) {
-			dc.print(abstand + "      ");// Einrückung
+			System.out.println(dc.getName() + " ");
 		}
 	}
 
