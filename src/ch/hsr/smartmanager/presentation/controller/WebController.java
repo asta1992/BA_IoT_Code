@@ -85,6 +85,11 @@ public class WebController {
 		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
 		return "discovery";
 	}
+	
+	@RequestMapping(value = "/devices")
+	public String showDevices(Model model) {
+		return "devices";
+	}
 		
 	 @RequestMapping(value = "/devices/{id}/summary", method = RequestMethod.GET)
 	    public ModelAndView deviceSummary(@PathVariable("id") String id) {
