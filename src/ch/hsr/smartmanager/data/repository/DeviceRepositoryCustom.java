@@ -22,6 +22,9 @@ public interface DeviceRepositoryCustom {
 	
 	public void deleteUnusedDiscoveries();
 	
+	public Device getDeviceByName(String name);
+
+	public Device findOneDevice(String id);
 	
 
 

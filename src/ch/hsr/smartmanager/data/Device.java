@@ -1,11 +1,13 @@
 package ch.hsr.smartmanager.data;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "devices")
+@Document(collection="device")
 public class Device implements DeviceComponent {
 
 	@Id
@@ -17,7 +19,9 @@ public class Device implements DeviceComponent {
 	private String username;
 	private String password;
 	private boolean added;
-	private HashSet<DeviceComponent> parent = new HashSet<DeviceComponent>();
+	
+	@DBRef
+	private List<DeviceComponent> parentComponent = new ArrayList<DeviceComponent>();
 
 	public Device() {
 	}
@@ -88,11 +92,11 @@ public class Device implements DeviceComponent {
 	}
 
 	public void addParent(DeviceComponent parentChild) {
-		this.parent.add(parentChild);
+		this.parentComponent.add(parentChild);
 	}
 
 	public void removeParent(DeviceComponent parentChild) {
-		this.parent.remove(parentChild);
+		this.parentComponent.remove(parentChild);
 	}
 
 	public boolean isAdded() {
@@ -113,6 +117,20 @@ public class Device implements DeviceComponent {
 		// Leaf node. No Implementation needed
 	}
 
+	@Override
+	public boolean isParent(DeviceComponent deviceComponent) {
+		return false;
+	}
+
+	
+	public List<DeviceComponent> getParentComponent() {
+		return parentComponent;
+	}
+
+	public void setParentComponent(List<DeviceComponent> parentComponent) {
+		this.parentComponent = parentComponent;
+	}
+
 	public boolean isNew() {
 		return (this.id == null);
 	}
@@ -120,19 +138,30 @@ public class Device implements DeviceComponent {
 	@Override
 	public void print(String abstand) {
 		String parentString = "None";
-		if (parent.size() > 0) {
+		if (parentComponent.size() > 0) {
 			parentString = "";
-			for (DeviceComponent s : parent) {
+			for (DeviceComponent s : parentComponent) {
 				parentString += s.getName() + ", ";
 			}
 		}
 		System.out.println(abstand + toString() + " Parent: " + parentString);
 	}
+	
+	
+
 
 	@Override
 	public String toString() {
 		return "Device [id=" + id + ", name=" + name + ", regId=" + regId + ", endpoint=" + endpoint + ", username="
-				+ username + ", password=" + password + "]";
+				+ username + ", password=" + password + ", added=" + added
+				+ "]";
 	}
+
+	@Override
+	public List<DeviceComponent> getDeviceComponent() {
+		return null;
+	}
+	
+	
 
 }

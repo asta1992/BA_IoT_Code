@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import ch.hsr.smartmanager.data.Device;
+import ch.hsr.smartmanager.data.DeviceComponent;
 
 public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
 
@@ -63,6 +64,23 @@ public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
 		dev.setAdded(!dev.isAdded());
 		mongoTemplate.save(dev);
 		
+	}
+
+	@Override
+	public Device getDeviceByName(String name) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("name").is(name));
+		return mongoTemplate.findOne(query, Device.class);
+	}
+	
+	@Override
+	public Device findOneDevice(String id) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(id));
+		
+		Device dev = mongoTemplate.findOne(query, Device.class);
+		System.out.println(dev);
+		return dev;
 	}
 
 

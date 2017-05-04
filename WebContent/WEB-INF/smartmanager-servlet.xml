@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.10.xsd">
 
-	
+
 
 	<mvc:annotation-driven></mvc:annotation-driven>
 	<bean id="jspViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<!-- <property name="prefix" value="/WEB-INF/views/"></property>-->
+		<!-- <property name="prefix" value="/WEB-INF/views/"></property> -->
 		<property name="prefix" value="/WEB-INF/newviews/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 
-    <mvc:resources mapping="/resources/**" location="/resources/"
-	cache-period="31556926"/>
+	<mvc:resources mapping="/resources/**" location="/resources/"
+		cache-period="31556926" />
 
 
-	<context:component-scan base-package="ch.hsr.smartmanager.presentation.controller">
-	</context:component-scan>
+	<mongo:mongo id="mongo" host="127.0.0.1" />
 
+	<mongo:db-factory id="mongoDbFactory" dbname="test"
+		mongo-ref="mongo" />
 
-	<bean id="mongo"
-		class="org.springframework.data.mongodb.core.MongoClientFactoryBean">
-		<property name="host" value="127.0.0.1" />
-	</bean>
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongo" ref="mongo" />
-		<constructor-arg name="databaseName" value="test" />
+		<constructor-arg ref="mongoDbFactory" />
 	</bean>
 
-	<mongo:repositories base-package="ch.hsr.smartmanager.data" />
+
+
+	<mongo:repositories base-package="ch.hsr.smartmanager.data.repository" />
+
 	<context:component-scan base-package="ch.hsr.smartmanager.data"></context:component-scan>
-	
-	<context:component-scan
-		base-package="ch.hsr.smartmanager.service">
+	<context:component-scan base-package="ch.hsr.smartmanager.data.converter"></context:component-scan>
+
+	<context:component-scan base-package="ch.hsr.smartmanager.service">
 	</context:component-scan>
-	<context:component-scan
-		base-package="ch.hsr.smartmanager.data.repository">
+
+	<context:component-scan base-package="ch.hsr.smartmanager.data.repository">
+	</context:component-scan>
+
+	<context:component-scan base-package="ch.hsr.smartmanager.presentation.controller">
 	</context:component-scan>
 </beans>

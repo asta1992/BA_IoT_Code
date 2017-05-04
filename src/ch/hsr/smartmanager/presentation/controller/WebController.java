@@ -1,7 +1,10 @@
 package ch.hsr.smartmanager.presentation.controller;
 
+import java.security.acl.Group;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.leshan.core.model.ObjectModel;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.hsr.smartmanager.data.Device;
+import ch.hsr.smartmanager.data.DeviceComponent;
+import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
@@ -34,7 +39,30 @@ public class WebController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model) {
 		
-		model.addAttribute("devices", deviceService.getAllRegistredDevice());
+		
+		
+		Device dev1 = new Device("Test1");
+		Device dev2 = new Device("Test2");
+		Device dev3 = new Device("Test3");
+		
+		DeviceGroup grp1 = new DeviceGroup("grp1");
+		DeviceGroup grp2 = new DeviceGroup("grp2");
+		
+		dev1 = deviceService.insertDevice(dev1);
+		dev2 = deviceService.insertDevice(dev2);
+		dev3 = deviceService.insertDevice(dev3);
+		
+		grp1 = deviceService.insertGroup(grp1);		
+		grp2 = deviceService.insertGroup(grp2);
+
+		
+		deviceService.addDeviceToGroup(grp1.getId(), dev1.getId());
+		//deviceService.addDeviceToGroup(grp2.getId(), dev1.getId());
+		
+		//deviceService.addDeviceToGroup(grp1.getId(), dev2.getId());
+		//deviceService.addGroupToGroup(grp1.getId(), grp2.getId());
+		
+		model.addAttribute("devices", null);
 		return "index";
 	}
 
