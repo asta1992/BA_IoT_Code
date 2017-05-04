@@ -1,39 +1,32 @@
-$(document).ready(function() {
-	$('#lwm2mproperties').tree({
-		primaryKey : 'id',
-		uiLibrary : 'bootstrap',
-		dataSource : [ {
-			text : 'North America',
-			children : [ {
-				text : 'USA',
-				children : [ {
-					text : 'California'
-				}, {
-					text : 'Miami'
-				} ]
-			}, {
-				text : 'Canada'
-			}, {
-				text : 'Mexico'
-			} ]
-		}, {
-			text : 'Europe',
-			children : [ {
-				text : 'France'
-			}, {
-				text : 'Spain'
-			}, {
-				text : 'Italy'
-			} ]
-		}, {
-			text : 'South America',
-			children : [ {
-				text : 'Brazil'
-			}, {
-				text : 'Argentina'
-			}, {
-				text : 'Columbia'
-			} ]
-		} ]
-	});
-});
+function post(path, params, method) {
+	method = method || "post"; 
+
+	var form = document.createElement("form");
+	form.setAttribute("method", method);
+	form.setAttribute("action", path);
+
+	for ( var key in params) {
+		if (params.hasOwnProperty(key)) {
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", key);
+			hiddenField.setAttribute("value", params[key]);
+
+			form.appendChild(hiddenField);
+		}
+	}
+
+	document.body.appendChild(form);
+	form.submit();
+}
+
+function getData(url) {
+	$.ajax({ 
+	    type: "GET",
+	    dataType: "jsonp",
+	    url: url,
+	    success: function(data) {
+	       console.log(data)
+	    }
+	}); 
+}

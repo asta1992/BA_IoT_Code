@@ -1,0 +1,14 @@
+body { 
+	padding-top: 70px !important;
+}
+
+.heading-button {
+	width: 150px !important;
+}
+
+.panel-heading .btn {
+	width: 110px !important;
+}
+.panel-body .btn {
+	width: 80px !important;
+}

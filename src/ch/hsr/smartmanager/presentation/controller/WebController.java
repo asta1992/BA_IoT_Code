@@ -52,9 +52,43 @@ public class WebController {
 
 	
 	
+//	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
+//	public String showDeviceDetails(Model model, @PathVariable("id") String id) {
+//
+//		Collection<ObjectModel> lwm2mModel = lwM2MManagementServer.getServer().getModelProvider()
+//				.getObjectModel(lwM2MManagementServer.getServer().getRegistrationService().getById(id))
+//				.getObjectModels();
+//
+//		Collection<ResourceModel> resourceModel = null;
+//		for (ObjectModel objectmodel : lwm2mModel) {
+//			if (objectmodel.id == 3) {
+//				resourceModel = objectmodel.resources.values();
+//			}
+//		}
+//		Map<Integer, String> resourceName = new HashMap<>();
+//		Map<Integer, String> resourceCommand = new HashMap<>();
+//
+//		for (ResourceModel s : resourceModel) {
+//			resourceName.put(s.id, s.name);
+//			resourceCommand.put(s.id, s.operations.toString());
+//		}
+//
+//		model.addAttribute("name", resourceName);
+//		model.addAttribute("operation", resourceCommand);
+//		model.addAttribute("devID", id);
+//
+//		return "deviceView";
+//	}
+	
+	@RequestMapping(value = "/discovery")
+	public String showDiscovery(Model model) {
+		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
+		return "discovery";
+	}
+	
 	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
-	public String showDeviceDetails(Model model, @PathVariable("id") String id) {
-
+	public String showDevices(Model model, @PathVariable("id") String id) {
+		
 		Collection<ObjectModel> lwm2mModel = lwM2MManagementServer.getServer().getModelProvider()
 				.getObjectModel(lwM2MManagementServer.getServer().getRegistrationService().getById(id))
 				.getObjectModels();
@@ -68,26 +102,15 @@ public class WebController {
 		Map<Integer, String> resourceName = new HashMap<>();
 		Map<Integer, String> resourceCommand = new HashMap<>();
 
-		for (ResourceModel s : resourceModel) {
+		for(ResourceModel s : resourceModel) {
 			resourceName.put(s.id, s.name);
 			resourceCommand.put(s.id, s.operations.toString());
 		}
-
+		
 		model.addAttribute("name", resourceName);
 		model.addAttribute("operation", resourceCommand);
 		model.addAttribute("devID", id);
-
-		return "deviceView";
-	}
-	
-	@RequestMapping(value = "/discovery")
-	public String showDiscovery(Model model) {
-		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
-		return "discovery";
-	}
-	
-	@RequestMapping(value = "/devices")
-	public String showDevices(Model model) {
+		
 		return "devices";
 	}
 		
