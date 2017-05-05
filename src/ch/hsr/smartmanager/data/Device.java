@@ -18,6 +18,7 @@ public class Device implements DeviceComponent {
 	private String endpoint;
 	private String username;
 	private String password;
+	private ArrayList<Integer> objectLinks;
 	private boolean added;
 	
 	@DBRef
@@ -30,12 +31,13 @@ public class Device implements DeviceComponent {
 		this.name = name;
 	}
 
-	public Device(String name, String regId, String endpoint, String username, String password, boolean added) {
+	public Device(String name, String regId, String endpoint, String username, String password, ArrayList<Integer> objectLinks, boolean added) {
 		this.name = name;
 		this.regId = regId;
 		this.endpoint = endpoint;
 		this.username = username;
 		this.password = password;
+		this.objectLinks = objectLinks;
 		this.added = added;
 	}
 
@@ -105,6 +107,14 @@ public class Device implements DeviceComponent {
 
 	public void setAdded(boolean added) {
 		this.added = added;
+	}
+
+	public ArrayList<Integer> getObjectLinks() {
+		return objectLinks;
+	}
+
+	public void setObjectLinks(ArrayList<Integer> objectLinks) {
+		this.objectLinks = objectLinks;
 	}
 
 	@Override

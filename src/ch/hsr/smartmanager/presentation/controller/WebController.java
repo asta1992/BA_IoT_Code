@@ -67,43 +67,28 @@ public class WebController {
 	public String showDevices(Model model, @PathVariable("id") String id) {
 
 		Registration reg = lwM2MManagementServer.getServer().getRegistrationService().getById(id);
+		Device dev = deviceService.getDevice(id);
+		
 		LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(reg);
-
-		ArrayList<Integer> objectId = new ArrayList<Integer>();
 		
 		HashMap<String, ArrayList<ResourceModelAdapter>> objectModelList = new HashMap<String, ArrayList<ResourceModelAdapter>>();
-		
 		ArrayList<ResourceModelAdapter> resourceModelList = new ArrayList<ResourceModelAdapter>();
 
-
-		final String regex = "\\/([0-9]*)\\/";
-		final Pattern pattern = Pattern.compile(regex);
-		Matcher matcher;
-
-		for (Link linkId : reg.getObjectLinks()) {
-			matcher = pattern.matcher(linkId.getUrl());
-			if (matcher.find()) {
-				objectId.add(Integer.parseInt(matcher.group(1)));
-			}
-		}
-
-		for (int objId : objectId) {
-			ObjectModel objectmodel = regModel.getObjectModel(objId);
+		for (int objId : dev.getObjectLinks()) {
+			ObjectModel objectModel = regModel.getObjectModel(objId);
 			resourceModelList = new ArrayList<ResourceModelAdapter>();
 			
-			for (Map.Entry<Integer, ResourceModel> entry : objectmodel.resources.entrySet())
+			for (ResourceModel entry : objectModel.resources.values())
 			{
-				ResourceModelAdapter resourceModel = new ResourceModelAdapter(entry.getValue());
-				resourceModelList.add(resourceModel);
+				resourceModelList.add(new ResourceModelAdapter(entry));
 			}
-			objectModelList.put(objectmodel.name, resourceModelList);
+			objectModelList.put(objectModel.name, resourceModelList);
 		}
 		
 
 		model.addAttribute("modelDescription", objectModelList);
 		model.addAttribute("registration", reg);
-
-
+		model.addAttribute("id", id);
 		return "devices";
 	}
 

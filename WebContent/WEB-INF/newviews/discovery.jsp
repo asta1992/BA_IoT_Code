@@ -45,9 +45,9 @@
 						<c:if test="${not empty devices}">
 							<c:forEach var="row" items="${devices}">
 								<tr>
-									<td><a href="/smartmanager/devices/${row.regId}">${row.regId}</a></td>
+									<td><a href="/smartmanager/devices/${row.id}">${row.id}</a></td>
 									<td>${row.name}</td>
-									<td><spring:url value="/devices/${row.regId}/add"
+									<td><spring:url value="/devices/${row.id}/add"
 											var="addUrl" />
 										<button class="btn btn-info btn-xs"
 											onclick="location.href='${addUrl}'">Add</button>

@@ -48,7 +48,7 @@ public class DeviceService {
 		}
 	}
 
-	public DeviceComponent getDevice(String id) {
+	public Device getDevice(String id) {
 		return deviceRepo.findOne(id);
 	}
 
