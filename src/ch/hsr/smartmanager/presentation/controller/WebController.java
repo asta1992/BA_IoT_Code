@@ -6,9 +6,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.eclipse.leshan.Link;
+import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
+import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -117,27 +122,27 @@ public class WebController {
 	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
 	public String showDevices(Model model, @PathVariable("id") String id) {
 		
-		Collection<ObjectModel> lwm2mModel = lwM2MManagementServer.getServer().getModelProvider()
-				.getObjectModel(lwM2MManagementServer.getServer().getRegistrationService().getById(id))
-				.getObjectModels();
+		Registration reg = lwM2MManagementServer.getServer().getRegistrationService().getById(id);
+		LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(reg);
 
-		Collection<ResourceModel> resourceModel = null;
-		for (ObjectModel objectmodel : lwm2mModel) {
-			if (objectmodel.id == 3) {
-				resourceModel = objectmodel.resources.values();
-			}
-		}
-		Map<Integer, String> resourceName = new HashMap<>();
-		Map<Integer, String> resourceCommand = new HashMap<>();
+		
+		Map<String, ObjectModel> modelResource = new HashMap<>();
 
-		for(ResourceModel s : resourceModel) {
-			resourceName.put(s.id, s.name);
-			resourceCommand.put(s.id, s.operations.toString());
+		Pattern pattern = Pattern.compile("\\/([0-9]*)\\/");
+		ArrayList<String> ids = new ArrayList<String>();
+
+		for(Link linkId : reg.getObjectLinks()) {
+	        Matcher matcher = pattern.matcher(linkId.getUrl());
+	        ids.add(matcher.group(0));
 		}
 		
-		model.addAttribute("name", resourceName);
-		model.addAttribute("operation", resourceCommand);
-		model.addAttribute("devID", id);
+		for (ObjectModel objectmodel : regModel.getObjectModels()) {
+			if(ids.contains(objectmodel.id)) {
+				modelResource.put(objectmodel.name, objectmodel);
+			}
+		}
+		model.addAttribute("modelDescription", modelResource);
+		model.addAttribute("registration", reg);
 		
 		return "devices";
 	}
