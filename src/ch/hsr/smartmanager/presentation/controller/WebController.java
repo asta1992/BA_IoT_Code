@@ -99,6 +99,8 @@ public class WebController {
 				resourceModel = objectmodel.resources.values();
 			}
 		}
+		System.out.println(resourceModel);
+		
 		Map<Integer, String> resourceName = new HashMap<>();
 		Map<Integer, String> resourceCommand = new HashMap<>();
 
@@ -110,6 +112,8 @@ public class WebController {
 		model.addAttribute("name", resourceName);
 		model.addAttribute("operation", resourceCommand);
 		model.addAttribute("devID", id);
+		
+		
 		
 		return "devices";
 	}

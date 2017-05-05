@@ -1,5 +1,5 @@
 function post(path, params, method) {
-	method = method || "post"; 
+	method = method || "post";
 
 	var form = document.createElement("form");
 	form.setAttribute("method", method);
@@ -20,13 +20,43 @@ function post(path, params, method) {
 	form.submit();
 }
 
-function getData(url) {
-	$.ajax({ 
-	    type: "GET",
-	    dataType: "jsonp",
-	    url: url,
-	    success: function(data) {
-	       console.log(data)
-	    }
-	}); 
+function getData(url, id) {
+	$.ajax({
+		dataType : "json",
+		url : url,
+		success : function(data) {
+			$("#" + id).text(data.content.value);
+		}
+	});
+}
+
+function writeData(url, id) {
+	bootbox.prompt("Please enter the value", function(result) {
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			data : {
+				"postValue" : result
+			},
+			url : url,
+			success : function(data) {
+				$("#res" + id).hide();
+				$("#" + id).text(result);
+				$("#res" + id).text(data.coapResponse.code);
+				$("#res" + id).fadeIn("slow").delay(2000).fadeOut('slow');
+			}
+		});
+	});
+}
+
+function execute(url, id) {
+	$.ajax({
+		dataType : "json",
+		url : url,
+		success : function(data) {
+			$("#res" + id).hide();
+			$("#res" + id).text("Mission accomplished!");
+			$("#res" + id).fadeIn("slow").delay(2000).fadeOut('slow');
+		}
+	});
 }
