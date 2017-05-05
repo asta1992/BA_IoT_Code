@@ -1,19 +1,14 @@
 package ch.hsr.smartmanager.presentation.controller;
 
-import java.security.acl.Group;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.core.appender.SyslogAppender;
 import org.eclipse.leshan.Link;
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
-import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.hsr.smartmanager.data.Device;
-import ch.hsr.smartmanager.data.DeviceComponent;
-import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
@@ -44,7 +37,7 @@ public class WebController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model) {
-		
+
 		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
 		return "index";
 	}
@@ -54,95 +47,90 @@ public class WebController {
 		deviceService.toggleDevice(id);
 		return "redirect:/discovery";
 	}
-	
+
 	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.GET)
 	public String removeDevice(Model model, @PathVariable("id") String id) {
 		deviceService.toggleDevice(id);
 		return "redirect:/";
 	}
 
-	
-	
-//	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
-//	public String showDeviceDetails(Model model, @PathVariable("id") String id) {
-//
-//		Collection<ObjectModel> lwm2mModel = lwM2MManagementServer.getServer().getModelProvider()
-//				.getObjectModel(lwM2MManagementServer.getServer().getRegistrationService().getById(id))
-//				.getObjectModels();
-//
-//		Collection<ResourceModel> resourceModel = null;
-//		for (ObjectModel objectmodel : lwm2mModel) {
-//			if (objectmodel.id == 3) {
-//				resourceModel = objectmodel.resources.values();
-//			}
-//		}
-//		Map<Integer, String> resourceName = new HashMap<>();
-//		Map<Integer, String> resourceCommand = new HashMap<>();
-//
-//		for (ResourceModel s : resourceModel) {
-//			resourceName.put(s.id, s.name);
-//			resourceCommand.put(s.id, s.operations.toString());
-//		}
-//
-//		model.addAttribute("name", resourceName);
-//		model.addAttribute("operation", resourceCommand);
-//		model.addAttribute("devID", id);
-//
-//		return "deviceView";
-//	}
-	
+	// @RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
+	// public String showDeviceDetails(Model model, @PathVariable("id") String
+	// id) {
+	//
+	// Collection<ObjectModel> lwm2mModel =
+	// lwM2MManagementServer.getServer().getModelProvider()
+	// .getObjectModel(lwM2MManagementServer.getServer().getRegistrationService().getById(id))
+	// .getObjectModels();
+	//
+	// Collection<ResourceModel> resourceModel = null;
+	// for (ObjectModel objectmodel : lwm2mModel) {
+	// if (objectmodel.id == 3) {
+	// resourceModel = objectmodel.resources.values();
+	// }
+	// }
+	// Map<Integer, String> resourceName = new HashMap<>();
+	// Map<Integer, String> resourceCommand = new HashMap<>();
+	//
+	// for (ResourceModel s : resourceModel) {
+	// resourceName.put(s.id, s.name);
+	// resourceCommand.put(s.id, s.operations.toString());
+	// }
+	//
+	// model.addAttribute("name", resourceName);
+	// model.addAttribute("operation", resourceCommand);
+	// model.addAttribute("devID", id);
+	//
+	// return "deviceView";
+	// }
+
 	@RequestMapping(value = "/discovery")
 	public String showDiscovery(Model model) {
 		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
 		return "discovery";
 	}
-	
+
 	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
 	public String showDevices(Model model, @PathVariable("id") String id) {
-		
+
 		Registration reg = lwM2MManagementServer.getServer().getRegistrationService().getById(id);
 		LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(reg);
 
-		
-		Map<String, ObjectModel> modelResource = new HashMap<>();
+		ArrayList<Integer> objectId = new ArrayList<Integer>();
+		ArrayList<ObjectModel> modelResource = new ArrayList<ObjectModel>();
 
-		
-		ArrayList<String> ids = new ArrayList<String>();
-		
+
 		final String regex = "\\/([0-9]*)\\/";
 		final Pattern pattern = Pattern.compile(regex);
 		Matcher matcher;
-		
-		for(Link linkId : reg.getObjectLinks()) {
-		}
-		
 
-		
-		for (ObjectModel objectmodel : regModel.getObjectModels()) {
-			if(ids.contains(objectmodel.id)) {
-				modelResource.put(objectmodel.name, objectmodel);
+		for (Link linkId : reg.getObjectLinks()) {
+			matcher = pattern.matcher(linkId.getUrl());
+			if (matcher.find()) {
+				objectId.add(Integer.parseInt(matcher.group(1)));
 			}
 		}
+
+		for (int objId : objectId) {
+			ObjectModel objectmodel = regModel.getObjectModel(objId);
+			modelResource.add(objectmodel);
+		}
+
 		model.addAttribute("modelDescription", modelResource);
 		model.addAttribute("registration", reg);
-		
-		System.out.println(modelResource);
-		
+
+
 		return "devices";
 	}
-		
-	 @RequestMapping(value = "/devices/{id}/summary", method = RequestMethod.GET)
-	    public ModelAndView deviceSummary(@PathVariable("id") String id) {
-	        ModelAndView model = new ModelAndView("deviceSummary");
-	        return model;
-	    }
-	
-	
-	
-	
-	
-	//OLD--------------------
-	
+
+	@RequestMapping(value = "/devices/{id}/summary", method = RequestMethod.GET)
+	public ModelAndView deviceSummary(@PathVariable("id") String id) {
+		ModelAndView model = new ModelAndView("deviceSummary");
+		return model;
+	}
+
+	// OLD--------------------
+
 	@RequestMapping(value = "/devices/{id}/update", method = RequestMethod.GET)
 	public String showUpdateUserForm(@PathVariable("id") String id, Device device, Model model) {
 		model.addAttribute("device", deviceService.getDevice(id));
@@ -154,28 +142,26 @@ public class WebController {
 		deviceService.deleteDevice(id);
 		return "redirect:/";
 	}
-	
+
 	@RequestMapping(value = "/devices", method = RequestMethod.POST)
 	public String saveOrUpdateUser(@ModelAttribute Device device, Model model, BindingResult result) {
 		// deviceService.createOrUpdateDevice(device);
 		return "redirect:/";
 	}
-	
-	
-	
-	//Neu TEMP-----------------
-	
-//	@RequestMapping(value = "/", method = RequestMethod.GET)
-//	public String showIndex(Model model) {
-//		
-//		evtl ein Dashboard?!
-//		return "index";
-//	}
-	
-//	@RequestMapping(value = "/discovery")
-//	public String showDiscovery(Model model) {
-//		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
-//		return "discovery";
-//	}
-	
+
+	// Neu TEMP-----------------
+
+	// @RequestMapping(value = "/", method = RequestMethod.GET)
+	// public String showIndex(Model model) {
+	//
+	// evtl ein Dashboard?!
+	// return "index";
+	// }
+
+	// @RequestMapping(value = "/discovery")
+	// public String showDiscovery(Model model) {
+	// model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
+	// return "discovery";
+	// }
+
 }
