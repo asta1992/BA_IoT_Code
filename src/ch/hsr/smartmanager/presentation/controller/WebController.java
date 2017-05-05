@@ -2,6 +2,7 @@ package ch.hsr.smartmanager.presentation.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,7 +57,6 @@ public class WebController {
 		return "redirect:/";
 	}
 
-
 	@RequestMapping(value = "/discovery")
 	public String showDiscovery(Model model) {
 		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
@@ -68,23 +68,21 @@ public class WebController {
 
 		Registration reg = lwM2MManagementServer.getServer().getRegistrationService().getById(id);
 		Device dev = deviceService.getDevice(id);
-		
+
 		LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(reg);
-		
-		HashMap<String, ArrayList<ResourceModelAdapter>> objectModelList = new HashMap<String, ArrayList<ResourceModelAdapter>>();
+
+		LinkedHashMap<String, ArrayList<ResourceModelAdapter>> objectModelList = new LinkedHashMap<String, ArrayList<ResourceModelAdapter>>();
 		ArrayList<ResourceModelAdapter> resourceModelList = new ArrayList<ResourceModelAdapter>();
 
 		for (int objId : dev.getObjectLinks()) {
 			ObjectModel objectModel = regModel.getObjectModel(objId);
 			resourceModelList = new ArrayList<ResourceModelAdapter>();
-			
-			for (ResourceModel entry : objectModel.resources.values())
-			{
+
+			for (ResourceModel entry : objectModel.resources.values()) {
 				resourceModelList.add(new ResourceModelAdapter(entry));
 			}
 			objectModelList.put(objectModel.name, resourceModelList);
 		}
-		
 
 		model.addAttribute("modelDescription", objectModelList);
 		model.addAttribute("registration", reg);
@@ -117,6 +115,5 @@ public class WebController {
 		// deviceService.createOrUpdateDevice(device);
 		return "redirect:/";
 	}
-
 
 }

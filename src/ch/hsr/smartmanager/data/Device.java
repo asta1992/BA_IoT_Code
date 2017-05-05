@@ -2,6 +2,7 @@ package ch.hsr.smartmanager.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -18,7 +19,7 @@ public class Device implements DeviceComponent {
 	private String endpoint;
 	private String username;
 	private String password;
-	private ArrayList<Integer> objectLinks;
+	private TreeSet<Integer> objectLinks;
 	private boolean added;
 	
 	@DBRef
@@ -31,7 +32,7 @@ public class Device implements DeviceComponent {
 		this.name = name;
 	}
 
-	public Device(String name, String regId, String endpoint, String username, String password, ArrayList<Integer> objectLinks, boolean added) {
+	public Device(String name, String regId, String endpoint, String username, String password, TreeSet<Integer> objectLinks, boolean added) {
 		this.name = name;
 		this.regId = regId;
 		this.endpoint = endpoint;
@@ -109,11 +110,11 @@ public class Device implements DeviceComponent {
 		this.added = added;
 	}
 
-	public ArrayList<Integer> getObjectLinks() {
+	public TreeSet<Integer> getObjectLinks() {
 		return objectLinks;
 	}
 
-	public void setObjectLinks(ArrayList<Integer> objectLinks) {
+	public void setObjectLinks(TreeSet<Integer> objectLinks) {
 		this.objectLinks = objectLinks;
 	}
 

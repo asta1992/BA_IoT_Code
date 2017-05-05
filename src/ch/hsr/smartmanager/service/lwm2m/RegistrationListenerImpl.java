@@ -1,7 +1,7 @@
 package ch.hsr.smartmanager.service.lwm2m;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,8 +51,8 @@ public class RegistrationListenerImpl {
 		};
 	}
 	
-	private ArrayList<Integer> getObjectLinks(Link[] links) {
-		ArrayList<Integer> objectId = new ArrayList<Integer>();
+	private TreeSet<Integer> getObjectLinks(Link[] links) {
+		TreeSet<Integer> objectId = new TreeSet<Integer>();
 
 		final String regex = "\\/([0-9]*)\\/";
 		final Pattern pattern = Pattern.compile(regex);
