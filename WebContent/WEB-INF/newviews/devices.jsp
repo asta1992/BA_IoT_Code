@@ -42,12 +42,12 @@
 				<div id="tree"></div>
 			</div>
 			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-				<h3>
+				<h2>
 					LeshanDevice Client <span class="pull-right"><button
-							type="button" class="btn btn-danger btn-lg heading-button">Delete Device</button></span> <span
-						class="pull-right"><button type="button"
-							class="btn btn-primary btn-lg heading-button">Read All</button></span>
-				</h3>
+							type="button" class="btn btn-danger heading-button">Delete
+							Device</button></span> <span class="pull-right"><button type="button"
+							class="btn btn-primary heading-button">Read All</button></span>
+				</h2>
 				<dl class="dl-horizontal">
 					<dt>Registration ID</dt>
 					<dd>V7Ao74z4lO</dd>
@@ -65,16 +65,16 @@
 				<div class="panel-group" id="accordion">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>
+							<h5>
 								<a data-toggle="collapse" href="#collapse1">Device</a> <span
 									class="pull-right"><button type="button"
 										class="btn btn-primary btn-xs">Read Multiple</button></span>
-							</h4>
+							</h5>
 						</div>
-						<div id="collapse1" class="panel-collapse collapse in">
+						<div id="collapse1" class="panel-collapse collapse">
 							<div class="panel-body">
-								<table class="table table-hover">
-									
+								<table width="99%" class="table-hover">
+
 									<tbody>
 										<c:forEach var="type" items="${name}" varStatus="status">
 											<spring:url value="/devices/${devID}/read/3/0/${type.key}"
@@ -92,20 +92,23 @@
 												<td><c:choose>
 														<c:when
 															test="${fn:contains(operation[status.index], 'R')}">
-															<span class="pull-right"><button class="btn btn-success btn-xs"
-																onclick="getData('${read}', '${type.key}')">Read</button></span>
+															<span class="pull-right"><button
+																	class="btn btn-primary btn-xs"
+																	onclick="getData('${read}', '${type.key}')">Read</button></span>
 														</c:when>
 													</c:choose> <c:choose>
 														<c:when
 															test="${fn:contains(operation[status.index], 'W')}">
-															<span class="pull-right"><button class="btn btn-info btn-xs"
-																onclick="writeData('${write}', '${type.key}')">Write</button></span>
+															<span class="pull-right"><button
+																	class="btn btn-success btn-xs"
+																	onclick="writeData('${write}', '${type.key}')">Write</button></span>
 														</c:when>
 													</c:choose> <c:choose>
 														<c:when
 															test="${fn:contains(operation[status.index], 'E') && (operation[status.index] != 'NONE')}">
-															<span class="pull-right"><button class="btn btn-warning btn-xs"
-																onclick="execute('${execute}', '${type.key}')">Execute</button></span>
+															<span class="pull-right"><button
+																	class="btn btn-warning btn-xs"
+																	onclick="execute('${execute}', '${type.key}')">Execute</button></span>
 														</c:when>
 													</c:choose></td>
 												<td><div id="res${type.key}"></div></td>
@@ -118,12 +121,12 @@
 					</div>
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>
+							<h5>
 								<a data-toggle="collapse" href="#collapse2">Connectivity
 									Monitoring</a> <span class="pull-right"><button
 										type="button" class="btn btn-primary btn-xs">Read
 										Multiple</button></span>
-							</h4>
+							</h5>
 						</div>
 						<div id="collapse2" class="panel-collapse collapse">
 							<div class="panel-body">Lorem ipsum dolor sit amet,
@@ -135,11 +138,11 @@
 					</div>
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>
+							<h5>
 								<a data-toggle="collapse" href="#collapse3">Location</a> <span
 									class="pull-right"><button type="button"
 										class="btn btn-primary btn-xs">Read Multiple</button></span>
-							</h4>
+							</h5>
 						</div>
 						<div id="collapse3" class="panel-collapse collapse">
 							<div class="panel-body">Lorem ipsum dolor sit amet,

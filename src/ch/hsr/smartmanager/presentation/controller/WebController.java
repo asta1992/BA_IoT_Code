@@ -144,6 +144,8 @@ public class WebController {
 		model.addAttribute("modelDescription", modelResource);
 		model.addAttribute("registration", reg);
 		
+		
+		
 		return "devices";
 	}
 		

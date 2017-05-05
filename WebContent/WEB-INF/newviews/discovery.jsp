@@ -16,7 +16,7 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
 	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
 	crossorigin="anonymous">
-<link rel=stylesheet href="resources/css/menu.css">
+<link rel=stylesheet href="resources/css/style.css">
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
 	integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
 	crossorigin="anonymous"></script>
@@ -28,22 +28,17 @@
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
-				style="padding: 0 0 0 0;">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<jsp:include page="../newviews/fragments/menuFragment.jsp" />
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<div class="page-header">
-					<h1>
-						Discovery
-					</h1>
-				</div>
+
+					<h3>Discovery</h3>
 				<table class="table table-hover">
 					<thead>
 						<tr>
 							<th>Registration Id</th>
 							<th>Devicename</th>
-							<th>Endpoint</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -52,9 +47,9 @@
 								<tr>
 									<td><a href="/smartmanager/devices/${row.regId}">${row.regId}</a></td>
 									<td>${row.name}</td>
-									<td>${row.endpoint}</td>
-									<td><spring:url value="/devices/${row.regId}/add" var="addUrl" />
-										<button class="btn btn-info"
+									<td><spring:url value="/devices/${row.regId}/add"
+											var="addUrl" />
+										<button class="btn btn-info btn-xs"
 											onclick="location.href='${addUrl}'">Add</button>
 								</tr>
 							</c:forEach>
