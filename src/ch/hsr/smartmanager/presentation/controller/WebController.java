@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.hsr.smartmanager.data.Device;
+import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
@@ -69,7 +70,10 @@ public class WebController {
 		LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(reg);
 
 		ArrayList<Integer> objectId = new ArrayList<Integer>();
-		Map<String, Map<Integer, ResourceModel>> modelResource = new HashMap<String, Map<Integer, ResourceModel>>();
+		
+		HashMap<String, ArrayList<ResourceModelAdapter>> objectModelList = new HashMap<String, ArrayList<ResourceModelAdapter>>();
+		
+		ArrayList<ResourceModelAdapter> resourceModelList = new ArrayList<ResourceModelAdapter>();
 
 
 		final String regex = "\\/([0-9]*)\\/";
@@ -85,10 +89,18 @@ public class WebController {
 
 		for (int objId : objectId) {
 			ObjectModel objectmodel = regModel.getObjectModel(objId);
-			modelResource.put(objectmodel.name, objectmodel.resources);
+			resourceModelList = new ArrayList<ResourceModelAdapter>();
+			
+			for (Map.Entry<Integer, ResourceModel> entry : objectmodel.resources.entrySet())
+			{
+				ResourceModelAdapter resourceModel = new ResourceModelAdapter(entry.getValue());
+				resourceModelList.add(resourceModel);
+			}
+			objectModelList.put(objectmodel.name, resourceModelList);
 		}
+		
 
-		model.addAttribute("modelDescription", modelResource);
+		model.addAttribute("modelDescription", objectModelList);
 		model.addAttribute("registration", reg);
 
 
@@ -120,5 +132,6 @@ public class WebController {
 		// deviceService.createOrUpdateDevice(device);
 		return "redirect:/";
 	}
+
 
 }
