@@ -108,6 +108,8 @@
 															<span class="pull-right"><button
 																	class="btn btn-warning btn-xs"
 																	onclick="execute('${execute}', '${type.key}')">Execute</button></span>
+													
+													<c:out value="" />
 														</c:when>
 													</c:choose></td>
 												<td><div id="res${type.key}"></div></td>

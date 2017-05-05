@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.eclipse.leshan.Link;
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
+import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,35 +55,6 @@ public class WebController {
 		return "redirect:/";
 	}
 
-	// @RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
-	// public String showDeviceDetails(Model model, @PathVariable("id") String
-	// id) {
-	//
-	// Collection<ObjectModel> lwm2mModel =
-	// lwM2MManagementServer.getServer().getModelProvider()
-	// .getObjectModel(lwM2MManagementServer.getServer().getRegistrationService().getById(id))
-	// .getObjectModels();
-	//
-	// Collection<ResourceModel> resourceModel = null;
-	// for (ObjectModel objectmodel : lwm2mModel) {
-	// if (objectmodel.id == 3) {
-	// resourceModel = objectmodel.resources.values();
-	// }
-	// }
-	// Map<Integer, String> resourceName = new HashMap<>();
-	// Map<Integer, String> resourceCommand = new HashMap<>();
-	//
-	// for (ResourceModel s : resourceModel) {
-	// resourceName.put(s.id, s.name);
-	// resourceCommand.put(s.id, s.operations.toString());
-	// }
-	//
-	// model.addAttribute("name", resourceName);
-	// model.addAttribute("operation", resourceCommand);
-	// model.addAttribute("devID", id);
-	//
-	// return "deviceView";
-	// }
 
 	@RequestMapping(value = "/discovery")
 	public String showDiscovery(Model model) {
@@ -97,7 +69,7 @@ public class WebController {
 		LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(reg);
 
 		ArrayList<Integer> objectId = new ArrayList<Integer>();
-		ArrayList<ObjectModel> modelResource = new ArrayList<ObjectModel>();
+		Map<String, Map<Integer, ResourceModel>> modelResource = new HashMap<String, Map<Integer, ResourceModel>>();
 
 
 		final String regex = "\\/([0-9]*)\\/";
@@ -113,7 +85,7 @@ public class WebController {
 
 		for (int objId : objectId) {
 			ObjectModel objectmodel = regModel.getObjectModel(objId);
-			modelResource.add(objectmodel);
+			modelResource.put(objectmodel.name, objectmodel.resources);
 		}
 
 		model.addAttribute("modelDescription", modelResource);
@@ -148,20 +120,5 @@ public class WebController {
 		// deviceService.createOrUpdateDevice(device);
 		return "redirect:/";
 	}
-
-	// Neu TEMP-----------------
-
-	// @RequestMapping(value = "/", method = RequestMethod.GET)
-	// public String showIndex(Model model) {
-	//
-	// evtl ein Dashboard?!
-	// return "index";
-	// }
-
-	// @RequestMapping(value = "/discovery")
-	// public String showDiscovery(Model model) {
-	// model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
-	// return "discovery";
-	// }
 
 }
