@@ -49,8 +49,8 @@
 							class="btn btn-primary heading-button">Read All</button></span>
 				</h2>
 				<dl class="dl-horizontal">
-					<dt>Registration ID</dt>
-					<dd>V7Ao74z4lO</dd>
+					<dt>Registration Id</dt>
+					<dd>${registration.id}</dd>
 					<dt>IPAddress</dt>
 					<dd>2001:cdba:0000:0000:0000:0000:3257:9652</dd>
 					<dt>Authentication</dt>
@@ -61,7 +61,6 @@
 					<dd></dd>
 
 				</dl>
-
 				<div class="panel-group" id="accordion">
 					<div class="panel panel-default">
 						<div class="panel-heading">

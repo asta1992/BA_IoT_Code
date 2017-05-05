@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.core.appender.SyslogAppender;
 import org.eclipse.leshan.Link;
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
@@ -44,30 +45,7 @@ public class WebController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model) {
 		
-		
-		
-		Device dev1 = new Device("Test1");
-		Device dev2 = new Device("Test2");
-		Device dev3 = new Device("Test3");
-		
-		DeviceGroup grp1 = new DeviceGroup("grp1");
-		DeviceGroup grp2 = new DeviceGroup("grp2");
-		
-		dev1 = deviceService.insertDevice(dev1);
-		dev2 = deviceService.insertDevice(dev2);
-		dev3 = deviceService.insertDevice(dev3);
-		
-		grp1 = deviceService.insertGroup(grp1);		
-		grp2 = deviceService.insertGroup(grp2);
-
-		
-		deviceService.addDeviceToGroup(grp1.getId(), dev1.getId());
-		//deviceService.addDeviceToGroup(grp2.getId(), dev1.getId());
-		
-		//deviceService.addDeviceToGroup(grp1.getId(), dev2.getId());
-		//deviceService.addGroupToGroup(grp1.getId(), grp2.getId());
-		
-		model.addAttribute("devices", null);
+		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
 		return "index";
 	}
 
@@ -128,13 +106,17 @@ public class WebController {
 		
 		Map<String, ObjectModel> modelResource = new HashMap<>();
 
-		Pattern pattern = Pattern.compile("\\/([0-9]*)\\/");
+		
 		ArrayList<String> ids = new ArrayList<String>();
-
+		
+		final String regex = "\\/([0-9]*)\\/";
+		final Pattern pattern = Pattern.compile(regex);
+		Matcher matcher;
+		
 		for(Link linkId : reg.getObjectLinks()) {
-	        Matcher matcher = pattern.matcher(linkId.getUrl());
-	        ids.add(matcher.group(0));
 		}
+		
+
 		
 		for (ObjectModel objectmodel : regModel.getObjectModels()) {
 			if(ids.contains(objectmodel.id)) {
@@ -144,7 +126,7 @@ public class WebController {
 		model.addAttribute("modelDescription", modelResource);
 		model.addAttribute("registration", reg);
 		
-		
+		System.out.println(modelResource);
 		
 		return "devices";
 	}
