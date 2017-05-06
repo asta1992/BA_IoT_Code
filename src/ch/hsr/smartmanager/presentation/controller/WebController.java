@@ -87,6 +87,7 @@ public class WebController {
 		model.addAttribute("modelDescription", objectModelList);
 		model.addAttribute("registration", reg);
 		model.addAttribute("id", id);
+		
 		return "devices";
 	}
 
