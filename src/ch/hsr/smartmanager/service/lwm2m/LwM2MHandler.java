@@ -17,11 +17,16 @@ import org.eclipse.leshan.server.californium.impl.LeshanServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ch.hsr.smartmanager.service.DeviceService;
+
 @Service
 public class LwM2MHandler {
 
 	@Autowired
 	private LwM2MManagementServer lwM2MManagementServer;
+	
+	@Autowired
+	private DeviceService deviceService;
 
 	private LeshanServer server;
 
@@ -36,7 +41,7 @@ public class LwM2MHandler {
 		server = lwM2MManagementServer.getServer();
 
 		try {
-			res = server.send(server.getRegistrationService().getById(id), req);
+			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
 		} catch (InterruptedException e) {
 			res = null;
 			e.printStackTrace();
@@ -50,7 +55,7 @@ public class LwM2MHandler {
 		server = lwM2MManagementServer.getServer();
 
 		try {
-			res = server.send(server.getRegistrationService().getById(id), req);
+			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
 		} catch (InterruptedException e) {
 			res = null;
 			e.printStackTrace();
@@ -64,7 +69,7 @@ public class LwM2MHandler {
 		server = lwM2MManagementServer.getServer();
 
 		try {
-			res = server.send(server.getRegistrationService().getById(id), req);
+			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
 		} catch (InterruptedException e) {
 			res = null;
 			e.printStackTrace();
@@ -73,12 +78,12 @@ public class LwM2MHandler {
 	}
 
 	public Link[] ressourceDiscovery(String path, String id) {
-		DiscoverRequest disReq = new DiscoverRequest(path);
+		DiscoverRequest req = new DiscoverRequest(path);
 		DiscoverResponse res;
 		server = lwM2MManagementServer.getServer();
 
 		try {
-			res = server.send(server.getRegistrationService().getById(id), disReq);
+			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
 		} catch (InterruptedException e) {
 			res = null;
 			e.printStackTrace();
