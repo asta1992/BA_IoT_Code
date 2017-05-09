@@ -38,9 +38,10 @@ public class RestController {
 			@PathVariable("objectId") int objectId, 
 			@PathVariable("objectInstanceId") int objectInstanceId,
 			@PathVariable("resourceId") int resourceId,
-			@RequestParam("postValue")String postValue  ) {
+			@RequestParam("value")String value,
+			@RequestParam("type") String type) {
 		
-		return lwM2MHandler.write(id, objectId, objectInstanceId, resourceId, postValue);
+		return lwM2MHandler.write(id, objectId, objectInstanceId, resourceId, value, type);
 	}
 	
 	@RequestMapping(value = "/devices/{id}/execute/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)

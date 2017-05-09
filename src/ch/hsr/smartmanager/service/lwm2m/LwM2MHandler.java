@@ -1,5 +1,9 @@
 package ch.hsr.smartmanager.service.lwm2m;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.leshan.Link;
 import org.eclipse.leshan.core.request.DiscoverRequest;
 import org.eclipse.leshan.core.request.ExecuteRequest;
@@ -24,8 +28,10 @@ public class LwM2MHandler {
 	public LwM2MHandler() {
 	}
 
-	public WriteResponse write(String id, int objectId, int objectInstanceId, int resourceId, String value) {
-		WriteRequest req = new WriteRequest(objectId, objectInstanceId, resourceId, value);
+	public WriteResponse write(String id, int objectId, int objectInstanceId, int resourceId, String value,
+			String type) {
+
+		WriteRequest req = getWriteRequest(objectId, objectInstanceId, resourceId, value, type);
 		WriteResponse res;
 		server = lwM2MManagementServer.getServer();
 
@@ -64,8 +70,8 @@ public class LwM2MHandler {
 			e.printStackTrace();
 		}
 		return res;
-	}	
-	
+	}
+
 	public Link[] ressourceDiscovery(String path, String id) {
 		DiscoverRequest disReq = new DiscoverRequest(path);
 		DiscoverResponse res;
@@ -78,6 +84,39 @@ public class LwM2MHandler {
 			e.printStackTrace();
 		}
 		return res.getObjectLinks();
+	}
+
+	private WriteRequest getWriteRequest(int objectId, int objectInstanceId, int resourceId, String value,
+			String type) {
+
+		switch (type) {
+		case "STRING":
+			return new WriteRequest(objectId, objectInstanceId, resourceId, (String) value);
+		case "INTEGER":
+			return new WriteRequest(objectId, objectInstanceId, resourceId, Integer.parseInt(value));
+		case "FLOAT":
+			return new WriteRequest(objectId, objectInstanceId, resourceId, Float.parseFloat(value));
+		case "BOOLEAN":
+			return new WriteRequest(objectId, objectInstanceId, resourceId, Boolean.parseBoolean(value));
+		case "OPAQUE":
+			return new WriteRequest(objectId, objectInstanceId, resourceId, Byte.parseByte(value));
+		case "TIME": {
+			SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMM dd, yyyy HH:mm:ss a");
+			Date date;
+			try {
+				date = formatter.parse(value);
+			} catch (ParseException e) {
+				date = null;
+				e.printStackTrace();
+			}
+			return new WriteRequest(objectId, objectInstanceId, resourceId, date);
+		}
+		case "OBJLNK":
+			return new WriteRequest(objectId, objectInstanceId, resourceId, value);
+		default:
+			return new WriteRequest(objectId, objectInstanceId, resourceId, "");
+
+		}
 
 	}
 }

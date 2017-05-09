@@ -1,13 +1,7 @@
 package ch.hsr.smartmanager.presentation.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.eclipse.leshan.Link;
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
@@ -66,8 +60,8 @@ public class WebController {
 	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
 	public String showDevices(Model model, @PathVariable("id") String id) {
 
-		Registration reg = lwM2MManagementServer.getServer().getRegistrationService().getById(id);
 		Device dev = deviceService.getDevice(id);
+		Registration reg = lwM2MManagementServer.getServer().getRegistrationService().getById(dev.getRegId());
 
 		LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(reg);
 
@@ -83,10 +77,13 @@ public class WebController {
 			}
 			objectModelList.put(objectModel.name, resourceModelList);
 		}
+		
+		System.out.println(reg);
 
 		model.addAttribute("modelDescription", objectModelList);
+		model.addAttribute("objectLinks", dev.getObjectLinks().toArray());
 		model.addAttribute("registration", reg);
-		model.addAttribute("id", id);
+		model.addAttribute("device", dev);
 		
 		return "devices";
 	}

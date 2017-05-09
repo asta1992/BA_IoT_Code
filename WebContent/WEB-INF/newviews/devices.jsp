@@ -50,7 +50,7 @@
 				</h2>
 				<dl class="dl-horizontal">
 					<dt>Registration Id</dt>
-					<dd>${id}</dd>
+					<dd>${device.regId}</dd>
 					<dt>IPAddress</dt>
 					<dd>2001:cdba:0000:0000:0000:0000:3257:9652</dd>
 					<dt>Authentication</dt>
@@ -80,16 +80,16 @@
 											<c:forEach var="resource" items="${model.value}"
 												varStatus="status">
 												<spring:url
-													value="/devices/${devID}/read/x/x/${resource.id}"
+													value="/devices/${device.id}/read/${objectLinks[loop.index]}/0/${resource.id}"
 													var="read" />
 												<spring:url
-													value="/devices/${devID}/write/x/x/${resource.id}"
+													value="/devices/${device.id}/write/x/x/${resource.id}"
 													var="write" />
 												<spring:url
-													value="/devices/${devID}/execute/x/x/${resource.id}"
+													value="/devices/${device.id}/execute/x/x/${resource.id}"
 													var="execute" />
 												<spring:url
-													value="/devices/${devID}/observe/x/x/${resource.id}"
+													value="/devices/${device.id}/observe/x/x/${resource.id}"
 													var="observe" />
 												<tr>
 													<td>${resource.id}
