@@ -18,47 +18,42 @@ public class RestController {
 
 	@Autowired
 	LwM2MHandler lwM2MHandler;
-	
+
 	@Autowired
 	DeviceService deviceService;
-	
+
 	@RequestMapping(value = "/devices/{id}/read/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
-	public ReadResponse read(Model model, 
-			@PathVariable("id") String id, 
-			@PathVariable("objectId") int objectId, 
-			@PathVariable("objectInstanceId") int objectInstanceId,
-			@PathVariable("resourceId") int resourceId) {
+	public ReadResponse readResource(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
+			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
 
 		return lwM2MHandler.read(id, objectId, objectInstanceId, resourceId);
+
 	}
-	
+
+	@RequestMapping(value = "/devices/{id}/read/{objectId}", method = RequestMethod.GET)
+	public ReadResponse readObject(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId) {
+
+		return lwM2MHandler.read(id, objectId);
+	}
+
 	@RequestMapping(value = "/devices/{id}/write/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
-	public WriteResponse write(Model model, 
-			@PathVariable("id") String id,
-			@PathVariable("objectId") int objectId, 
-			@PathVariable("objectInstanceId") int objectInstanceId,
-			@PathVariable("resourceId") int resourceId,
-			@RequestParam("value")String value,
-			@RequestParam("type") String type) {
-		
-		return lwM2MHandler.write(id, objectId, objectInstanceId, resourceId, value, type);
+	public WriteResponse write(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
+			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId,
+			@RequestParam("value") String value) {
+
+		return lwM2MHandler.write(id, objectId, objectInstanceId, resourceId, value);
 	}
-	
+
 	@RequestMapping(value = "/devices/{id}/execute/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
-	public ExecuteResponse execute(Model model, 
-			@PathVariable("id") String id,
-			@PathVariable("objectId") int objectId, 
-			@PathVariable("objectInstanceId") int objectInstanceId,
-			@PathVariable("resourceId") int resourceId){
-		
+	public ExecuteResponse execute(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
+			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
+
 		return lwM2MHandler.execute(id, objectId, objectInstanceId, resourceId);
 	}
-	
+
 	@RequestMapping(value = "/countDiscoveredDevices", method = RequestMethod.GET)
-	public int countDevices(Model model){
-		
+	public int countDevices(Model model) {
+
 		return deviceService.countDiscoveredDevices();
 	}
-	
-
 }
