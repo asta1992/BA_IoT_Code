@@ -83,7 +83,7 @@ public class WebController {
 	}
 	
 	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
-	public String showDevices(Model model, @PathVariable("id") String id) {
+	public String showDeviceDetails(Model model, @PathVariable("id") String id) {
 
 		Device dev = deviceService.getDevice(id);
 		Registration reg = lwM2MManagementServer.getServer().getRegistrationService().getById(dev.getRegId());
@@ -108,7 +108,15 @@ public class WebController {
 		model.addAttribute("registration", reg);
 		model.addAttribute("device", dev);
 		
-		return "devices";
+		return "fragments/deviceFragment";
+	}
+	
+	@RequestMapping(value = "/groups/{id}", method = RequestMethod.GET)
+	public String showGroupDetails(Model model, @PathVariable("id") String id) {
+		DeviceGroup group = deviceService.getGroup(id);
+		
+		model.addAttribute("group", group);
+		return "fragments/groupFragment";
 	}
 	
 	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.GET)
