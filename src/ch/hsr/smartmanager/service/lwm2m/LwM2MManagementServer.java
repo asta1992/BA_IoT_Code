@@ -19,7 +19,6 @@ import org.eclipse.leshan.server.cluster.RedisSecurityStore;
 import org.eclipse.leshan.server.impl.FileSecurityStore;
 import org.eclipse.leshan.server.model.LwM2mModelProvider;
 import org.eclipse.leshan.server.model.StaticModelProvider;
-import org.eclipse.leshan.server.registration.RegistrationService;
 import org.eclipse.leshan.server.security.EditableSecurityStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -35,16 +34,16 @@ public class LwM2MManagementServer {
 
 	@Autowired
 	private RegistrationListenerImpl registrationListenerImpl;
-	
+
 	@Autowired
 	private ServerTaskExecutor serverTaskExecutor;
 	private LeshanServer server;
 	private String address;
 	private int port;
-	
+
 	private String redisUrl = "redis://127.0.0.1:6379";
 	private Resource resource = new ClassPathResource("ch/hsr/smartmanager/resources/models/");
-	
+
 	public LwM2MManagementServer() {
 		this.address = "localhost";
 		this.port = 5683;
@@ -78,7 +77,6 @@ public class LwM2MManagementServer {
 		LwM2mModelProvider modelProvider = new StaticModelProvider(models);
 		builder.setObjectModelProvider(modelProvider);
 
-
 		Pool<Jedis> jedis = null;
 		if (redisUrl != null) {
 			try {
@@ -98,11 +96,10 @@ public class LwM2MManagementServer {
 		builder.setSecurityStore(securityStore);
 
 		this.server = builder.build();
-		RegistrationService regService = server.getRegistrationService();
-		regService.addListener(registrationListenerImpl.getRegistrationListener());
+		server.getRegistrationService().addListener(registrationListenerImpl.getRegistrationListener());
 		serverTaskExecutor.doIt(this.server);
 	}
-	
+
 	public LeshanServer getServer() {
 		return server;
 	}

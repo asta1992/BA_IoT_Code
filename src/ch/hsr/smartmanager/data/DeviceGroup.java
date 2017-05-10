@@ -4,22 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
-@Document(collection="device")
+@Document
 public class DeviceGroup implements DeviceComponent {
 
 	@Id
 	private String id;
-	
+
 	private String name;
 
-	@DBRef
-	private List<DeviceComponent> deviceComponent = new ArrayList<DeviceComponent>();
-	@DBRef
-	private List<DeviceComponent> parentComponent = new ArrayList<DeviceComponent>();
+	private List<DeviceComponent> children = new ArrayList<DeviceComponent>();
 
 	public DeviceGroup(String name) {
 		this.name = name;
@@ -27,87 +22,63 @@ public class DeviceGroup implements DeviceComponent {
 
 	@Override
 	public void add(DeviceComponent deviceComponent) {
-		if (!isParent(deviceComponent)) {
-			deviceComponent.addParent(this);
-			this.deviceComponent.add(deviceComponent);
+		if(deviceComponent instanceof Device &&  (!children.contains(deviceComponent))){
+			children.add(deviceComponent);
+			return;
 		}
-		else return;
+		
+		if (children.contains(deviceComponent)) {
+			return;
+		}
+		else if (!isChild(deviceComponent) && !deviceComponent.isChild(this)) {
+			this.children.add(deviceComponent);
+		} else
+			return;
+
 	}
 
 	@Override
-	public boolean isParent(DeviceComponent component) {
-		if (this.parentComponent.isEmpty()) {
+	public boolean isChild(DeviceComponent component) {
+		if (this.children.isEmpty()) {
 			return false;
 		}
-		if (this.parentComponent.contains(component)) {
+		if (this.children.contains(component)) {
 			return true;
 		} else {
-			if(component instanceof Device) return false;
-			if ((((DeviceGroup) component).parentComponent != null)) {
-					for (DeviceComponent comp : ((DeviceGroup) component).deviceComponent) {
-						return isParent(comp);
-					}
+			for (DeviceComponent comp : children) {
+				return isChild(comp);
 			}
 			return false;
 		}
-
 	}
 
 	@Override
 	public void remove(DeviceComponent deviceComponent) {
-		deviceComponent.removeParent(this);
-		this.deviceComponent.remove(deviceComponent);
+		this.children.remove(deviceComponent);
 	}
 
-	@Override
+	public void print(String abstand) {
+		System.out.println(abstand + "Gruppe " + getName());
+		for (DeviceComponent dc : children) {
+			dc.print(abstand + "      ");
+		}
+
+	}
+
+	public List<DeviceComponent> getChildren() {
+		return children;
+	}
+
 	public String getName() {
 		return name;
 	}
 
-	public void print(String abstand) {
-		String parent = "None";
-		if (parentComponent.size() > 0) {
-			parent = "";
-			for (DeviceComponent s : parentComponent) {
-				parent += s.getName() + ", ";
-			}
-		}
-		System.out.println(abstand + "Gruppe " + getName() + " Parent: " + parent);
-		for (DeviceComponent dc : deviceComponent) {
-			dc.print(abstand + "      ");// Einrückung
-		}
-
-	}
-
-	@Override
-	public void addParent(DeviceComponent deviceComponent) {
-		parentComponent.add(deviceComponent);
-	}
-
-	@Override
-	public void removeParent(DeviceComponent deviceComponent) {
-		parentComponent.add(deviceComponent);
-
-	}
-
-	public List<DeviceComponent> getDeviceComponent() {
-		return deviceComponent;
-	}
-
-	public void setDeviceComponent(List<DeviceComponent> deviceComponent) {
-		this.deviceComponent = deviceComponent;
-	}
-
-	public List<DeviceComponent> getParentComponent() {
-		return parentComponent;
-	}
-
-	public void setParentComponent(List<DeviceComponent> parentComponent) {
-		this.parentComponent = parentComponent;
-	}
-
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getId() {
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -115,18 +86,40 @@ public class DeviceGroup implements DeviceComponent {
 	}
 
 	@Override
-	public String getId() {
-		return this.id;
+	public String toString() {
+		return "DeviceGroup [id=" + id + ", name=" + name + "]";
 	}
 
 	@Override
-	public String toString() {
-		return "DeviceGroup [id=" + id + ", name=" + name+ "]";
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
 	}
-	
-	
 
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DeviceGroup other = (DeviceGroup) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
 	
 	
 

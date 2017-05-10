@@ -37,7 +37,7 @@ public class RegistrationListenerImpl {
 
 			@Override
 			public void unregistered(Registration registration, Collection<Observation> observerColl) {
-				deviceService.deleteDevice(registration);
+				deviceService.deleteDeviceByRegistration(registration);
 
 			}
 

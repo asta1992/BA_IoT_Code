@@ -27,9 +27,17 @@ public class RestController {
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
 
 		return lwM2MHandler.read(id, objectId, objectInstanceId, resourceId);
+	}
+
+	@RequestMapping(value = "/devices/{id}/observe/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
+	public ReadResponse observeResource(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
+			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
+
+		return lwM2MHandler.observe(id, objectId, objectInstanceId, resourceId);
 
 	}
 
+	
 	@RequestMapping(value = "/devices/{id}/read/{objectId}", method = RequestMethod.GET)
 	public ReadResponse readObject(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId) {
 
