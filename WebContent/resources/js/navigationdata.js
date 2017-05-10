@@ -10,9 +10,7 @@ $(document).ready(function() {
 			dataType : "html",
 			url : "/smartmanager/"+id,
 			success : function(data) {
-				/*$('#main-content').html(data);
-*/
-			console.log("yay");
+				$('#main-content').html(data);
 			}
 		});
     });

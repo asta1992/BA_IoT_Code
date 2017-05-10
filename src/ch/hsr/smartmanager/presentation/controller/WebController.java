@@ -76,7 +76,7 @@ public class WebController {
 		model.addAttribute("registration", reg);
 		model.addAttribute("device", dev);
 		
-		return "fragments/deviceFragment";
+		return "deviceFragment";
 	}
 	
 	@RequestMapping(value = "/groups/{id}", method = RequestMethod.GET)
@@ -84,7 +84,7 @@ public class WebController {
 		DeviceGroup group = deviceService.getGroup(id);
 		
 		model.addAttribute("group", group);
-		return "fragments/groupFragment";
+		return "groupFragment";
 	}
 	
 	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.GET)
