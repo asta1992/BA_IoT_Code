@@ -20,43 +20,78 @@ function post(path, params, method) {
 	form.submit();
 }
 
-function getData(url, id) {
+function readData(url, objectLink) {
 	$.ajax({
 		dataType : "json",
 		url : url,
 		success : function(data) {
-			$("#" + id).text(data.content.value);
+			$("#readResponse" + objectLink).text(data.content.value);
 		}
 	});
 }
 
-function writeData(url, id) {
-	bootbox.prompt("Please enter the value", function(result) {
-		$.ajax({
-			type : "POST",
-			dataType : "json",
-			data : {
-				"postValue" : result
-			},
-			url : url,
-			success : function(data) {
-				$("#res" + id).hide();
-				$("#" + id).text(result);
-				$("#res" + id).text(data.coapResponse.code);
-				$("#res" + id).fadeIn("slow").delay(2000).fadeOut('slow');
-			}
-		});
+function writeData(url, objectLink, type) {
+	var inputType = '';
+	console.log(type)
+	switch(type) {
+    	case "STRING":
+    		inputType = 'text';
+    		break;
+    	case "INTEGER":
+    		inputType = 'number';
+    		break;
+    	case "FLOAT":
+    		inputType = 'number';
+    		break;
+    	case "BOOLEAN":
+    		inputType = 'text';
+    		break;
+    	case "OPAQUE":
+    		inputType = 'text';
+    		break;
+    	case "TIME":
+    		inputType = 'text';
+    		break;
+    	case "OBJLNK":
+    		inputType = 'text';
+    		break;
+    	default:
+    		inputType = 'text';
+	}
+	
+	bootbox.prompt({
+		title : "Please enter the value",
+		inputType : 'text',
+		callback : function(result) {
+			$.ajax({
+				type : "POST",
+				dataType : "json",
+				data : {
+					"postValue" : result
+				},
+				url : url,
+				success : function(data) {
+					$("#writeResponse" + objectLink).hide();
+					$("#readResponse" + objectLink).text(result);
+					$("#writeResponse" + objectLink).text(
+							data.coapResponse.code);
+					$("#writeResponse" + objectLink).fadeIn("slow").delay(2000)
+							.fadeOut('slow');
+				}
+			});
+		}
 	});
 }
 
-function execute(url, id) {
+function execute(url, objectLink) {
 	$.ajax({
 		dataType : "json",
 		url : url,
 		success : function(data) {
-			$("#res" + id).hide();
-			$("#res" + id).text("Mission accomplished!");
-			$("#res" + id).fadeIn("slow").delay(2000).fadeOut('slow');
+			$("#writeResponse" + objectLink).hide();
+			$("#writeResponse" + objectLink).text("Accomplished!");
+			$("#writeResponse" + objectLink).fadeIn("slow").delay(2000)
+					.fadeOut('slow');
 		}
 	});
 }

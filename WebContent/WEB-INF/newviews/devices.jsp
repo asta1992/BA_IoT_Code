@@ -25,6 +25,8 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="http://code.gijgo.com/1.3.1/js/gijgo.js"
 	type="text/javascript"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 <script src="../resources/js/navigationdata.js" type="text/javascript"></script>
 <script src="../resources/js/devicedata.js" type="text/javascript"></script>
 </head>
@@ -66,8 +68,8 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h5>
-									<a data-toggle="collapse" href="#collapse${loop.index}">${model.key}</a> <span
-										class="pull-right"><button type="button"
+									<a data-toggle="collapse" href="#collapse${loop.index}">${model.key}</a>
+									<span class="pull-right"><button type="button"
 											class="btn btn-primary btn-xs">Read Multiple</button></span>
 								</h5>
 							</div>
@@ -83,41 +85,41 @@
 													value="/devices/${device.id}/read/${objectLinks[loop.index]}/0/${resource.id}"
 													var="read" />
 												<spring:url
-													value="/devices/${device.id}/write/x/x/${resource.id}"
+													value="/devices/${device.id}/write/${objectLinks[loop.index]}/0/${resource.id}"
 													var="write" />
 												<spring:url
-													value="/devices/${device.id}/execute/x/x/${resource.id}"
+													value="/devices/${device.id}/execute/${objectLinks[loop.index]}/0/${resource.id}"
 													var="execute" />
 												<spring:url
-													value="/devices/${device.id}/observe/x/x/${resource.id}"
+													value="/devices/${device.id}/observe/${objectLinks[loop.index]}/0/${resource.id}"
 													var="observe" />
 												<tr>
-													<td>${resource.id}
-													<td>
-													<td>${resource.name}
-													<td>
+													<td>${objectLinks[loop.index]}/0/${resource.id}</td>
+													<td>${resource.name}</td>
+													<td><div
+															id="readResponse${objectLinks[loop.index]}0${resource.id}"></div></td>
+													<td><div
+															id="writeResponse${objectLinks[loop.index]}0${resource.id}"></div></td>
 													<td><c:set var="operations"
 															value="${resource.operations}" /> <c:choose>
 															<c:when test="${fn:contains(operations, 'R')}">
 																<span class="pull-right"><button
 																		class="btn btn-primary btn-xs"
-																		onclick="getData('${read}', '${resource.id}')">Read</button></span>
+																		onclick="readData('${read}', '${objectLinks[loop.index]}0${resource.id}')">Read</button></span>
 															</c:when>
 														</c:choose> <c:choose>
 															<c:when test="${fn:contains(operations, 'W')}">
 																<span class="pull-right"><button
 																		class="btn btn-success btn-xs"
-																		onclick="writeData('${write}', '${resource.id}')">Write</button></span>
+																		onclick="writeData('${write}', '${objectLinks[loop.index]}0${resource.id}', '${resource.type}')">Write</button></span>
 															</c:when>
 														</c:choose> <c:choose>
 															<c:when test="${fn:contains(operations, 'E')}">
 																<span class="pull-right"><button
 																		class="btn btn-warning btn-xs"
-																		onclick="execute('${execute}', '${resource.id}')">Execute</button></span>
+																		onclick="execute('${execute}', '${objectLinks[loop.index]}0${resource.id}')">Execute</button></span>
 															</c:when>
 														</c:choose></td>
-													<td>
-													<td>
 												</tr>
 											</c:forEach>
 										</tbody>
@@ -129,7 +131,6 @@
 					</c:forEach>
 
 				</div>
-
 
 			</div>
 		</div>
