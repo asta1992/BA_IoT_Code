@@ -5,8 +5,7 @@ $(document).ready(function() {
 		dataSource : '/smartmanager/group/getAll'});
 
 	
-	$('#tree').tree().on('select', function (e, node, id) {
-		console.log(e);
-        alert(id + ' is fired.');
+	$('#tree').tree().on('select', function (e, node, id, textField) {
+		alert(id);
     });
 });

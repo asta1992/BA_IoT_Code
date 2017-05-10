@@ -79,9 +79,8 @@ public class RestController {
 		for (DeviceComponent item : deviceService.getGroupAll()) {
 			if (!deviceService.isRoot(item.getId())) {
 				JSONObject jsonObj = new JSONObject();
-				jsonObj.put("id", item.getId());
+				jsonObj.put("id", "groups/" + item.getId());
 				jsonObj.put("text", item.getName());
-				jsonObj.put("deviceType", "groups");
 				jsonObj.put("children", allChildren(item));
 				allJson.add(jsonObj);
 			}
@@ -96,22 +95,19 @@ public class RestController {
 		for (DeviceComponent item : deviceComponent.getChildren()) {
 			JSONObject jsonObj = new JSONObject();
 			if (item instanceof Device) {
-				jsonObj.put("id", item.getId());
+				jsonObj.put("id", "devices/" + item.getId());
 				jsonObj.put("text", item.getName());
-				jsonObj.put("deviceType", "devices");
 				jsonObjects.add(jsonObj);
 			} else {
 				item = deviceService.getGroup(item.getId());
 				
 				if (item.getChildren().isEmpty()) {
-					jsonObj.put("id", item.getId());
+					jsonObj.put("id", "groups/" + item.getId());
 					jsonObj.put("text", item.getName());
-					jsonObj.put("deviceType", "groups");
 					jsonObjects.add(jsonObj);
 				} else {
-					jsonObj.put("id", item.getId());
+					jsonObj.put("id", "groups/" + item.getId());
 					jsonObj.put("text", item.getName());
-					jsonObj.put("deviceType", "groups");
 					jsonObj.put("children", allChildren(item));
 					jsonObjects.add(jsonObj);
 				}
