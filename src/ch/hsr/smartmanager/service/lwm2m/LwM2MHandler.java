@@ -3,6 +3,7 @@ package ch.hsr.smartmanager.service.lwm2m;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.eclipse.leshan.Link;
 import org.eclipse.leshan.core.model.ResourceModel;
@@ -142,7 +143,7 @@ public class LwM2MHandler {
 		case OPAQUE:
 			return new WriteRequest(objectId, objectInstanceId, resourceId, Byte.parseByte(value));
 		case TIME: {
-			SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMM dd, yyyy HH:mm:ss a");
+			SimpleDateFormat formatter = new SimpleDateFormat("MMMM d, yyyy H:mm:ss a", Locale.ENGLISH);
 			Date date;
 			try {
 				date = formatter.parse(value);
