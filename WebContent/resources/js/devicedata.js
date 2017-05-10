@@ -13,6 +13,7 @@ function readData(url, objectLink) {
 	});
 }
 
+
 function readAll() {
 	$('button[id^="btn-read-multiple"]').click();
 }
