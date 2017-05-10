@@ -5,7 +5,15 @@ $(document).ready(function() {
 		dataSource : '/smartmanager/group/getAll'});
 
 	
-	$('#tree').tree().on('select', function (e, node, id, textField) {
-		alert(id);
+	$('#tree').tree().on('select', function (e, node, id) {
+		$.ajax({
+			dataType : "html",
+			url : "/smartmanager/"+id,
+			success : function(data) {
+				/*$('#main-content').html(data);
+*/
+			console.log("yay");
+			}
+		});
     });
 });

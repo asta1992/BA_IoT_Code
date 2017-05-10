@@ -78,7 +78,6 @@ public class WebController {
 	
 	@RequestMapping(value = "/devices")
 	public String showDevices(Model model) {
-		model.addAttribute("devices", deviceService.getAllRegistredDevice());
 		return "devices";
 	}
 	
