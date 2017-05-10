@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import ch.hsr.smartmanager.data.Device;
-import ch.hsr.smartmanager.data.DeviceComponent;
 
 public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
 
@@ -47,6 +46,8 @@ public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
 		dev.setRegId(registration.getId());
 		mongoTemplate.save(dev);
 	}
+	
+	
 
 	@Override
 	public List<Device> findAllDevices(boolean added) {
@@ -58,9 +59,7 @@ public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
 
 	@Override
 	public void toggleDevice(String id) {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("regId").is(id));
-		Device dev = mongoTemplate.findOne(query, Device.class);	
+		Device dev = mongoTemplate.findById(id, Device.class);
 		dev.setAdded(!dev.isAdded());
 		mongoTemplate.save(dev);
 		

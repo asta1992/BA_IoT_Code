@@ -9,10 +9,12 @@ import org.eclipse.leshan.Link;
 import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.core.request.DiscoverRequest;
 import org.eclipse.leshan.core.request.ExecuteRequest;
+import org.eclipse.leshan.core.request.ObserveRequest;
 import org.eclipse.leshan.core.request.ReadRequest;
 import org.eclipse.leshan.core.request.WriteRequest;
 import org.eclipse.leshan.core.response.DiscoverResponse;
 import org.eclipse.leshan.core.response.ExecuteResponse;
+import org.eclipse.leshan.core.response.ObserveResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
 import org.eclipse.leshan.server.californium.impl.LeshanServer;
@@ -27,7 +29,7 @@ public class LwM2MHandler {
 
 	@Autowired
 	private LwM2MManagementServer lwM2MManagementServer;
-	
+
 	@Autowired
 	private DeviceService deviceService;
 
@@ -36,25 +38,7 @@ public class LwM2MHandler {
 	public LwM2MHandler() {
 	}
 
-	public WriteResponse write(String id, int objectId, int objectInstanceId, int resourceId, String value) {
-		server = lwM2MManagementServer.getServer();
-
-		Registration reg = server.getRegistrationService().getById(deviceService.getDevice(id).getRegId());
-		ResourceModel.Type type = server.getModelProvider().getObjectModel(reg).getResourceModel(objectId, resourceId).type;
-
-		WriteRequest req = getWriteRequest(objectId, objectInstanceId, resourceId, value, type);
-		WriteResponse res;
-
-		try {
-			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
-		} catch (InterruptedException e) {
-			res = null;
-			e.printStackTrace();
-		}
-		return res;
-	}
-
-
+	
 	public ReadResponse read(String id, int objectId) {
 		ReadRequest req = new ReadRequest(objectId);
 		ReadResponse res;
@@ -68,11 +52,30 @@ public class LwM2MHandler {
 		}
 		return res;
 	}
-	
+
 	public ReadResponse read(String id, int objectId, int objectInstanceId, int resourceId) {
 		ReadRequest req = new ReadRequest(objectId + "/" + objectInstanceId + "/" + resourceId);
 		ReadResponse res;
 		server = lwM2MManagementServer.getServer();
+
+		try {
+			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
+		} catch (InterruptedException e) {
+			res = null;
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	public WriteResponse write(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+		server = lwM2MManagementServer.getServer();
+
+		Registration reg = server.getRegistrationService().getById(deviceService.getDevice(id).getRegId());
+		ResourceModel.Type type = server.getModelProvider().getObjectModel(reg).getResourceModel(objectId,
+				resourceId).type;
+
+		WriteRequest req = getWriteRequest(objectId, objectInstanceId, resourceId, value, type);
+		WriteResponse res;
 
 		try {
 			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
@@ -96,8 +99,23 @@ public class LwM2MHandler {
 		}
 		return res;
 	}
+	
+	public ObserveResponse observe(String id, int objectId, int objectInstanceId, int resourceId) {
+		ObserveRequest req = new ObserveRequest(objectId, objectInstanceId, resourceId);
+		ObserveResponse res;
+		server = lwM2MManagementServer.getServer();
 
-	public Link[] ressourceDiscovery(String path, String id) {
+		try {
+			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
+		} catch (InterruptedException e) {
+			res = null;
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+
+	public Link[] ressourceDiscovery(String path, String id) {		
 		DiscoverRequest req = new DiscoverRequest(path);
 		DiscoverResponse res;
 		server = lwM2MManagementServer.getServer();

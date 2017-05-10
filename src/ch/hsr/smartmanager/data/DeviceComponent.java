@@ -7,15 +7,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection="device")
 public interface DeviceComponent {
 	
+	public String getId();
+	public String getName();
+
 	public void add(DeviceComponent deviceComponent);
 	public void remove(DeviceComponent deviceComponent);
-	public String getName();
+	
+	public List<DeviceComponent> getChildren();
+	public boolean isChild(DeviceComponent deviceComponent);
 	public void print(String abstand);
-	public void addParent(DeviceComponent deviceComponent);
-	public void removeParent(DeviceComponent deviceComponent);
-	public boolean isParent(DeviceComponent deviceComponent);
-	public List<DeviceComponent> getParentComponent();
-	public List<DeviceComponent> getDeviceComponent();
-	public String getId();
+	public boolean equals(Object obj);
 	
 }

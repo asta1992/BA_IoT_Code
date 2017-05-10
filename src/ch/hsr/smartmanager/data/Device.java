@@ -1,14 +1,12 @@
 package ch.hsr.smartmanager.data;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="device")
+@Document
 public class Device implements DeviceComponent {
 
 	@Id
@@ -21,9 +19,6 @@ public class Device implements DeviceComponent {
 	private String password;
 	private TreeSet<Integer> objectLinks;
 	private boolean added;
-	
-	@DBRef
-	private List<DeviceComponent> parentComponent = new ArrayList<DeviceComponent>();
 
 	public Device() {
 	}
@@ -32,7 +27,8 @@ public class Device implements DeviceComponent {
 		this.name = name;
 	}
 
-	public Device(String name, String regId, String endpoint, String username, String password, TreeSet<Integer> objectLinks, boolean added) {
+	public Device(String name, String regId, String endpoint, String username, String password,
+			TreeSet<Integer> objectLinks, boolean added) {
 		this.name = name;
 		this.regId = regId;
 		this.endpoint = endpoint;
@@ -94,14 +90,6 @@ public class Device implements DeviceComponent {
 		this.regId = regId;
 	}
 
-	public void addParent(DeviceComponent parentChild) {
-		this.parentComponent.add(parentChild);
-	}
-
-	public void removeParent(DeviceComponent parentChild) {
-		this.parentComponent.remove(parentChild);
-	}
-
 	public boolean isAdded() {
 		return added;
 	}
@@ -129,17 +117,8 @@ public class Device implements DeviceComponent {
 	}
 
 	@Override
-	public boolean isParent(DeviceComponent deviceComponent) {
+	public boolean isChild(DeviceComponent deviceComponent) {
 		return false;
-	}
-
-	
-	public List<DeviceComponent> getParentComponent() {
-		return parentComponent;
-	}
-
-	public void setParentComponent(List<DeviceComponent> parentComponent) {
-		this.parentComponent = parentComponent;
 	}
 
 	public boolean isNew() {
@@ -148,29 +127,82 @@ public class Device implements DeviceComponent {
 
 	@Override
 	public void print(String abstand) {
-		String parentString = "None";
-		if (parentComponent.size() > 0) {
-			parentString = "";
-			for (DeviceComponent s : parentComponent) {
-				parentString += s.getName() + ", ";
-			}
-		}
-		System.out.println(abstand + toString() + " Parent: " + parentString);
+		System.out.println(abstand + toString());
 	}
-	
-	
-
 
 	@Override
 	public String toString() {
 		return "Device [id=" + id + ", name=" + name + ", regId=" + regId + ", endpoint=" + endpoint + ", username="
-				+ username + ", password=" + password + ", added=" + added
-				+ "]";
+				+ username + ", password=" + password + ", added=" + added + "]";
 	}
 
 	@Override
-	public List<DeviceComponent> getDeviceComponent() {
+	public List<DeviceComponent> getChildren() {
 		return null;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (added ? 1231 : 1237);
+		result = prime * result + ((endpoint == null) ? 0 : endpoint.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((objectLinks == null) ? 0 : objectLinks.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((regId == null) ? 0 : regId.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Device other = (Device) obj;
+		if (added != other.added)
+			return false;
+		if (endpoint == null) {
+			if (other.endpoint != null)
+				return false;
+		} else if (!endpoint.equals(other.endpoint))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (objectLinks == null) {
+			if (other.objectLinks != null)
+				return false;
+		} else if (!objectLinks.equals(other.objectLinks))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (regId == null) {
+			if (other.regId != null)
+				return false;
+		} else if (!regId.equals(other.regId))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
 	}
 	
 	

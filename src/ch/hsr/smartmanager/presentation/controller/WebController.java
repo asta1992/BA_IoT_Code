@@ -9,14 +9,11 @@ import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
 import ch.hsr.smartmanager.data.Device;
+import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
@@ -34,21 +31,47 @@ public class WebController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model) {
+		
+		Device dev1 = new Device("Dev1");
+		Device dev2 = new Device("Dev2");
+		Device dev3 = new Device("Dev3");
+		
+		DeviceGroup grp1 = new DeviceGroup("grp1");
+		DeviceGroup grp2 = new DeviceGroup("grp2");
+		DeviceGroup grp3 = new DeviceGroup("grp3");
+		DeviceGroup grp4 = new DeviceGroup("grp4");
+		DeviceGroup grp5 = new DeviceGroup("grp5");
+		DeviceGroup grp6 = new DeviceGroup("grp6");
 
-		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
+		
+		dev1 = deviceService.insertDevice(dev1);
+		dev2 = deviceService.insertDevice(dev2);
+		dev3 = deviceService.insertDevice(dev3);
+		
+		grp1 = deviceService.insertGroup(grp1);
+		grp2 = deviceService.insertGroup(grp2);
+		grp3 = deviceService.insertGroup(grp3);
+		grp4 = deviceService.insertGroup(grp4);
+		grp5 = deviceService.insertGroup(grp5);
+		grp6 = deviceService.insertGroup(grp6);
+		
+		deviceService.addGroupToGroup(grp1.getId(), grp2.getId());
+		deviceService.addGroupToGroup(grp2.getId(), grp3.getId());
+		deviceService.addGroupToGroup(grp3.getId(), grp4.getId());
+		deviceService.addGroupToGroup(grp4.getId(), grp5.getId());
+		deviceService.addGroupToGroup(grp5.getId(), grp6.getId());
+		deviceService.addGroupToGroup(grp6.getId(), grp1.getId());
+		
+		deviceService.addDeviceToGroup(grp1.getId(), dev1.getId());
+		deviceService.addDeviceToGroup(grp3.getId(), dev1.getId());
+		deviceService.addDeviceToGroup(grp3.getId(), dev3.getId());
+		deviceService.addDeviceToGroup(grp1.getId(), dev2.getId());
+		
+		for(DeviceGroup grp : deviceService.listAllGroupsForDevice(dev1.getId())) {
+			System.out.println(grp.getName());
+		}
+		
 		return "index";
-	}
-
-	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.GET)
-	public String addDevice(Model model, @PathVariable("id") String id) {
-		deviceService.toggleDevice(id);
-		return "redirect:/discovery";
-	}
-
-	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.GET)
-	public String removeDevice(Model model, @PathVariable("id") String id) {
-		deviceService.toggleDevice(id);
-		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/discovery")
@@ -56,7 +79,13 @@ public class WebController {
 		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
 		return "discovery";
 	}
-
+	
+	@RequestMapping(value = "/devices")
+	public String showDevices(Model model) {
+		model.addAttribute("devices", deviceService.getAllRegistredDevice());
+		return "devices";
+	}
+	
 	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
 	public String showDevices(Model model, @PathVariable("id") String id) {
 
@@ -78,8 +107,6 @@ public class WebController {
 			objectModelList.put(objectModel.name, resourceModelList);
 		}
 		
-		System.out.println(reg);
-
 		model.addAttribute("modelDescription", objectModelList);
 		model.addAttribute("objectLinks", dev.getObjectLinks().toArray());
 		model.addAttribute("registration", reg);
@@ -87,31 +114,16 @@ public class WebController {
 		
 		return "devices";
 	}
-
-	@RequestMapping(value = "/devices/{id}/summary", method = RequestMethod.GET)
-	public ModelAndView deviceSummary(@PathVariable("id") String id) {
-		ModelAndView model = new ModelAndView("deviceSummary");
-		return model;
+	
+	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.GET)
+	public String addDevice(Model model, @PathVariable("id") String id) {
+		deviceService.toggleDevice(id);
+		return "redirect:/discovery";
 	}
 
-	// OLD--------------------
-
-	@RequestMapping(value = "/devices/{id}/update", method = RequestMethod.GET)
-	public String showUpdateUserForm(@PathVariable("id") String id, Device device, Model model) {
-		model.addAttribute("device", deviceService.getDevice(id));
-		return "createDevice";
-	}
-
-	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.POST)
-	public String deleteUser(@PathVariable("id") String id, Model model) {
-		deviceService.deleteDevice(id);
+	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.GET)
+	public String removeDevice(Model model, @PathVariable("id") String id) {
+		deviceService.toggleDevice(id);
 		return "redirect:/";
 	}
-
-	@RequestMapping(value = "/devices", method = RequestMethod.POST)
-	public String saveOrUpdateUser(@ModelAttribute Device device, Model model, BindingResult result) {
-		// deviceService.createOrUpdateDevice(device);
-		return "redirect:/";
-	}
-
 }
