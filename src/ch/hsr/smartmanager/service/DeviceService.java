@@ -109,7 +109,7 @@ public class DeviceService {
 	}
 
 	public void toggleDevice(String id) {
-		DeviceGroup group = (DeviceGroup) groupRepo.getGroupByName("unassigned");
+		DeviceGroup group = (DeviceGroup) groupRepo.getGroupByName("_unassigned");
 		addDeviceToGroup(group.getId(), id);
 		deviceRepo.toggleDevice(id);
 	}

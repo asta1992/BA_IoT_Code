@@ -31,7 +31,7 @@
 		<div class="row-fluid">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
 				style="padding: 0 0 0 0;">
-				<jsp:include page="../newviews/fragments/menuFragment.jsp" />
+				<jsp:include page="../newviews/menuFragment.jsp" />
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
 		</div>
