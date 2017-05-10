@@ -44,6 +44,15 @@ public class DeviceService {
 	public DeviceGroup getGroup(String id) {
 		return groupRepo.findOne(id);
 	}
+	
+	public List<DeviceGroup> getGroupAll() {
+		return groupRepo.findAll();
+	}
+	
+	public boolean isRoot(String id) {
+		return groupRepo.isRoot(id);
+	}
+
 
 	public Device insertDevice(Device device) {
 		return deviceRepo.insert(device);

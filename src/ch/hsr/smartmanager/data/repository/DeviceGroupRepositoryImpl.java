@@ -30,4 +30,12 @@ public class DeviceGroupRepositoryImpl implements DeviceGroupRepositoryCustom {
 		return mongoTemplate.find(query, DeviceGroup.class);
 	}
 
+	@Override
+	public boolean isRoot(String id) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("children._id").is(new ObjectId(id)));
+		return mongoTemplate.exists(query, DeviceGroup.class);
+	}
+	
+
 }

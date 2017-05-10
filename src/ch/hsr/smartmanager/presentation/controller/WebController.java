@@ -59,18 +59,14 @@ public class WebController {
 		deviceService.addGroupToGroup(grp2.getId(), grp3.getId());
 		deviceService.addGroupToGroup(grp3.getId(), grp4.getId());
 		deviceService.addGroupToGroup(grp4.getId(), grp5.getId());
-		deviceService.addGroupToGroup(grp5.getId(), grp6.getId());
-		deviceService.addGroupToGroup(grp6.getId(), grp1.getId());
+		deviceService.addGroupToGroup(grp2.getId(), grp5.getId());
 		
 		deviceService.addDeviceToGroup(grp1.getId(), dev1.getId());
 		deviceService.addDeviceToGroup(grp3.getId(), dev1.getId());
 		deviceService.addDeviceToGroup(grp3.getId(), dev3.getId());
 		deviceService.addDeviceToGroup(grp1.getId(), dev2.getId());
 		
-		for(DeviceGroup grp : deviceService.listAllGroupsForDevice(dev1.getId())) {
-			System.out.println(grp.getName());
-		}
-		
+	
 		return "index";
 	}
 

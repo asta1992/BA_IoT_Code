@@ -88,5 +88,10 @@
 			<version>1.0.0-M1</version>
 			<classifier>jar-with-dependencies</classifier>
 		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>org.json</artifactId>
+			<version>chargebee-1.0</version>
+		</dependency>
 	</dependencies>
 </project>

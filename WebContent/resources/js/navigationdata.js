@@ -1,76 +1,12 @@
 $(document).ready(function() {
 	$('#tree').tree({
-		primaryKey : 'text',
+		primaryKey : 'id',
 		uiLibrary : 'bootstrap',
-		dataSource : 
-		[ 
-			{
-				text : '_unassigned',
-					children : 
-					[ 
-						{
-							text : 'new Device 1'
-						}
-					]
-			},
-			{
-				text : 'North America',
-					children : 
-					[ 
-						{
-							text : 'USA',
-								children : 
-								[ 
-									{
-										text : 'California'
-									}, 
-									{
-										text : 'Miami'
-									} 
-								]
-						}, 
-						{
-							text : 'Canada'
-						}, 
-						{
-							text : 'Mexico'
-						} 
-					]
-			}, 
-			{
-				text : 'Europe',
-					children : 
-					[ 
-						{
-							text : 'France'
-						}, 
-						{
-							text : 'Spain'
-						}, 
-						{
-							text : 'Italy'
-						} 
-					]
-			}, 
-			{
-				text : 'South America',
-					children : 
-					[ 
-						{
-							text : 'Brazil'
-						}, 
-						{
-							text : 'Argentina'
-						}, 
-						{
-							text : 'Columbia'
-						} 
-					]
-			} 
-		]
-	});
+		dataSource : '/smartmanager/group/getAll'});
+
 	
 	$('#tree').tree().on('select', function (e, node, id) {
+		console.log(e);
         alert(id + ' is fired.');
     });
 });
