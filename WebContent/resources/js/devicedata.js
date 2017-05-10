@@ -1,86 +1,112 @@
-function post(path, params, method) {
-	method = method || "post";
-
-	var form = document.createElement("form");
-	form.setAttribute("method", method);
-	form.setAttribute("action", path);
-
-	for ( var key in params) {
-		if (params.hasOwnProperty(key)) {
-			var hiddenField = document.createElement("input");
-			hiddenField.setAttribute("type", "hidden");
-			hiddenField.setAttribute("name", key);
-			hiddenField.setAttribute("value", params[key]);
-
-			form.appendChild(hiddenField);
-		}
-	}
-
-	document.body.appendChild(form);
-	form.submit();
-}
-
 function readData(url, objectLink) {
 	$.ajax({
 		dataType : "json",
 		url : url,
 		success : function(data) {
-			$("#readResponse" + objectLink).text(data.content.value);
+			if (data.code == "CONTENT") {
+				$("#readResponse" + objectLink).text(data.content.value);
+			} else {
+				alert(data.code);
+			}
+
+		}
+	});
+}
+
+function readAll() {
+	$('button[id^="btn-read-multiple"]').click();
+}
+
+function readMultiple(url) {
+	var objectLink = "";
+	$.ajax({
+		dataType : "json",
+		url : url,
+		success : function(data) {
+			if (data.code == "CONTENT") {
+				for (i in data.content.instances[0].resources) {
+					objectLink = data.content.id + "0"
+							+ data.content.instances[0].resources[i].id;
+					$("#readResponse" + objectLink).text(
+							data.content.instances[0].resources[i].value);
+				}
+			} else {
+				alert(data.code);
+			}
 		}
 	});
 }
 
 function writeData(url, objectLink, type) {
-	var inputType = '';
-	console.log(type)
-	switch(type) {
-    	case "STRING":
-    		inputType = 'text';
-    		break;
-    	case "INTEGER":
-    		inputType = 'number';
-    		break;
-    	case "FLOAT":
-    		inputType = 'number';
-    		break;
-    	case "BOOLEAN":
-    		inputType = 'text';
-    		break;
-    	case "OPAQUE":
-    		inputType = 'text';
-    		break;
-    	case "TIME":
-    		inputType = 'text';
-    		break;
-    	case "OBJLNK":
-    		inputType = 'text';
-    		break;
-    	default:
-    		inputType = 'text';
-	}
-	
-	bootbox.prompt({
-		title : "Please enter the value",
-		inputType : 'text',
-		callback : function(result) {
-			$.ajax({
-				type : "POST",
-				dataType : "json",
-				data : {
-					"postValue" : result
-				},
-				url : url,
-				success : function(data) {
-					$("#writeResponse" + objectLink).hide();
-					$("#readResponse" + objectLink).text(result);
-					$("#writeResponse" + objectLink).text(
-							data.coapResponse.code);
-					$("#writeResponse" + objectLink).fadeIn("slow").delay(2000)
-							.fadeOut('slow');
+	readUrl = url.replace('write', 'read');
+	$.ajax({
+		dataType : "json",
+		url : readUrl,
+		success : function(data) {
+			var defaultValue = "";
+			if (data.code == "CONTENT") {
+				defaultValue = data.content.value;
+			} else {
+				defaultValue = data.code;
+			}
+			bootbox.prompt({
+				title : "Please enter the value",
+				inputType : 'text',
+				value : defaultValue,
+				callback : function(result) {
+					switch (type) {
+					case "STRING":
+
+						break;
+					case "INTEGER":
+						if (!/^-?\d*\.?\d+$/.test(result)) {
+							console.log("Wrong input!");
+							return;
+						}
+						break;
+					case "FLOAT":
+						if (!/^[+-]?\d+(\.\d+)?$/.test(result)) {
+							console.log("Wrong input!");
+							return;
+						}
+						break;
+					case "BOOLEAN":
+
+						break;
+					case "OPAQUE":
+
+						break;
+					case "TIME":
+
+						break;
+					case "OBJLNK":
+
+						break;
+					default:
+
+					}
+					console.log("Wert: " + result);
+					console.log("URL: " + url);
+					$.ajax({
+						type : "POST",
+						dataType : "json",
+						data : {
+							"value" : result
+						},
+						url : url,
+						success : function(data) {
+							$("#readResponse" + objectLink).text(result);
+							$("#writeResponse" + objectLink).text(
+									data.coapResponse.code);
+							$("#writeResponse" + objectLink).fadeIn("slow")
+									.delay(2000).fadeOut('slow');
+						}
+					});
 				}
 			});
 		}
 	});
+
 }
 
 function execute(url, objectLink) {
@@ -88,9 +114,8 @@ function execute(url, objectLink) {
 		dataType : "json",
 		url : url,
 		success : function(data) {
-			$("#writeResponse" + objectLink).hide();
 			$("#writeResponse" + objectLink).text("Accomplished!");
-			$("#writeResponse" + objectLink).fadeIn("slow").delay(2000)
+			$("#writeResponse" + objectLink).fadeIn("slow").delay(1000)
 					.fadeOut('slow');
 		}
 	});

@@ -48,11 +48,12 @@
 					LeshanDevice Client <span class="pull-right"><button
 							type="button" class="btn btn-danger heading-button">Delete
 							Device</button></span> <span class="pull-right"><button type="button"
-							class="btn btn-primary heading-button">Read All</button></span>
+							class="btn btn-primary heading-button"
+							onclick="readAll()">Read All</button></span>
 				</h2>
 				<dl class="dl-horizontal">
 					<dt>Registration Id</dt>
-					<dd>${device.regId}</dd>
+					<dd>${device.id}</dd>
 					<dt>IPAddress</dt>
 					<dd>2001:cdba:0000:0000:0000:0000:3257:9652</dd>
 					<dt>Authentication</dt>
@@ -65,12 +66,16 @@
 				</dl>
 				<div class="panel-group" id="accordion">
 					<c:forEach var="model" items="${modelDescription}" varStatus="loop">
+						<spring:url
+							value="/devices/${device.id}/read/${objectLinks[loop.index]}"
+							var="readMultiple" />
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h5>
 									<a data-toggle="collapse" href="#collapse${loop.index}">${model.key}</a>
 									<span class="pull-right"><button type="button"
-											class="btn btn-primary btn-xs">Read Multiple</button></span>
+											class="btn btn-primary btn-xs" id="btn-read-multiple${objectLinks[loop.index]}"
+											onclick="readMultiple('${readMultiple}')">Read Multiple</button></span>
 								</h5>
 							</div>
 
@@ -79,8 +84,7 @@
 									<table width="99%" class="table-hover">
 
 										<tbody>
-											<c:forEach var="resource" items="${model.value}"
-												varStatus="status">
+											<c:forEach var="resource" items="${model.value}">
 												<spring:url
 													value="/devices/${device.id}/read/${objectLinks[loop.index]}/0/${resource.id}"
 													var="read" />
