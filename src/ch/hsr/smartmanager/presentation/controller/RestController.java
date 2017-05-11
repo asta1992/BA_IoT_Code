@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
+import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 
@@ -70,6 +71,32 @@ public class RestController {
 	public int countDevices(Model model) {
 
 		return deviceService.countDiscoveredDevices();
+	}
+	
+	@RequestMapping(value = "/devices/{id}/addToGroups", method = RequestMethod.POST)
+	public void addToGroups(Model model,@PathVariable("id") String id, @RequestParam("value") List<String> value) {
+		for(String groupId: value) {
+			deviceService.addDeviceToGroup(groupId, id);
+		}
+	}
+	
+	@RequestMapping(value = "/devices/{id}/remoteFromGroups", method = RequestMethod.POST)
+	public void remoteFromGroups(Model model,@PathVariable("id") String id, @RequestParam("value") List<String> value) {
+		for(String groupId: value) {
+			deviceService.removeDeviceFromGroup(groupId, id);
+		}
+	}
+	
+
+	@RequestMapping(value = "/group/list", method = RequestMethod.GET)
+	public List<DeviceGroup> getGroupList(Model model) {
+		return deviceService.getGroupAll();
+	}
+	
+
+	@RequestMapping(value = "/devices/{id}/memberships", method = RequestMethod.GET)
+	public List<DeviceGroup> getDeviceMemberships(Model model, @PathVariable("id") String id) {
+		return deviceService.listAllGroupsForDevice(id);
 	}
 
 	@RequestMapping(value = "/group/getAll", method = RequestMethod.GET)

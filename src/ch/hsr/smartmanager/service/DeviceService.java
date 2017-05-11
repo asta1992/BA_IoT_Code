@@ -36,6 +36,16 @@ public class DeviceService {
 		groupRepo.save(grpParent);
 		groupRepo.save(grpChild);
 	}
+	
+	public void removeDeviceFromGroup(String groupId, String deviceId) {
+		DeviceGroup group = groupRepo.findOne(groupId);
+		Device device = deviceRepo.findOne(deviceId);
+		group.remove(device);
+		groupRepo.save(group);
+		deviceRepo.save(device);
+	}
+
+	
 
 	public Device getDevice(String id) {
 		return deviceRepo.findOne(id);
