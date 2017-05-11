@@ -10,10 +10,13 @@ import ch.hsr.smartmanager.data.DeviceGroup;
 
 @Repository
 public interface DeviceGroupRepository extends MongoRepository<DeviceGroup, String>, DeviceGroupRepositoryCustom {
-	
+
 	DeviceGroup findByName(String name);
+
 	boolean existsByName(String name);
+
 	List<DeviceGroup> findAllByChildrenId(ObjectId id);
+	List<DeviceGroup> findAllById(List<String> id);
 	boolean existsByChildrenId(ObjectId id);
 
 }

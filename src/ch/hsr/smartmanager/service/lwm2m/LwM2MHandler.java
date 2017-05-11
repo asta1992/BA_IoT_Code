@@ -9,12 +9,10 @@ import org.eclipse.leshan.Link;
 import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.core.request.DiscoverRequest;
 import org.eclipse.leshan.core.request.ExecuteRequest;
-import org.eclipse.leshan.core.request.ObserveRequest;
 import org.eclipse.leshan.core.request.ReadRequest;
 import org.eclipse.leshan.core.request.WriteRequest;
 import org.eclipse.leshan.core.response.DiscoverResponse;
 import org.eclipse.leshan.core.response.ExecuteResponse;
-import org.eclipse.leshan.core.response.ObserveResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
 import org.eclipse.leshan.server.californium.impl.LeshanServer;
@@ -50,6 +48,9 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
+		
+		//TODO Do something with it
+		
 		return res;
 	}
 
@@ -64,6 +65,9 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
+		
+		//TODO Do something with it
+		
 		return res;
 	}
 
@@ -83,6 +87,9 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
+		
+		//TODO Do something with it
+
 		return res;
 	}
 
@@ -97,23 +104,10 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
+		
 		return res;
 	}
 	
-	public ObserveResponse observe(String id, int objectId, int objectInstanceId, int resourceId) {
-		ObserveRequest req = new ObserveRequest(objectId, objectInstanceId, resourceId);
-		ObserveResponse res;
-		server = lwM2MManagementServer.getServer();
-
-		try {
-			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
-		} catch (InterruptedException e) {
-			res = null;
-			e.printStackTrace();
-		}
-		return res;
-	}
-
 
 	public Link[] ressourceDiscovery(String path, String id) {		
 		DiscoverRequest req = new DiscoverRequest(path);
