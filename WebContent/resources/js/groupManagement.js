@@ -9,6 +9,7 @@ function openGroupManagement(id) {
 				message : data,
 				callback : function(data) {
 					
+					
 				}
 			});
 		}
