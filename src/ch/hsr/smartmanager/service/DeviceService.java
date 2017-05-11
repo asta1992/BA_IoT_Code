@@ -37,7 +37,7 @@ public class DeviceService {
 		groupRepo.save(grpParent);
 		groupRepo.save(grpChild);
 	}
-	
+
 	public void removeDeviceFromGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
 		Device device = deviceRepo.findOne(deviceId);
@@ -45,7 +45,7 @@ public class DeviceService {
 		groupRepo.save(group);
 		deviceRepo.save(device);
 	}
-	
+
 	public void removeGroupFromGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
@@ -55,23 +55,22 @@ public class DeviceService {
 	}
 
 	public void addToManagement(String id) {
-		DeviceGroup group = (DeviceGroup) groupRepo.getGroupByName("_unassigned");
+		DeviceGroup group = (DeviceGroup) groupRepo.findByName("_unassigned");
 		Device device = deviceRepo.findOne(id);
 		device.setAdded(true);
 		deviceRepo.save(device);
 		addDeviceToGroup(group.getId(), id);
 	}
-	
-//	public void removeFromManagement(String id) {
-//		Device device = deviceRepo.findOne(id);
-//		List<DeviceGroup> groups = groupRepo.findAllByChildrenId(new ObjectId(id));
-//		for(DeviceGroup group: groups) {
-//			group.getChildren().remove(device);
-//		}
-//		groupRepo.save(groups);
-//		deviceRepo.delete(device);
-//	}
-//	
+
+	public void removeFromManagement(String id) {
+		Device device = deviceRepo.findOne(id);
+		List<DeviceGroup> groups = groupRepo.findAllByChildrenId(new ObjectId(id));
+		for (DeviceGroup group : groups) {
+			group.getChildren().remove(device);
+		}
+		groupRepo.save(groups);
+		deviceRepo.delete(device);
+	}
 
 	public Device getDevice(String id) {
 		return deviceRepo.findOne(id);
@@ -80,22 +79,29 @@ public class DeviceService {
 	public DeviceGroup getGroup(String id) {
 		return groupRepo.findOne(id);
 	}
-	
+
 	public List<DeviceGroup> getGroupAll() {
 		return groupRepo.findAll();
 	}
-	
-	public boolean isRoot(String id) {
-		return groupRepo.isRoot(id);
-	}
 
+	public boolean isRoot(String id) {
+		return groupRepo.existsByChildrenId(new ObjectId(id));
+	}
 
 	public Device insertDevice(Device device) {
-		return deviceRepo.insert(device);
+		if (deviceRepo.existsByName(device.getName())) {
+			return deviceRepo.findByName(device.getName());
+		} else {
+			return deviceRepo.insert(device);
+		}
 	}
 
-	public DeviceGroup insertGroup(DeviceGroup grp) {
-		return groupRepo.insert(grp);
+	public DeviceGroup insertGroup(DeviceGroup group) {
+		if (groupRepo.existsByName(group.getName())) {
+			return groupRepo.findByName(group.getName());
+		} else {
+			return groupRepo.insert(group);
+		}
 	}
 
 	public void deleteDevice(String id) {
@@ -109,9 +115,9 @@ public class DeviceService {
 	public void deleteGroup(String id) {
 		groupRepo.delete(id);
 	}
-	
+
 	public List<DeviceGroup> listAllGroupsForDevice(String id) {
-		return groupRepo.getGroupsForDevice(id);
+		return groupRepo.findAllByChildrenId(new ObjectId(id));
 	}
 
 	public List<Device> getAllDiscoveredDevice() {
@@ -128,7 +134,7 @@ public class DeviceService {
 
 	public void createOrUpdateDevice(Device device, Registration registration) {
 		if (deviceRepo.existsByName(device.getName())) {
-			Device dev = deviceRepo.findOne(device.getId());
+			Device dev = deviceRepo.findByName(device.getName());
 			dev.setRegId(registration.getId());
 			deviceRepo.save(dev);
 		} else {
@@ -142,7 +148,7 @@ public class DeviceService {
 
 	@PostConstruct
 	public void removeOldDiscoveries() {
-		if(!groupRepo.existsByName("_unassigned")) {
+		if (!groupRepo.existsByName("_unassigned")) {
 			DeviceGroup unassigned = new DeviceGroup("_unassigned");
 			groupRepo.save(unassigned);
 		}
