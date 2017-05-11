@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.bson.types.ObjectId;
 import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,33 @@ public class DeviceService {
 		groupRepo.save(group);
 		deviceRepo.save(device);
 	}
+	
+	public void removeGroupFromGroup(String parent, String child) {
+		DeviceGroup grpParent = groupRepo.findOne(parent);
+		DeviceGroup grpChild = groupRepo.findOne(child);
+		grpParent.remove(grpChild);
+		groupRepo.save(grpParent);
+		groupRepo.save(grpChild);
+	}
 
+	public void addToManagement(String id) {
+		DeviceGroup group = (DeviceGroup) groupRepo.findByName("_unassigned");
+		Device device = deviceRepo.findOne(id);
+		addDeviceToGroup(group.getId(), device.getId());
+		device.setAdded(true);
+		groupRepo.save(group);
+		deviceRepo.save(device);
+	}
+	
+	public void removeFromManagement(String id) {
+		Device device = deviceRepo.findOne(id);
+		List<DeviceGroup> groups = groupRepo.findAllByChildrenId(new ObjectId(id));
+		for(DeviceGroup group: groups) {
+			group.getChildren().remove(device);
+		}
+		groupRepo.save(groups);
+		deviceRepo.delete(device);
+	}
 	
 
 	public Device getDevice(String id) {
@@ -60,7 +87,7 @@ public class DeviceService {
 	}
 	
 	public boolean isRoot(String id) {
-		return groupRepo.isRoot(id);
+		return groupRepo.existsByChildrenId(new ObjectId(id));
 	}
 
 
@@ -77,7 +104,7 @@ public class DeviceService {
 	}
 
 	public void deleteDeviceByRegistration(Registration registration) {
-		deviceRepo.deleteEndpoint(registration.getEndpoint());
+		deviceRepo.removeDeviceByName(registration.getEndpoint());
 	}
 
 	public void deleteGroup(String id) {
@@ -85,15 +112,15 @@ public class DeviceService {
 	}
 	
 	public List<DeviceGroup> listAllGroupsForDevice(String id) {
-		return groupRepo.getGroupsForDevice(id);
+		return groupRepo.findAllByChildrenId(new ObjectId(id));
 	}
 
 	public List<Device> getAllDiscoveredDevice() {
-		return deviceRepo.findAllDevices(false);
+		return deviceRepo.findByAdded(false);
 	}
 
 	public List<Device> getAllRegistredDevice() {
-		return deviceRepo.findAllDevices(true);
+		return deviceRepo.findByAdded(true);
 	}
 
 	public List<Device> getAll() {
@@ -101,17 +128,13 @@ public class DeviceService {
 	}
 
 	public void createOrUpdateDevice(Device device, Registration registration) {
-		if (deviceRepo.endpointExists(device.getName())) {
-			deviceRepo.updateDevice(device, registration);
+		if (deviceRepo.existsByName(device.getName())) {
+			Device dev = deviceRepo.findOne(device.getId());
+			dev.setRegId(registration.getId());
+			deviceRepo.save(dev);
 		} else {
 			deviceRepo.insert(device);
 		}
-	}
-
-	public void toggleDevice(String id) {
-		DeviceGroup group = (DeviceGroup) groupRepo.getGroupByName("_unassigned");
-		addDeviceToGroup(group.getId(), id);
-		deviceRepo.toggleDevice(id);
 	}
 
 	public int countDiscoveredDevices() {
@@ -120,7 +143,11 @@ public class DeviceService {
 
 	@PostConstruct
 	public void removeOldDiscoveries() {
-		deviceRepo.deleteUnusedDiscoveries();
+		if(!groupRepo.existsByName("_unassigned")) {
+			DeviceGroup unassigned = new DeviceGroup("_unassigned");
+			groupRepo.save(unassigned);
+		}
+		deviceRepo.removeDeviceByAddedIsFalse();
 	}
 
 }

@@ -31,10 +31,22 @@ public class WebController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model) {
-	
-		DeviceGroup unassigned = new DeviceGroup("_unassigned");
+		DeviceGroup grp1 = new DeviceGroup("grp1");
+		DeviceGroup grp2 = new DeviceGroup("grp2");
+		DeviceGroup grp3 = new DeviceGroup("grp3");
 
-		deviceService.insertGroup(unassigned);
+		Device dev1 = new Device("Dev1");
+		
+		dev1 = deviceService.insertDevice(dev1);
+		grp1 = deviceService.insertGroup(grp1);
+		grp2 = deviceService.insertGroup(grp2);
+		grp3 = deviceService.insertGroup(grp3);
+
+		
+		deviceService.addDeviceToGroup(grp1.getId(), dev1.getId());
+		deviceService.addDeviceToGroup(grp3.getId(), dev1.getId());
+		
+		System.out.println(deviceService.listAllGroupsForDevice(dev1.getId()));
 		
 		return "index";
 	}
@@ -89,13 +101,13 @@ public class WebController {
 	
 	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.GET)
 	public String addDevice(Model model, @PathVariable("id") String id) {
-		deviceService.toggleDevice(id);
+		deviceService.addToManagement(id);
 		return "redirect:/discovery";
 	}
 
 	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.GET)
 	public String removeDevice(Model model, @PathVariable("id") String id) {
-		deviceService.toggleDevice(id);
+		deviceService.removeFromManagement(id);
 		return "redirect:/";
 	}
 }
