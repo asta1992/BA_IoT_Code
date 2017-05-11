@@ -9,22 +9,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smartmanager</title>
+<link rel="stylesheet" href="../smartmanager/resources/css/style.css" type="text/css">
+<link href="../smartmanager/resources/css/gijgo.css" rel="stylesheet"
+	type="text/css">
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
+	href="../smartmanager/resources/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-	crossorigin="anonymous">
-<link rel=stylesheet href="resources/css/menu.css">
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
-	integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
-	crossorigin="anonymous"></script>
+	href="../smartmanager/resources/css/bootstrap-theme.min.css" type="text/css">
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-	crossorigin="anonymous"></script>
+	src="../smartmanager/resources/js/bootstrap.min.js"></script>
+<script src="../smartmanager/resources/js/gijgo.js"
+	type="text/javascript"></script>
+<script
+	src="../smartmanager/resources/js/bootbox.min.js"></script>
 </head>
 <body>
 	<div class="container-fluid">
