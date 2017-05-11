@@ -33,17 +33,8 @@ public class RestController {
 	@RequestMapping(value = "/devices/{id}/read/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
 	public ReadResponse readResource(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
-
-		return lwM2MHandler.read(id, objectId, objectInstanceId, resourceId);
-	}
-
-	@RequestMapping(value = "/devices/{id}/observe/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
-	public ReadResponse observeResource(Model model, @PathVariable("id") String id,
-			@PathVariable("objectId") int objectId, @PathVariable("objectInstanceId") int objectInstanceId,
-			@PathVariable("resourceId") int resourceId) {
-
-		return lwM2MHandler.observe(id, objectId, objectInstanceId, resourceId);
-
+		
+		return lwM2MHandler.read(id, objectId, objectInstanceId, resourceId);		
 	}
 
 	@RequestMapping(value = "/devices/{id}/read/{objectId}", method = RequestMethod.GET)
@@ -94,7 +85,7 @@ public class RestController {
 	}
 
 	@RequestMapping(value = "/devices/{id}/removeFromGroups", method = RequestMethod.POST)
-	public void remoteFromGroups(Model model, @PathVariable("id") String id,
+	public void removeFromGroups(Model model, @PathVariable("id") String id,
 			@RequestParam("value") List<String> value) {
 		for (String groupId : value) {
 			deviceService.removeDeviceFromGroup(groupId, id);
