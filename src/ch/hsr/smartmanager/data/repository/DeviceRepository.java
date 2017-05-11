@@ -11,7 +11,6 @@ import ch.hsr.smartmanager.data.Device;
 public interface DeviceRepository extends MongoRepository<Device, String>, DeviceRepositoryCustom {
 
 	List<Device> findByAdded(boolean added);
-
 	boolean existsByName(String name);
 	Device findByName(String name);
 

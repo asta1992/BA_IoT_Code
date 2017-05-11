@@ -80,7 +80,7 @@ public class DeviceService {
 		return groupRepo.findOne(id);
 	}
 
-	public List<DeviceGroup> getGroupAll() {
+	public List<DeviceGroup> getAllGroups() {
 		return groupRepo.findAll();
 	}
 
@@ -105,16 +105,25 @@ public class DeviceService {
 	}
 
 	public void deleteDevice(String id) {
+		Device device = deviceRepo.findOne(id);
+		for(DeviceGroup group : groupRepo.findAllByChildrenId(new ObjectId(id))) {
+			group.getChildren().remove(device);
+		}
 		deviceRepo.delete(id);
+	}
+	public boolean deleteGroup(String id) {
+		DeviceGroup group = groupRepo.findOne(id);
+		if(!group.getChildren().isEmpty()) {
+			return false;
+		}
+		groupRepo.delete(id);
+		return true;
 	}
 
 	public void deleteDeviceByRegistration(Registration registration) {
 		deviceRepo.removeDeviceByName(registration.getEndpoint());
 	}
 
-	public void deleteGroup(String id) {
-		groupRepo.delete(id);
-	}
 
 	public List<DeviceGroup> listAllGroupsForDevice(String id) {
 		return groupRepo.findAllByChildrenId(new ObjectId(id));
@@ -128,8 +137,13 @@ public class DeviceService {
 		return deviceRepo.findByAdded(true);
 	}
 
-	public List<Device> getAll() {
+	public List<Device> getAllDevices() {
 		return deviceRepo.findAll();
+	}
+	
+	public List<DeviceGroup> findAllGroupById(List<String> id) {
+		return groupRepo.findAllById(id);
+		
 	}
 
 	public void createOrUpdateDevice(Device device, Registration registration) {

@@ -72,33 +72,45 @@ public class RestController {
 
 		return deviceService.countDiscoveredDevices();
 	}
-	
-	@RequestMapping(value = "/devices/{id}/addToGroups", method = RequestMethod.POST)
-	public void addToGroups(Model model,@PathVariable("id") String id, @RequestParam("value") List<String> value) {
-		for(String groupId: value) {
-			deviceService.addDeviceToGroup(groupId, id);
+
+	@RequestMapping(value = "/devices/{id}/changeMembership", method = RequestMethod.POST)
+	public void addToGroups(Model model,@PathVariable("id") String id,
+		@RequestParam("value") List<String> value){
+		
+		Device device = deviceService.getDevice(id);
+		List<DeviceGroup> preGroups = deviceService.listAllGroupsForDevice(id);
+		List<DeviceGroup> postGroups = deviceService.findAllGroupById(value);
+		
+		for(DeviceGroup devGroups : preGroups) {
+			if(!postGroups.contains(devGroups)) {
+				deviceService.removeDeviceFromGroup(devGroups.getId(), device.getId());
+			}
+		}
+		for(DeviceGroup devGroups : postGroups) {
+			if(!preGroups.contains(devGroups)) {
+				deviceService.addDeviceToGroup(devGroups.getId(), device.getId());
+			}
 		}
 	}
-	
-	@RequestMapping(value = "/devices/{id}/remoteFromGroups", method = RequestMethod.POST)
-	public void remoteFromGroups(Model model,@PathVariable("id") String id, @RequestParam("value") List<String> value) {
-		for(String groupId: value) {
+
+	@RequestMapping(value = "/devices/{id}/removeFromGroups", method = RequestMethod.POST)
+	public void remoteFromGroups(Model model, @PathVariable("id") String id,
+			@RequestParam("value") List<String> value) {
+		for (String groupId : value) {
 			deviceService.removeDeviceFromGroup(groupId, id);
 		}
 	}
-	
 
 	@RequestMapping(value = "/group/list", method = RequestMethod.GET)
 	public List<DeviceGroup> getGroupList(Model model) {
-		return deviceService.getGroupAll();
+		return deviceService.getAllGroups();
 	}
-
 
 	@RequestMapping(value = "/group/getAll", method = RequestMethod.GET)
 	public String getAllGroups(Model model) throws JSONException {
 		List<JSONObject> allJson = new ArrayList<>();
 
-		for (DeviceComponent item : deviceService.getGroupAll()) {
+		for (DeviceComponent item : deviceService.getAllGroups()) {
 			if (!deviceService.isRoot(item.getId())) {
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("id", "groups/" + item.getId());
@@ -109,11 +121,10 @@ public class RestController {
 		}
 
 		return allJson.toString();
-
 	}
 
 	private List<JSONObject> allChildren(DeviceComponent deviceComponent) throws JSONException {
-		List<JSONObject> jsonObjects = new ArrayList<>();		
+		List<JSONObject> jsonObjects = new ArrayList<>();
 		for (DeviceComponent item : deviceComponent.getChildren()) {
 			JSONObject jsonObj = new JSONObject();
 			if (item instanceof Device) {
@@ -122,7 +133,7 @@ public class RestController {
 				jsonObjects.add(jsonObj);
 			} else {
 				item = deviceService.getGroup(item.getId());
-				
+
 				if (item.getChildren().isEmpty()) {
 					jsonObj.put("id", "groups/" + item.getId());
 					jsonObj.put("text", item.getName());
