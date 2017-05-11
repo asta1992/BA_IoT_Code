@@ -29,6 +29,7 @@
 
 #bootstrap-duallistbox-selected-list_groups-duallistbox {
 	height: 250px !important;
+	
 }
 
 </style>
