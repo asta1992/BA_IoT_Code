@@ -67,6 +67,11 @@ public class RestController {
 	@RequestMapping(value = "/devices/{id}/changeMembership", method = RequestMethod.POST)
 	public void addToGroups(Model model,@PathVariable("id") String id,
 		@RequestParam("value") List<String> value){
+		System.out.println("Before Updated: ");
+		for(String val : value){
+			System.out.println("Updated: ");
+			System.out.println(val);
+		}
 		
 		Device device = deviceService.getDevice(id);
 		List<DeviceGroup> preGroups = deviceService.listAllGroupsForDevice(id);

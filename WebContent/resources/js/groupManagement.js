@@ -10,7 +10,18 @@ function openGroupManagement(id) {
 					$( '#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
 					    updatedMemberships += JSON.stringify(this.id);
 					    });
-					console.log(JSON.stringify(updatedMemberships));
+					
+					$.ajax({
+						type : "POST",
+						dataType : "json",
+						data : {
+							updatedMemberships
+						},
+						url : "/smartmanager/devices/"+id+"/changeMembership",
+						success : function(res) {
+							alert("rainbowfish");
+						}
+					});
 				}
 			});
 		}
