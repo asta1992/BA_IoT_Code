@@ -13,5 +13,6 @@ public interface DeviceRepository extends MongoRepository<Device, String>, Devic
 	List<Device> findByAdded(boolean added);
 
 	boolean existsByName(String name);
+	Device findByName(String name);
 
 }
