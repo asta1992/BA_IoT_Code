@@ -2,6 +2,8 @@ package ch.hsr.smartmanager.presentation.controller;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
@@ -93,9 +95,21 @@ public class WebController {
 	@RequestMapping(value = "/groups/{id}", method = RequestMethod.GET)
 	public String showGroupDetails(Model model, @PathVariable("id") String id) {
 		DeviceGroup group = deviceService.getGroup(id);
-		
 		model.addAttribute("group", group);
 		return "groupFragment";
+	}
+	
+	@RequestMapping(value = "/devices/{id}/memberships", method = RequestMethod.GET)
+	public String getMemberships(Model model, @PathVariable("id") String id) {
+		List<DeviceGroup> groups = deviceService.getGroupAll();
+		List<DeviceGroup> deviceGroups = deviceService.listAllGroupsForDevice(id);
+		
+		groups.removeAll(deviceGroups);
+		
+		model.addAttribute("allGroups", groups);
+		model.addAttribute("deviceGroups", deviceGroups);
+
+		return "groupManagementFragment";
 	}
 	
 	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.GET)

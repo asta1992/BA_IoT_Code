@@ -92,12 +92,7 @@ public class RestController {
 	public List<DeviceGroup> getGroupList(Model model) {
 		return deviceService.getGroupAll();
 	}
-	
 
-	@RequestMapping(value = "/devices/{id}/memberships", method = RequestMethod.GET)
-	public List<DeviceGroup> getDeviceMemberships(Model model, @PathVariable("id") String id) {
-		return deviceService.listAllGroupsForDevice(id);
-	}
 
 	@RequestMapping(value = "/group/getAll", method = RequestMethod.GET)
 	public String getAllGroups(Model model) throws JSONException {
