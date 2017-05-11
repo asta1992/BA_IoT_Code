@@ -103,7 +103,7 @@ public class WebController {
 	
 	@RequestMapping(value = "/devices/{id}/memberships", method = RequestMethod.GET)
 	public String getMemberships(Model model, @PathVariable("id") String id) {
-		List<DeviceGroup> groups = deviceService.getGroupAll();
+		List<DeviceGroup> groups = deviceService.getAllGroups();
 		List<DeviceGroup> deviceGroups = deviceService.listAllGroupsForDevice(id);
 		
 		groups.removeAll(deviceGroups);
