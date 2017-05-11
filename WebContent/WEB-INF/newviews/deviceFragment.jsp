@@ -7,93 +7,98 @@
 
 
 <h2>
-					LeshanDevice Client <span class="pull-right"><button
-							type="button" class="btn btn-danger heading-button">Delete
-							Device</button></span> <span class="pull-right"><button type="button"
-							class="btn btn-primary heading-button"
-							onclick="readAll()">Read All</button></span>
-				</h2>
-				<dl class="dl-horizontal">
-					<dt>Registration Id</dt>
-					<dd>${device.id}</dd>
-					<dt>IPAddress</dt>
-					<dd>2001:cdba:0000:0000:0000:0000:3257:9652</dd>
-					<dt>Authentication</dt>
-					<dd>Certificate Authentication</dd>
-					<dt>Last Updated</dt>
-					<dd>03.05.2017 20.19 Uhr</dd>
-					<dt>Group Memberships</dt>
-					<dd></dd>
+	LeshanDevice Client <span class="pull-right"><button
+			type="button" class="btn btn-danger heading-button">Delete
+			Device</button></span> <span class="pull-right"><button type="button"
+			class="btn btn-primary heading-button" onclick="readAll()">Read
+			All</button></span>
+</h2>
+<dl class="dl-horizontal">
+	<dt>Registration Id</dt>
+	<dd>${device.id}</dd>
+	<dt>IPAddress</dt>
+	<dd>2001:cdba:0000:0000:0000:0000:3257:9652</dd>
+	<dt>Authentication</dt>
+	<dd>Certificate Authentication</dd>
+	<dt>Last Updated</dt>
+	<dd>03.05.2017 20.19 Uhr</dd>
 
-				</dl>
-				<div class="panel-group" id="accordion">
-					<c:forEach var="model" items="${modelDescription}" varStatus="loop">
-						<spring:url
-							value="/devices/${device.id}/read/${objectLinks[loop.index]}"
-							var="readMultiple" />
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h5>
-									<a data-toggle="collapse" href="#collapse${loop.index}">${model.key}</a>
-									<span class="pull-right"><button type="button"
-											class="btn btn-primary btn-xs" id="btn-read-multiple${objectLinks[loop.index]}"
-											onclick="readMultiple('${readMultiple}')">Read Multiple</button></span>
-								</h5>
-							</div>
+	<dt>
+		<button type="button" class="btn btn-sm btn-warning heading-button"
+			onclick="openGroupManagement('${device.id}')">Group Memberships</button>
+	</dt>
+	<dd></dd>
 
-							<div id="collapse${loop.index}" class="panel-collapse collapse">
-								<div class="panel-body">
-									<table width="99%" class="table-hover">
+</dl>
+<div class="panel-group" id="accordion">
+	<c:forEach var="model" items="${modelDescription}" varStatus="loop">
+		<spring:url
+			value="/devices/${device.id}/read/${objectLinks[loop.index]}"
+			var="readMultiple" />
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h5>
+					<a data-toggle="collapse" href="#collapse${loop.index}">${model.key}</a>
+					<span class="pull-right"><button type="button"
+							class="btn btn-primary btn-xs"
+							id="btn-read-multiple${objectLinks[loop.index]}"
+							onclick="readMultiple('${readMultiple}')">Read Multiple</button></span>
+				</h5>
+			</div>
 
-										<tbody>
-											<c:forEach var="resource" items="${model.value}">
-												<spring:url
-													value="/devices/${device.id}/read/${objectLinks[loop.index]}/0/${resource.id}"
-													var="read" />
-												<spring:url
-													value="/devices/${device.id}/write/${objectLinks[loop.index]}/0/${resource.id}"
-													var="write" />
-												<spring:url
-													value="/devices/${device.id}/execute/${objectLinks[loop.index]}/0/${resource.id}"
-													var="execute" />
-												<spring:url
-													value="/devices/${device.id}/observe/${objectLinks[loop.index]}/0/${resource.id}"
-													var="observe" />
-												<tr>
-													<td>${objectLinks[loop.index]}/0/${resource.id}</td>
-													<td>${resource.name}</td>
-													<td><div
-															id="readResponse${objectLinks[loop.index]}0${resource.id}"></div></td>
-													<td><div
-															id="writeResponse${objectLinks[loop.index]}0${resource.id}"></div></td>
-													<td><c:set var="operations"
-															value="${resource.operations}" /> <c:choose>
-															<c:when test="${fn:contains(operations, 'R')}">
-																<span class="pull-right"><button
-																		class="btn btn-primary btn-xs"
-																		onclick="readData('${read}', '${objectLinks[loop.index]}0${resource.id}')">Read</button></span>
-															</c:when>
-														</c:choose> <c:choose>
-															<c:when test="${fn:contains(operations, 'W')}">
-																<span class="pull-right"><button
-																		class="btn btn-success btn-xs"
-																		onclick="writeData('${write}', '${objectLinks[loop.index]}0${resource.id}', '${resource.type}')">Write</button></span>
-															</c:when>
-														</c:choose> <c:choose>
-															<c:when test="${fn:contains(operations, 'E')}">
-																<span class="pull-right"><button
-																		class="btn btn-warning btn-xs"
-																		onclick="execute('${execute}', '${objectLinks[loop.index]}0${resource.id}')">Execute</button></span>
-															</c:when>
-														</c:choose></td>
-												</tr>
-											</c:forEach>
-										</tbody>
-									</table>
-								</div>
-							</div>
+			<div id="collapse${loop.index}" class="panel-collapse collapse">
+				<div class="panel-body">
+					<table width="99%" class="table-hover">
 
-						</div>
-					</c:forEach>
-
+						<tbody>
+							<c:forEach var="resource" items="${model.value}">
+								<spring:url
+									value="/devices/${device.id}/read/${objectLinks[loop.index]}/0/${resource.id}"
+									var="read" />
+								<spring:url
+									value="/devices/${device.id}/write/${objectLinks[loop.index]}/0/${resource.id}"
+									var="write" />
+								<spring:url
+									value="/devices/${device.id}/execute/${objectLinks[loop.index]}/0/${resource.id}"
+									var="execute" />
+								<spring:url
+									value="/devices/${device.id}/observe/${objectLinks[loop.index]}/0/${resource.id}"
+									var="observe" />
+								<tr>
+									<td>${objectLinks[loop.index]}/0/${resource.id}</td>
+									<td>${resource.name}</td>
+									<td><div
+											id="readResponse${objectLinks[loop.index]}0${resource.id}"></div></td>
+									<td><div
+											id="writeResponse${objectLinks[loop.index]}0${resource.id}"></div></td>
+									<td><c:set var="operations" value="${resource.operations}" />
+										<c:choose>
+											<c:when test="${fn:contains(operations, 'R')}">
+												<span class="pull-right"><button
+														class="btn btn-primary btn-xs"
+														onclick="readData('${read}', '${objectLinks[loop.index]}0${resource.id}')">Read</button></span>
+											</c:when>
+										</c:choose> <c:choose>
+											<c:when test="${fn:contains(operations, 'W')}">
+												<span class="pull-right"><button
+														class="btn btn-success btn-xs"
+														onclick="writeData('${write}', '${objectLinks[loop.index]}0${resource.id}', '${resource.type}')">Write</button></span>
+											</c:when>
+										</c:choose> <c:choose>
+											<c:when test="${fn:contains(operations, 'E')}">
+												<span class="pull-right"><button
+														class="btn btn-warning btn-xs"
+														onclick="execute('${execute}', '${objectLinks[loop.index]}0${resource.id}')">Execute</button></span>
+											</c:when>
+										</c:choose></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
 				</div>
+			</div>
+
+		</div>
+	</c:forEach>
+
+</div>

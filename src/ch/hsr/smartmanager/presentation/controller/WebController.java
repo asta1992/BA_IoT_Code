@@ -31,23 +31,6 @@ public class WebController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model) {
-		DeviceGroup grp1 = new DeviceGroup("grp1");
-		DeviceGroup grp2 = new DeviceGroup("grp2");
-		DeviceGroup grp3 = new DeviceGroup("grp3");
-
-		Device dev1 = new Device("Dev1");
-		
-		dev1 = deviceService.insertDevice(dev1);
-		grp1 = deviceService.insertGroup(grp1);
-		grp2 = deviceService.insertGroup(grp2);
-		grp3 = deviceService.insertGroup(grp3);
-
-		
-		deviceService.addDeviceToGroup(grp1.getId(), dev1.getId());
-		deviceService.addDeviceToGroup(grp3.getId(), dev1.getId());
-		
-		System.out.println(deviceService.listAllGroupsForDevice(dev1.getId()));
-		
 		return "index";
 	}
 

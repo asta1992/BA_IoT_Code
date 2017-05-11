@@ -22,7 +22,7 @@
 	href="../smartmanager/resources/css/prettify.min.css">
 <link rel="stylesheet" type="text/css"
 	href="../smartmanager/resources/css/bootstrap-duallistbox.css">
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="../smartmanager/resources/js/jquery-2.1.4.min.js"></script>
 <script src="../smartmanager/resources/js/bootstrap.min.js"></script>
 <script src="../smartmanager/resources/js/gijgo.js"
 	type="text/javascript"></script>
@@ -31,9 +31,12 @@
 	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/devicedata.js"
 	type="text/javascript"></script>
-<script
-	src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
-<script src="js/jquery.bootstrap-duallistbox.js"></script>
+<script src="../smartmanager/resources/js/run_prettify.min.js"
+	type="text/javascript"></script>
+<script src="../smartmanager/resources/js/jquery.bootstrap-duallistbox.js"
+	type="text/javascript"></script>
+<script src="../smartmanager/resources/js/groupManagement.js"
+	type="text/javascript"></script>
 </head>
 <body>
 

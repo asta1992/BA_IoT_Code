@@ -8,11 +8,9 @@ function readData(url, objectLink) {
 			} else {
 				alert(data.code);
 			}
-
 		}
 	});
 }
-
 
 function readAll() {
 	$('button[id^="btn-read-multiple"]').click();

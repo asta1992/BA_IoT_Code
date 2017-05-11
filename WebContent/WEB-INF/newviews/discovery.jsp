@@ -8,20 +8,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smartmanager</title>
-<link rel="stylesheet" href="../smartmanager/resources/css/style.css" type="text/css">
-<link href="../smartmanager/resources/css/gijgo.css" rel="stylesheet"
+<link rel="stylesheet" href="../smartmanager/resources/css/style.css"
 	type="text/css">
 <link rel="stylesheet"
 	href="../smartmanager/resources/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet"
-	href="../smartmanager/resources/css/bootstrap-theme.min.css" type="text/css">
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script
-	src="../smartmanager/resources/js/bootstrap.min.js"></script>
-<script src="../smartmanager/resources/js/gijgo.js"
-	type="text/javascript"></script>
-<script
-	src="../smartmanager/resources/js/bootbox.min.js"></script>
+	href="../smartmanager/resources/css/bootstrap-theme.min.css"
+	type="text/css">
+<script src="../smartmanager/resources/js/jquery-2.1.4.min.js"></script>
+<script src="../smartmanager/resources/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<div class="container-fluid">
@@ -31,7 +26,7 @@
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-					<h3>Discovery</h3>
+				<h3>Discovery</h3>
 				<table class="table table-hover">
 					<thead>
 						<tr>
