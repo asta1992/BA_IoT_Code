@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.mongodb.util.JSON;
-
 import com.eclipsesource.json.Json;
 
 import ch.hsr.smartmanager.data.Device;
@@ -62,11 +60,11 @@ public class RestController {
 
 		return lwM2MHandler.execute(id, objectId, objectInstanceId, resourceId);
 	}
-	
-	//@RequestMapping(value = "/groups/{id}/addNewGroup")
-	
+
+	// @RequestMapping(value = "/groups/{id}/addNewGroup")
+
 	@RequestMapping(value = "/groups/add", method = RequestMethod.POST)
-	public void addNewGroup(Model mode,@RequestParam("value") String groupName){
+	public void addNewGroup(Model mode, @RequestParam("value") String groupName) {
 		deviceService.insertGroup(new DeviceGroup(Json.parse(groupName).asString()));
 	}
 
@@ -93,6 +91,7 @@ public class RestController {
 
 		for (DeviceGroup devGroups : preGroups) {
 			if (!postGroups.contains(devGroups)) {
+				System.out.println("REMOVE");
 				deviceService.removeDeviceFromGroup(devGroups.getId(), device.getId());
 			}
 		}
@@ -101,16 +100,16 @@ public class RestController {
 				deviceService.addDeviceToGroup(devGroups.getId(), device.getId());
 			}
 		}
-		
+
 		DeviceGroup devGroup = deviceService.findByName("_unassigned");
-		
-		
-		if(postGroups.size() > 1 && postGroups.contains(devGroup)) {
+
+		if (postGroups.size() > 1 && postGroups.contains(devGroup)) {
 			deviceService.removeDeviceFromGroup(devGroup.getId(), id);
 		}
 		if (postGroups.isEmpty()) {
 			deviceService.addDeviceToGroup(devGroup.getId(), id);
 		}
+
 
 	}
 

@@ -42,6 +42,7 @@ public class DeviceService {
 		Device device = deviceRepo.findOne(deviceId);
 		group.remove(device);
 		groupRepo.save(group);
+		deviceRepo.save(device);
 	}
 	
 	public void removeGroupFromGroup(String parent, String child) {
@@ -151,7 +152,7 @@ public class DeviceService {
 		if (deviceRepo.existsByName(device.getName())) {
 			Device dev = deviceRepo.findByName(device.getName());
 			dev.setRegId(registration.getId());
-			deviceRepo.save(dev);
+			dev = deviceRepo.save(dev);
 		} else {
 			deviceRepo.insert(device);
 		}
