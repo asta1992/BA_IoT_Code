@@ -3,30 +3,35 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<div class=row>
 <h2>
-	LeshanDevice Client <span class="pull-right"><button
-			type="button" class="btn btn-danger heading-button">Delete
-			Device</button></span> <span class="pull-right"><button type="button"
+	${device.name} <span class="pull-right"><button type="button"
+			class="btn btn-danger heading-button">Delete Device</button></span> <span
+		class="pull-right"><button type="button"
 			class="btn btn-primary heading-button" onclick="readAll()">Read
 			All</button></span>
 </h2>
+</div>
+<div class=row>
 <dl class="dl-horizontal">
 	<dt>Registration Id</dt>
 	<dd>${device.id}</dd>
-	<dt>IPAddress</dt>
-	<dd>2001:cdba:0000:0000:0000:0000:3257:9652</dd>
+	<dt>Endpoint</dt>
+	<dd>${device.endpoint}</dd>
 	<dt>Authentication</dt>
 	<dd>Certificate Authentication</dd>
 	<dt>Last Updated</dt>
 	<dd>03.05.2017 20.19 Uhr</dd>
 
 	<dt>
-		<button type="button" class="btn btn-sm btn-warning heading-button"
-			onclick="openGroupManagement('${device.id}')">Group Memberships</button>
+		<button type="button" class="btn btn-sm btn-default heading-button"
+			onclick="openGroupManagement('${device.id}')">Group
+			Memberships</button>
 	</dt>
 	<dd></dd>
 
 </dl>
+</div>
 <div class="panel-group" id="accordion">
 	<c:forEach var="model" items="${modelDescription}" varStatus="loop">
 		<spring:url
