@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.mongodb.util.JSON;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
@@ -33,8 +36,8 @@ public class RestController {
 	@RequestMapping(value = "/devices/{id}/read/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
 	public ReadResponse readResource(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
-		
-		return lwM2MHandler.read(id, objectId, objectInstanceId, resourceId);		
+
+		return lwM2MHandler.read(id, objectId, objectInstanceId, resourceId);
 	}
 
 	@RequestMapping(value = "/devices/{id}/read/{objectId}", method = RequestMethod.GET)
@@ -65,27 +68,41 @@ public class RestController {
 	}
 
 	@RequestMapping(value = "/devices/{id}/changeMembership", method = RequestMethod.POST)
-	public void addToGroups(Model model,@PathVariable("id") String id,
-		@RequestParam("value") List<String> value){
-		System.out.println("Before Updated: ");
-		System.out.println(value);
-		
-		
-		
+	public void addToGroups(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
+
+		List<DeviceGroup> postGroups = new ArrayList<>();
+		for (int i = 0; i < value.length(); i++) {
+			try {
+				postGroups.add(deviceService.getGroup(value.getString(i)));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
 		Device device = deviceService.getDevice(id);
 		List<DeviceGroup> preGroups = deviceService.listAllGroupsForDevice(id);
-		List<DeviceGroup> postGroups = deviceService.findAllGroupById(value);
-		
-		for(DeviceGroup devGroups : preGroups) {
-			if(!postGroups.contains(devGroups)) {
+
+		for (DeviceGroup devGroups : preGroups) {
+			if (!postGroups.contains(devGroups)) {
 				deviceService.removeDeviceFromGroup(devGroups.getId(), device.getId());
 			}
 		}
-		for(DeviceGroup devGroups : postGroups) {
-			if(!preGroups.contains(devGroups)) {
+		for (DeviceGroup devGroups : postGroups) {
+			if (!preGroups.contains(devGroups)) {
 				deviceService.addDeviceToGroup(devGroups.getId(), device.getId());
 			}
 		}
+		
+		DeviceGroup devGroup = deviceService.findByName("_unassigned");
+		
+		
+		if(postGroups.size() > 1 && postGroups.contains(devGroup)) {
+			deviceService.removeDeviceFromGroup(devGroup.getId(), id);
+		}
+		if (postGroups.isEmpty()) {
+			deviceService.addDeviceToGroup(devGroup.getId(), id);
+		}
+
 	}
 
 	@RequestMapping(value = "/devices/{id}/removeFromGroups", method = RequestMethod.POST)

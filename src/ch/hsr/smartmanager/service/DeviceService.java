@@ -27,9 +27,8 @@ public class DeviceService {
 		Device device = deviceRepo.findOne(deviceId);
 		group.add(device);
 		groupRepo.save(group);
-		deviceRepo.save(device);
 	}
-
+	
 	public void addGroupToGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
@@ -43,9 +42,8 @@ public class DeviceService {
 		Device device = deviceRepo.findOne(deviceId);
 		group.remove(device);
 		groupRepo.save(group);
-		deviceRepo.save(device);
 	}
-
+	
 	public void removeGroupFromGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
@@ -70,6 +68,10 @@ public class DeviceService {
 		}
 		groupRepo.save(groups);
 		deviceRepo.delete(device);
+	}
+	
+	public DeviceGroup findByName(String name) {
+		return groupRepo.findByName(name);
 	}
 
 	public Device getDevice(String id) {
@@ -143,7 +145,6 @@ public class DeviceService {
 	
 	public List<DeviceGroup> findAllGroupById(List<String> id) {
 		return groupRepo.findAllById(id);
-		
 	}
 
 	public void createOrUpdateDevice(Device device, Registration registration) {

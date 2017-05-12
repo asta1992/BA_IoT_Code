@@ -17,7 +17,7 @@ function openGroupManagement(id) {
 						data : {
 							value : JSON.stringify(updatedMemberships)
 						},
-						url : "/smartmanager/devices/" + id + "/changeMembership",
+						url : "/smartmanager/devices/" + id + "/changeMembership"
 					});
 				}
 			});

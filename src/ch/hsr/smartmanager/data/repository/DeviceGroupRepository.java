@@ -3,6 +3,7 @@ package ch.hsr.smartmanager.data.repository;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.json.JSONArray;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,7 @@ public interface DeviceGroupRepository extends MongoRepository<DeviceGroup, Stri
 	boolean existsByName(String name);
 
 	List<DeviceGroup> findAllByChildrenId(ObjectId id);
-	List<DeviceGroup> findAllById(List<String> id);
+	List<DeviceGroup> findAllById(List<String> name);
 	boolean existsByChildrenId(ObjectId id);
 
 }
