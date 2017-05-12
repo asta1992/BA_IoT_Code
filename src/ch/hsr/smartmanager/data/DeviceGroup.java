@@ -3,15 +3,20 @@ package ch.hsr.smartmanager.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import ch.hsr.smartmanager.data.repository.DeviceGroupRepository;
+import ch.hsr.smartmanager.data.repository.DeviceRepository;
 
 @Document
 public class DeviceGroup implements DeviceComponent {
 
 	@Id
 	private String id;
-
+	@Autowired
+	private DeviceGroupRepository deviceRepo;
 	private String name;
 
 	private List<DeviceComponent> children = new ArrayList<DeviceComponent>();
@@ -22,6 +27,7 @@ public class DeviceGroup implements DeviceComponent {
 
 	@Override
 	public void add(DeviceComponent deviceComponent) {
+		System.out.println("Add---------------------------------------------------------------------------------");
 		if(deviceComponent instanceof Device &&  (!children.contains(deviceComponent))){
 			children.add(deviceComponent);
 			return;
@@ -30,7 +36,7 @@ public class DeviceGroup implements DeviceComponent {
 		if (children.contains(deviceComponent)) {
 			return;
 		}
-		else if (!isChild(deviceComponent) && !deviceComponent.isChild(this)) {
+		else if (!this.isChild(deviceComponent) && !deviceComponent.isChild(this)) {
 			this.children.add(deviceComponent);
 		} else
 			return;
@@ -39,7 +45,8 @@ public class DeviceGroup implements DeviceComponent {
 
 	@Override
 	public boolean isChild(DeviceComponent component) {
-		System.out.println("Node "+this.getName() + " To Check: "+ component.getName() );
+		System.out.println("This: " + this.getName() + " component: " + component.getName() + "This Children: " + this.getChildren());
+
 		if (children.isEmpty()) {
 			return false;
 		}
@@ -48,8 +55,8 @@ public class DeviceGroup implements DeviceComponent {
 			return true;
 		} 
 		else {
-			for (DeviceComponent comp : children) {
-				return comp.isChild(component);
+			for (DeviceComponent child : children) {
+				return child.isChild(component);
 			}
 			return false;
 		}

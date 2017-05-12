@@ -32,10 +32,7 @@ public class DeviceService {
 	public void addGroupToGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
-		System.out.println(grpParent);
-		System.out.println(grpChild);
 		grpParent.add(grpChild);
-		System.out.println(grpParent.getChildren());
 		groupRepo.save(grpParent);
 		groupRepo.save(grpChild);
 	}
