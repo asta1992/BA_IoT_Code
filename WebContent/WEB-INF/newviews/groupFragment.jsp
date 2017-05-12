@@ -24,7 +24,8 @@
 				onclick="openGroupManagement('${device.id}')">Group Members</button>
 		</dt>
 		<dd>
-			<button type="button" class="btn btn-sm btn-default heading-button" onclick="addNewGroup('${group.id}')">Add New Group</button>
+			<button type="button" class="btn btn-sm btn-default heading-button"
+				onclick="addNewChildGroup('${group.id}')">Add New Group</button>
 		</dd>
 
 	</dl>

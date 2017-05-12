@@ -63,10 +63,16 @@ public class RestController {
 		return lwM2MHandler.execute(id, objectId, objectInstanceId, resourceId);
 	}
 	
-	//@RequestMapping(value = "/groups/{id}/addNewGroup")
+	@RequestMapping(value = "/groups/{id}/add")
+	public void addNewChildGroup(Model model,@PathVariable("id") String id,@RequestParam("value") String groupName){
+		DeviceGroup devGroup = new DeviceGroup(Json.parse(groupName).asString());
+		deviceService.insertGroup(devGroup);
+		devGroup = deviceService.findByName(Json.parse(groupName).asString());
+		deviceService.addGroupToGroup(id, devGroup.getId());
+	}
 	
 	@RequestMapping(value = "/groups/add", method = RequestMethod.POST)
-	public void addNewGroup(Model mode,@RequestParam("value") String groupName){
+	public void addNewRootGroup(Model mode,@RequestParam("value") String groupName){
 		deviceService.insertGroup(new DeviceGroup(Json.parse(groupName).asString()));
 	}
 

@@ -39,14 +39,17 @@ public class DeviceGroup implements DeviceComponent {
 
 	@Override
 	public boolean isChild(DeviceComponent component) {
-		if (this.children.isEmpty()) {
+		System.out.println("Node "+this.getName() + " To Check: "+ component.getName() );
+		if (children.isEmpty()) {
 			return false;
 		}
-		if (this.children.contains(component)) {
+		if (children.contains(component)) {
+			System.out.println("wird nicht passieren");
 			return true;
-		} else {
+		} 
+		else {
 			for (DeviceComponent comp : children) {
-				return isChild(comp);
+				return comp.isChild(component);
 			}
 			return false;
 		}
@@ -94,7 +97,6 @@ public class DeviceGroup implements DeviceComponent {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -105,14 +107,7 @@ public class DeviceGroup implements DeviceComponent {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
 		DeviceGroup other = (DeviceGroup) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -120,7 +115,7 @@ public class DeviceGroup implements DeviceComponent {
 			return false;
 		return true;
 	}
-	
+
 	
 
 }

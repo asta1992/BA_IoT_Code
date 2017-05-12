@@ -51,7 +51,7 @@
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 				<h4>
 					Navigation <span class="pull-right">
-						<button type="button" class="btn btn-default btn-sm" onclick="addNewGroup()">Add
+						<button type="button" class="btn btn-default btn-sm" onclick="addNewRootGroup()">Add
 							New Group</button>
 					</span>
 				</h4>

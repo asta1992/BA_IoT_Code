@@ -118,6 +118,7 @@ public class Device implements DeviceComponent {
 
 	@Override
 	public boolean isChild(DeviceComponent deviceComponent) {
+		System.out.println("Device");
 		return false;
 	}
 
