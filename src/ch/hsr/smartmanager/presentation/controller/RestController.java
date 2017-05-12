@@ -68,10 +68,9 @@ public class RestController {
 	public void addToGroups(Model model,@PathVariable("id") String id,
 		@RequestParam("value") List<String> value){
 		System.out.println("Before Updated: ");
-		for(String val : value){
-			System.out.println("Updated: ");
-			System.out.println(val);
-		}
+		System.out.println(value);
+		
+		
 		
 		Device device = deviceService.getDevice(id);
 		List<DeviceGroup> preGroups = deviceService.listAllGroupsForDevice(id);
