@@ -1,3 +1,19 @@
+function addNewGroup() {
+	bootbox.prompt({
+		title : "Please enter a group name",
+		callback : function(message){
+			$.ajax({
+				type: "POST",
+				dataType : "json",
+				data : {
+					value : JSON.stringify(message)
+				},
+				url : "/smartmanager/groups/add",
+			});
+		}
+	});
+}
+
 function openGroupManagement(id) {
 	$.ajax({
 		dataType : "html",
@@ -23,5 +39,4 @@ function openGroupManagement(id) {
 			});
 		}
 	});
-
 }

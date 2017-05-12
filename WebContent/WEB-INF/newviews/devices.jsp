@@ -33,7 +33,8 @@
 	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/run_prettify.min.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/jquery.bootstrap-duallistbox.js"
+<script
+	src="../smartmanager/resources/js/jquery.bootstrap-duallistbox.js"
 	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/groupManagement.js"
 	type="text/javascript"></script>
@@ -48,7 +49,13 @@
 
 		<div class="row">
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-				<h4>Navigation</h4>
+				<h4>
+					Navigation <span class="pull-right">
+						<button type="button" class="btn btn-default btn-sm" onclick="addNewGroup()">Add
+							New Group</button>
+					</span>
+				</h4>
+				<br>
 				<div id="tree"></div>
 			</div>
 			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="main-content">

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.eclipsesource.json.Json;
+
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
@@ -56,6 +58,13 @@ public class RestController {
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
 
 		return lwM2MHandler.execute(id, objectId, objectInstanceId, resourceId);
+	}
+	
+	//@RequestMapping(value = "/groups/{id}/addNewGroup")
+	
+	@RequestMapping(value = "/groups/add", method = RequestMethod.POST)
+	public void addNewGroup(Model mode,@RequestParam("value") String groupName){
+		deviceService.insertGroup(new DeviceGroup(Json.parse(groupName).asString()));
 	}
 
 	@RequestMapping(value = "/countDiscoveredDevices", method = RequestMethod.GET)
