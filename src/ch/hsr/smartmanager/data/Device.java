@@ -183,26 +183,6 @@ public class Device implements DeviceComponent {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (objectLinks == null) {
-			if (other.objectLinks != null)
-				return false;
-		} else if (!objectLinks.equals(other.objectLinks))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (regId == null) {
-			if (other.regId != null)
-				return false;
-		} else if (!regId.equals(other.regId))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
 		return true;
 	}
 	
