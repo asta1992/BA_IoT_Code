@@ -15,7 +15,6 @@
 			<ul class="nav navbar-nav">
 				<li><a href="/smartmanager/">Home</a></li>
 				<li><a href="/smartmanager/devices">Devices</a></li>
-				<li><a href="/smartmanager/groups">Groups</a></li>
 				<li><a href="/smartmanager/discovery">Discovery</a></li>
 				<li><a href="/smartmanager/templates">Templates</a></li>
 			</ul>
