@@ -92,7 +92,19 @@ function openGroupMembers(id){
 			bootbox.confirm({
 				message: groupMembers,
 				callback: function() {
-					
+					var updatedMemberships = [];
+					$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
+						updatedMemberships.push(this.id);
+					});
+
+					$.ajax({
+						type : "POST",
+						dataType : "json",
+						data : {
+							value : JSON.stringify(updatedMemberships)
+						},
+						url : "/smartmanager/groups/" + id + "/changeMembers"
+					});
 				}
 			})
 			

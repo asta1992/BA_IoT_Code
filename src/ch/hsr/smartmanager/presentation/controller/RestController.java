@@ -114,8 +114,6 @@ public class RestController {
 		if (postGroups.isEmpty()) {
 			deviceService.addDeviceToGroup(devGroup.getId(), id);
 		}
-
-
 	}
 	
 	@RequestMapping(value = "/groups/{id}/changeMembership", method = RequestMethod.POST)
@@ -138,9 +136,40 @@ public class RestController {
 	
 	@RequestMapping(value = "/groups/{id}/changeMembers", method = RequestMethod.POST)
 	public void changeMembers(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
+		List<DeviceComponent> postMembers = new ArrayList<>();
+		for (int i = 0; i < value.length(); i++) {
+			try {
+				postMembers.add(deviceService.getComponent(value.getString(i)));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 		
+		DeviceGroup group = deviceService.getGroup(id);
+		List<DeviceComponent> preMembers = group.getChildren();
+
+		for (DeviceComponent comp : preMembers) {
+			if (!postMembers.contains(comp)) {
+				if(comp instanceof Device){
+					deviceService.removeDeviceFromGroup(comp.getId(), group.getId());
+				}
+				if(comp instanceof DeviceGroup){
+					deviceService.removeGroupFromGroup(comp.getId(), group.getId());
+				}
+			}
+		}
 		
-		
+		for (DeviceComponent comp : postMembers) {
+			if (!preMembers.contains(comp)) {
+				if(comp instanceof Device){
+					deviceService.addDeviceToGroup(group.getId(), comp.getId());
+				}
+				if(comp instanceof DeviceGroup){
+					System.out.println("Group to Group");
+					deviceService.addGroupToGroup(group.getId(), comp.getId());
+				}
+			}
+		}
 	}
 
 	@RequestMapping(value = "/devices/{id}/removeFromGroups", method = RequestMethod.POST)

@@ -91,6 +91,7 @@ public class WebController {
 		
 		groups.removeAll(deviceGroups);
 		
+		model.addAttribute("componentName", deviceService.getDevice(id).getName());
 		model.addAttribute("allGroups", groups);
 		model.addAttribute("deviceGroups", deviceGroups);
 
@@ -105,6 +106,7 @@ public class WebController {
 			allGroups.remove(groupMembership);
 		}
 		
+		model.addAttribute("componentName", deviceService.getGroup(id).getName());
 		model.addAttribute("allGroups", allGroups);
 		model.addAttribute("deviceGroups", groupMembership);
 
@@ -117,6 +119,7 @@ public class WebController {
 		List<DeviceComponent> groupMembers = deviceService.getGroup(id).getChildren();
 		allComponents.removeAll(groupMembers);
 		
+		model.addAttribute("groupName", deviceService.getGroup(id).getName());
 		model.addAttribute("allComponents", allComponents);
 		model.addAttribute("groupMembers", groupMembers);
 

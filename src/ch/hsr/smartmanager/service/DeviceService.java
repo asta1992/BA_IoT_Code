@@ -84,6 +84,10 @@ public class DeviceService {
 	public DeviceGroup getGroup(String id) {
 		return groupRepo.findOne(id);
 	}
+	
+	public DeviceComponent getComponent(String id) {
+		return groupRepo.findOne(id);
+	}
 
 	public List<DeviceGroup> getAllGroups() {
 		return groupRepo.findAll();

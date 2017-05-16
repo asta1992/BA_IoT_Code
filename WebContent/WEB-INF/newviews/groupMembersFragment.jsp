@@ -5,18 +5,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <div class="row">
 	<div class ="col-md-12">
-		<h2>Memberships of ${componentName}</h2>
+		<h2>Members of ${groupName}</h2>
 	</div>
 </div>
 <div class="row">
 	<div class ="col-md-11" id="selectBoxes">
 		<select multiple="multiple" size="15" name="groups-duallistbox"
 			class="groups-boxes">
-			<c:forEach var="allGroups" items="${allGroups}" varStatus="loop">
-				<option value="option${loop.index}" id="${allGroups.id}">${allGroups.name}</option>
+			<c:forEach var="allComponents" items="${allComponents}" varStatus="loop">
+				<option value="option${loop.index}" id="${allComponents.id}">${allComponents.name}</option>
 			</c:forEach>
-			<c:forEach var="deviceGroups" items="${deviceGroups}" varStatus="loop">
-				<option value="option${loop.index}" id="${deviceGroups.id}" selected="selected">${deviceGroups.name}</option>
+			<c:forEach var="groupMembers" items="${groupMembers}" varStatus="loop">
+				<option value="option${loop.index}" id="${groupMembers.id}" selected="selected">${groupMembers.name}</option>
 			</c:forEach>
 			
 		</select>
@@ -40,8 +40,8 @@
 </style>
 <script>
 	$('.groups-boxes').bootstrapDualListbox({
-		nonSelectedListLabel : 'All Groups',
-		selectedListLabel : 'Memberships',
+		nonSelectedListLabel : 'All Components',
+		selectedListLabel : 'Members',
 		preserveSelectionOnMove : 'moved',
 		moveOnSelect : false,
 	});
