@@ -6,7 +6,7 @@
 <div class=row>
 <h2>
 	${device.name} <span class="pull-right"><button type="button"
-			class="btn btn-danger heading-button">Delete Device</button></span> <span
+			class="btn btn-danger heading-button" onclick="location.href='/smartmanager/devices/${device.id}/delete'">Delete Device</button></span> <span
 		class="pull-right"><button type="button"
 			class="btn btn-primary heading-button" onclick="readAll()">Read
 			All</button></span>

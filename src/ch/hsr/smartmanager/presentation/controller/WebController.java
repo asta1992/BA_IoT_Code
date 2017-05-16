@@ -135,6 +135,6 @@ public class WebController {
 	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.GET)
 	public String removeDevice(Model model, @PathVariable("id") String id) {
 		deviceService.removeFromManagement(id);
-		return "redirect:/";
+		return "redirect:/devices";
 	}
 }
