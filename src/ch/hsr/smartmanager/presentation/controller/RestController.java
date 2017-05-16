@@ -93,7 +93,7 @@ public class RestController {
 		}
 
 		Device device = deviceService.getDevice(id);
-		List<DeviceGroup> preGroups = deviceService.listAllGroupsForDevice(id);
+		List<DeviceGroup> preGroups = deviceService.listAllGroupsForComponents(id);
 
 		for (DeviceGroup devGroups : preGroups) {
 			if (!postGroups.contains(devGroups)) {
@@ -117,6 +117,24 @@ public class RestController {
 		}
 
 
+	}
+	
+	@RequestMapping(value = "/groups/{id}/changeMembership", method = RequestMethod.POST)
+	public void addGroupToGroup(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
+		if(value.length() == 1) {
+			try {
+				DeviceGroup newParentGroup = deviceService.getGroup(value.getString(0));
+				DeviceGroup oldParentGroup = deviceService.listAllGroupsForComponents(id).get(0);
+				DeviceGroup group = deviceService.getGroup(id);
+				
+				deviceService.removeGroupFromGroup(oldParentGroup.getId(), group.getId());
+				
+				deviceService.addGroupToGroup(newParentGroup.getId(), group.getId());
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@RequestMapping(value = "/devices/{id}/removeFromGroups", method = RequestMethod.POST)

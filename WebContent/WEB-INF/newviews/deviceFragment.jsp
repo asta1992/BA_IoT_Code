@@ -25,7 +25,7 @@
 
 	<dt>
 		<button type="button" class="btn btn-sm btn-default heading-button"
-			onclick="openGroupManagement('${device.id}')">Group
+			onclick="openDeviceMemberships('${device.id}')">Group
 			Memberships</button>
 	</dt>
 	<dd></dd>

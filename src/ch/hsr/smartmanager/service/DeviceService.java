@@ -128,7 +128,7 @@ public class DeviceService {
 	}
 
 
-	public List<DeviceGroup> listAllGroupsForDevice(String id) {
+	public List<DeviceGroup> listAllGroupsForComponents(String id) {
 		return groupRepo.findAllByChildrenId(new ObjectId(id));
 	}
 

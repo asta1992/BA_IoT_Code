@@ -84,14 +84,28 @@ public class WebController {
 	}
 	
 	@RequestMapping(value = "/devices/{id}/memberships", method = RequestMethod.GET)
-	public String getMemberships(Model model, @PathVariable("id") String id) {
+	public String getDeviceMemberships(Model model, @PathVariable("id") String id) {
 		List<DeviceGroup> groups = deviceService.getAllGroups();
-		List<DeviceGroup> deviceGroups = deviceService.listAllGroupsForDevice(id);
+		List<DeviceGroup> deviceGroups = deviceService.listAllGroupsForComponents(id);
 		
 		groups.removeAll(deviceGroups);
 		
 		model.addAttribute("allGroups", groups);
 		model.addAttribute("deviceGroups", deviceGroups);
+
+		return "groupManagementFragment";
+	}
+	
+	@RequestMapping(value = "/groups/{id}/memberships", method = RequestMethod.GET)
+	public String getGroupMembership(Model model, @PathVariable("id") String id) {
+		List<DeviceGroup> allGroups = deviceService.getAllGroups();
+		List<DeviceGroup> groupMembership = deviceService.listAllGroupsForComponents(id);
+		if(groupMembership.size() != 0) {
+			allGroups.remove(groupMembership);
+		}
+		
+		model.addAttribute("allGroups", allGroups);
+		model.addAttribute("deviceGroups", groupMembership);
 
 		return "groupManagementFragment";
 	}
