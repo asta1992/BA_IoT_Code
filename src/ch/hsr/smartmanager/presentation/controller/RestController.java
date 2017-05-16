@@ -82,7 +82,6 @@ public class RestController {
 
 	@RequestMapping(value = "/devices/{id}/changeMembership", method = RequestMethod.POST)
 	public void addToGroups(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
-
 		List<DeviceGroup> postGroups = new ArrayList<>();
 		for (int i = 0; i < value.length(); i++) {
 			try {
@@ -135,6 +134,13 @@ public class RestController {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@RequestMapping(value = "/groups/{id}/changeMembers", method = RequestMethod.POST)
+	public void changeMembers(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
+		
+		
+		
 	}
 
 	@RequestMapping(value = "/devices/{id}/removeFromGroups", method = RequestMethod.POST)

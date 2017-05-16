@@ -34,10 +34,10 @@ function openDeviceMemberships(id) {
 	$.ajax({
 		dataType : "html",
 		url : "/smartmanager/devices/" + id + "/memberships",
-		success : function(data) {
+		success : function(deviceMemberships) {
 			bootbox.confirm({
-				message : data,
-				callback : function(data) {
+				message : deviceMemberships,
+				callback : function() {
 					var updatedMemberships = [];
 					$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
 						updatedMemberships.push(this.id);
@@ -61,10 +61,10 @@ function openGroupMemberships(id) {
 	$.ajax({
 		dataType : "html",
 		url : "/smartmanager/groups/" + id + "/memberships",
-		success : function(data) {
+		success : function(groupMemberships) {
 			bootbox.confirm({
-				message : data,
-				callback : function(data) {
+				message : groupMemberships,
+				callback : function() {
 					var updatedMemberships = [];
 					$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
 						updatedMemberships.push(this.id);
@@ -82,4 +82,20 @@ function openGroupMemberships(id) {
 			});
 		}
 	});
+}
+
+function openGroupMembers(id){
+	$.ajax({
+		dataType: "html",
+		url : "/smartmanager/groups/" + id + "/members",
+		success : function(groupMembers) {
+			bootbox.confirm({
+				message: groupMembers,
+				callback: function() {
+					
+				}
+			})
+			
+		}
+	})
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ch.hsr.smartmanager.data.Device;
+import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.service.DeviceService;
@@ -93,7 +94,7 @@ public class WebController {
 		model.addAttribute("allGroups", groups);
 		model.addAttribute("deviceGroups", deviceGroups);
 
-		return "groupManagementFragment";
+		return "groupMembershipsFragment";
 	}
 	
 	@RequestMapping(value = "/groups/{id}/memberships", method = RequestMethod.GET)
@@ -107,7 +108,19 @@ public class WebController {
 		model.addAttribute("allGroups", allGroups);
 		model.addAttribute("deviceGroups", groupMembership);
 
-		return "groupManagementFragment";
+		return "groupMembershipsFragment";
+	}
+	
+	@RequestMapping(value = "/groups/{id}/members", method = RequestMethod.GET)
+	public String getGroupMembers(Model model, @PathVariable("id") String id) {
+		List<DeviceComponent> allComponents = deviceService.getAllComponents();
+		List<DeviceComponent> groupMembers = deviceService.getGroup(id).getChildren();
+		allComponents.removeAll(groupMembers);
+		
+		model.addAttribute("allComponents", allComponents);
+		model.addAttribute("groupMembers", groupMembers);
+
+		return "groupMembersFragment";
 	}
 	
 	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.GET)

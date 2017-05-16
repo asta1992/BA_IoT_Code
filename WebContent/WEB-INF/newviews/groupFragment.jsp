@@ -21,7 +21,7 @@
 
 		<dt>
 			<button type="button" class="btn btn-sm btn-default heading-button"
-				onclick="openGroupManagement('${group.id}')">Group Members</button>
+				onclick="openGroupMembers('${group.id}')">Group Members</button>
 		</dt>
 		<dd>
 			<button type="button" class="btn btn-sm btn-default heading-button"
