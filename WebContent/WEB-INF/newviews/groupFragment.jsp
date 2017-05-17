@@ -10,6 +10,9 @@
 			class="pull-right"><button type="button"
 				class="btn btn-primary heading-button" onclick="readAll()">Update
 				All Devices</button></span>
+				<span
+			class="pull-right"><button type="button"
+				class="btn btn-warning heading-button" onclick="writeAllChildDevices('${group.id}')">Write to Childs</button></span>
 	</h2>
 </div>
 <div class=row>
