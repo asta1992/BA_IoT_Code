@@ -176,6 +176,10 @@ public class DeviceService {
 	public List<DeviceGroup> findAllGroupById(List<String> id) {
 		return groupRepo.findAllById(id);
 	}
+	
+	public void	findAllChildren(String name) {
+		System.out.println(groupRepo.findAllChildren(name));
+	}
 
 	public void createOrUpdateDevice(Device device, Registration registration) {
 		if (deviceRepo.existsByName(device.getName())) {

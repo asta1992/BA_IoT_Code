@@ -9,5 +9,6 @@ public interface DeviceGroupRepositoryCustom {
 	
 
 	List<String> findAllAncestors(String name);
+	List<String> findAllChildren(String name);
 
 }
