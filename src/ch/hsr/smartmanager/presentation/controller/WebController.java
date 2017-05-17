@@ -137,4 +137,10 @@ public class WebController {
 		deviceService.removeFromManagement(id);
 		return "redirect:/devices";
 	}
+	
+	@RequestMapping(value = "/groups/{id}/delete", method = RequestMethod.GET)
+	public String removeGroup(Model model, @PathVariable("id") String id) {
+		deviceService.deleteGroup(id);
+		return "redirect:/devices";
+	}
 }

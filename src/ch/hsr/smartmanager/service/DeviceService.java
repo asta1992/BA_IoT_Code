@@ -131,7 +131,7 @@ public class DeviceService {
 		}
 		deviceRepo.delete(id);
 	}
-
+	
 	public boolean deleteGroup(String id) {
 		DeviceGroup group = groupRepo.findOne(id);
 		if (!group.getChildren().isEmpty()) {
