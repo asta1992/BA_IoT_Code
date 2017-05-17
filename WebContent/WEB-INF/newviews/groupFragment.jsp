@@ -21,12 +21,16 @@
 
 		<dt>
 			<button type="button" class="btn btn-sm btn-default heading-button"
-				onclick="openGroupManagement('${device.id}')">Group Members</button>
+				onclick="openGroupMembers('${group.id}')">Group Members</button>
 		</dt>
 		<dd>
 			<button type="button" class="btn btn-sm btn-default heading-button"
-				onclick="addNewChildGroup('${group.id}')">Add New Group</button>
+				onclick="openGroupMemberships('${group.id}')">Group Memberships</button>
 		</dd>
+		<dt>
+			<button type="button" class="btn btn-sm btn-default heading-button"
+				onclick="addNewChildGroup('${group.id}')">Add New Child Group</button>
+		</dt>
 
 	</dl>
 </div>

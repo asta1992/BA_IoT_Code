@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ch.hsr.smartmanager.data.Device;
+import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.service.DeviceService;
@@ -85,16 +86,45 @@ public class WebController {
 	}
 	
 	@RequestMapping(value = "/devices/{id}/memberships", method = RequestMethod.GET)
-	public String getMemberships(Model model, @PathVariable("id") String id) {
+	public String getDeviceMemberships(Model model, @PathVariable("id") String id) {
 		List<DeviceGroup> groups = deviceService.getAllGroups();
-		List<DeviceGroup> deviceGroups = deviceService.listAllGroupsForDevice(id);
+		List<DeviceGroup> deviceGroups = deviceService.listAllGroupsForComponents(id);
 		
 		groups.removeAll(deviceGroups);
 		
+		model.addAttribute("componentName", deviceService.getDevice(id).getName());
 		model.addAttribute("allGroups", groups);
 		model.addAttribute("deviceGroups", deviceGroups);
 
-		return "groupManagementFragment";
+		return "groupMembershipsFragment";
+	}
+	
+	@RequestMapping(value = "/groups/{id}/memberships", method = RequestMethod.GET)
+	public String getGroupMembership(Model model, @PathVariable("id") String id) {
+		List<DeviceGroup> allGroups = deviceService.getAllGroups();
+		List<DeviceGroup> groupMembership = deviceService.listAllGroupsForComponents(id);
+		if(groupMembership.size() != 0) {
+			allGroups.remove(groupMembership);
+		}
+		
+		model.addAttribute("componentName", deviceService.getGroup(id).getName());
+		model.addAttribute("allGroups", allGroups);
+		model.addAttribute("deviceGroups", groupMembership);
+
+		return "groupMembershipsFragment";
+	}
+	
+	@RequestMapping(value = "/groups/{id}/members", method = RequestMethod.GET)
+	public String getGroupMembers(Model model, @PathVariable("id") String id) {
+		List<DeviceComponent> allComponents = deviceService.getAllComponents();
+		List<DeviceComponent> groupMembers = deviceService.getGroup(id).getChildren();
+		allComponents.removeAll(groupMembers);
+		
+		model.addAttribute("groupName", deviceService.getGroup(id).getName());
+		model.addAttribute("allComponents", allComponents);
+		model.addAttribute("groupMembers", groupMembers);
+
+		return "groupMembersFragment";
 	}
 	
 	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.GET)
@@ -106,6 +136,6 @@ public class WebController {
 	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.GET)
 	public String removeDevice(Model model, @PathVariable("id") String id) {
 		deviceService.removeFromManagement(id);
-		return "redirect:/";
+		return "redirect:/devices";
 	}
 }

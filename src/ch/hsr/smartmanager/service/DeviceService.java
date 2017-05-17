@@ -1,5 +1,6 @@
 package ch.hsr.smartmanager.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.hsr.smartmanager.data.Device;
+import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.repository.DeviceGroupRepository;
 import ch.hsr.smartmanager.data.repository.DeviceRepository;
@@ -88,6 +90,10 @@ public class DeviceService {
 	public DeviceGroup getGroup(String id) {
 		return groupRepo.findOne(id);
 	}
+	
+	public DeviceComponent getComponent(String id) {
+		return groupRepo.findOne(id);
+	}
 
 	public List<DeviceGroup> getAllGroups() {
 		return groupRepo.findAll();
@@ -134,7 +140,7 @@ public class DeviceService {
 		deviceRepo.removeDeviceByName(registration.getEndpoint());
 	}
 
-	public List<DeviceGroup> listAllGroupsForDevice(String id) {
+	public List<DeviceGroup> listAllGroupsForComponents(String id) {
 		return groupRepo.findAllByChildrenId(new ObjectId(id));
 	}
 
@@ -149,7 +155,19 @@ public class DeviceService {
 	public List<Device> getAllDevices() {
 		return deviceRepo.findAll();
 	}
-
+	
+	public List<DeviceComponent> getAllComponents() {
+		List<DeviceComponent> allComponents = new ArrayList<DeviceComponent>();
+		for(DeviceComponent component : this.getAllDevices()){
+			allComponents.add(component);
+		}
+		for(DeviceComponent component : this.getAllGroups()) {
+			allComponents.add(component);
+		}
+		
+		return allComponents;
+	}
+	
 	public List<DeviceGroup> findAllGroupById(List<String> id) {
 		return groupRepo.findAllById(id);
 	}

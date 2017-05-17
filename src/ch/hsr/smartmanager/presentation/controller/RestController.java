@@ -82,7 +82,6 @@ public class RestController {
 
 	@RequestMapping(value = "/devices/{id}/changeMembership", method = RequestMethod.POST)
 	public void addToGroups(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
-
 		List<DeviceGroup> postGroups = new ArrayList<>();
 		for (int i = 0; i < value.length(); i++) {
 			try {
@@ -93,7 +92,7 @@ public class RestController {
 		}
 
 		Device device = deviceService.getDevice(id);
-		List<DeviceGroup> preGroups = deviceService.listAllGroupsForDevice(id);
+		List<DeviceGroup> preGroups = deviceService.listAllGroupsForComponents(id);
 
 		for (DeviceGroup devGroups : preGroups) {
 			if (!postGroups.contains(devGroups)) {
@@ -115,8 +114,62 @@ public class RestController {
 		if (postGroups.isEmpty()) {
 			deviceService.addDeviceToGroup(devGroup.getId(), id);
 		}
+	}
+	
+	@RequestMapping(value = "/groups/{id}/changeMembership", method = RequestMethod.POST)
+	public void addGroupToGroup(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
+		if(value.length() == 1) {
+			try {
+				DeviceGroup newParentGroup = deviceService.getGroup(value.getString(0));
+				DeviceGroup oldParentGroup = deviceService.listAllGroupsForComponents(id).get(0);
+				DeviceGroup group = deviceService.getGroup(id);
+				
+				deviceService.removeGroupFromGroup(oldParentGroup.getId(), group.getId());
+				
+				deviceService.addGroupToGroup(newParentGroup.getId(), group.getId());
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@RequestMapping(value = "/groups/{id}/changeMembers", method = RequestMethod.POST)
+	public void changeMembers(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
+		List<DeviceComponent> postMembers = new ArrayList<>();
+		for (int i = 0; i < value.length(); i++) {
+			try {
+				postMembers.add(deviceService.getComponent(value.getString(i)));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		DeviceGroup group = deviceService.getGroup(id);
+		List<DeviceComponent> preMembers = group.getChildren();
 
-
+		for (DeviceComponent comp : preMembers) {
+			if (!postMembers.contains(comp)) {
+				if(comp instanceof Device){
+					deviceService.removeDeviceFromGroup(comp.getId(), group.getId());
+				}
+				if(comp instanceof DeviceGroup){
+					deviceService.removeGroupFromGroup(comp.getId(), group.getId());
+				}
+			}
+		}
+		
+		for (DeviceComponent comp : postMembers) {
+			if (!preMembers.contains(comp)) {
+				if(comp instanceof Device){
+					deviceService.addDeviceToGroup(group.getId(), comp.getId());
+				}
+				if(comp instanceof DeviceGroup){
+					System.out.println("Group to Group");
+					deviceService.addGroupToGroup(group.getId(), comp.getId());
+				}
+			}
+		}
 	}
 
 	@RequestMapping(value = "/devices/{id}/removeFromGroups", method = RequestMethod.POST)
