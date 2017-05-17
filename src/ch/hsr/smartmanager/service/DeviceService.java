@@ -28,13 +28,19 @@ public class DeviceService {
 		group.add(device);
 		groupRepo.save(group);
 	}
-	
+
 	public void addGroupToGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
-		grpParent.add(grpChild);
-		groupRepo.save(grpParent);
-		groupRepo.save(grpChild);
+		if (!groupRepo.existsByChildrenId(new ObjectId(grpChild.getId()))) {
+			grpParent.add(grpChild);
+			groupRepo.save(grpParent);
+			groupRepo.save(grpChild);
+		}
+	}
+	
+	public void findAllAncestors(String name) {
+		System.out.println(groupRepo.findAllAncestors(name));
 	}
 
 	public void removeDeviceFromGroup(String groupId, String deviceId) {
@@ -44,7 +50,7 @@ public class DeviceService {
 		groupRepo.save(group);
 		deviceRepo.save(device);
 	}
-	
+
 	public void removeGroupFromGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
@@ -70,7 +76,7 @@ public class DeviceService {
 		groupRepo.save(groups);
 		deviceRepo.delete(device);
 	}
-	
+
 	public DeviceGroup findByName(String name) {
 		return groupRepo.findByName(name);
 	}
@@ -109,14 +115,15 @@ public class DeviceService {
 
 	public void deleteDevice(String id) {
 		Device device = deviceRepo.findOne(id);
-		for(DeviceGroup group : groupRepo.findAllByChildrenId(new ObjectId(id))) {
+		for (DeviceGroup group : groupRepo.findAllByChildrenId(new ObjectId(id))) {
 			group.getChildren().remove(device);
 		}
 		deviceRepo.delete(id);
 	}
+
 	public boolean deleteGroup(String id) {
 		DeviceGroup group = groupRepo.findOne(id);
-		if(!group.getChildren().isEmpty()) {
+		if (!group.getChildren().isEmpty()) {
 			return false;
 		}
 		groupRepo.delete(id);
@@ -126,7 +133,6 @@ public class DeviceService {
 	public void deleteDeviceByRegistration(Registration registration) {
 		deviceRepo.removeDeviceByName(registration.getEndpoint());
 	}
-
 
 	public List<DeviceGroup> listAllGroupsForDevice(String id) {
 		return groupRepo.findAllByChildrenId(new ObjectId(id));
@@ -143,7 +149,7 @@ public class DeviceService {
 	public List<Device> getAllDevices() {
 		return deviceRepo.findAll();
 	}
-	
+
 	public List<DeviceGroup> findAllGroupById(List<String> id) {
 		return groupRepo.findAllById(id);
 	}

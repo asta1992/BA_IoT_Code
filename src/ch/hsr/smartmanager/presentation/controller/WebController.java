@@ -33,6 +33,7 @@ public class WebController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model) {
+		deviceService.findAllAncestors("1");
 		return "index";
 	}
 

@@ -5,7 +5,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.mongodb.BulkUpdateRequestBuilder;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceGroup;
