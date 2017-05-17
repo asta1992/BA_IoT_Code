@@ -85,6 +85,11 @@ public class WebController {
 		return "groupFragment";
 	}
 	
+	@RequestMapping(value = "/groups/writeToChilds", method = RequestMethod.GET)
+	public String showGroupDetails(Model model) {
+		return "writeToChildsFragment";
+	}
+	
 	@RequestMapping(value = "/devices/{id}/memberships", method = RequestMethod.GET)
 	public String getDeviceMemberships(Model model, @PathVariable("id") String id) {
 		List<DeviceGroup> groups = deviceService.getAllGroups();

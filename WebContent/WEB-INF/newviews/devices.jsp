@@ -27,14 +27,16 @@
 <script src="../smartmanager/resources/js/gijgo.js"
 	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/bootbox.min.js"></script>
-<script src="../smartmanager/resources/js/navigationdata.js"
-	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/devicedata.js"
-	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/run_prettify.min.js"
 	type="text/javascript"></script>
 <script
 	src="../smartmanager/resources/js/jquery.bootstrap-duallistbox.js"
+	type="text/javascript"></script>
+<script src="../smartmanager/resources/js/navigationdata.js"
+	type="text/javascript"></script>
+<script src="../smartmanager/resources/js/deviceData.js"
+	type="text/javascript"></script>
+<script src="../smartmanager/resources/js/groupData.js"
 	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/groupManagement.js"
 	type="text/javascript"></script>
