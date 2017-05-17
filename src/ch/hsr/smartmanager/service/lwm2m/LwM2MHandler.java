@@ -17,9 +17,14 @@ import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
 import org.eclipse.leshan.server.californium.impl.LeshanServer;
 import org.eclipse.leshan.server.registration.Registration;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.eclipsesource.json.JsonArray;
+
+import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.service.DeviceService;
 
 @Service
@@ -41,15 +46,30 @@ public class LwM2MHandler {
 		ReadRequest req = new ReadRequest(objectId);
 		ReadResponse res;
 		server = lwM2MManagementServer.getServer();
+		Device dev = deviceService.getDevice(id);
 
 		try {
-			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
+			res = server.send(server.getRegistrationService().getById(dev.getRegId()), req);
 		} catch (InterruptedException e) {
 			res = null;
 			e.printStackTrace();
 		}
 		
-		//TODO Do something with it
+		JSONObject json = new JSONObject();
+		try {
+			json = new JSONObject(dev.getJsonData());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		if(json.has(Integer.toString(objectId))) {
+			try {
+				json.get(Integer.toString(objectId));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
 		return res;
 	}

@@ -34,7 +34,6 @@ public class WebController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model) {
-		deviceService.findAllChildren("_unassigned");
 		return "index";
 	}
 

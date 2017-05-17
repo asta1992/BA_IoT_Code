@@ -19,6 +19,7 @@ public class Device implements DeviceComponent {
 	private String password;
 	private TreeSet<Integer> objectLinks;
 	private boolean added;
+	private String jsonData;
 
 	public Device() {
 	}
@@ -178,6 +179,14 @@ public class Device implements DeviceComponent {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public String getJsonData() {
+		return jsonData;
+	}
+
+	public void setJsonData(String jsonData) {
+		this.jsonData = jsonData;
 	}
 	
 	
