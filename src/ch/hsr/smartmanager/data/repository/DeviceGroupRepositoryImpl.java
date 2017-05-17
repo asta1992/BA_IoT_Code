@@ -13,7 +13,6 @@ import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-
 public class DeviceGroupRepositoryImpl implements DeviceGroupRepositoryCustom {
 
 	@Autowired
@@ -22,13 +21,56 @@ public class DeviceGroupRepositoryImpl implements DeviceGroupRepositoryCustom {
 	@Override
 	public List<String> findAllAncestors(String name) {
 
+		AggregationOutput output = mongoTemplate.getCollection("deviceGroup")
+				.aggregate(getLookupQuery("$name", "name", "children.name", name));
+
+		JSONArray jsonArray = new JSONArray();
+		List<String> list = new ArrayList<>();
+		for (DBObject a : output.results()) {
+			try {
+				jsonArray = new JSONArray(a.get("ancestorsname").toString());
+				for (int i = 0; i < jsonArray.length(); i++) {
+					list.add(jsonArray.getString(i));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return list;
+	}
+	
+	@Override
+	public List<String> findAllChildren(String name) {
+
+		AggregationOutput output = mongoTemplate.getCollection("deviceGroup")
+				.aggregate(getLookupQuery("$children.name", "children.name", "name", name));
+
+		JSONArray jsonArray = new JSONArray();
+		List<String> list = new ArrayList<>();
+		for (DBObject a : output.results()) {
+			try {
+				jsonArray = new JSONArray(a.get("ancestorsname").toString());
+				for (int i = 0; i < jsonArray.length(); i++) {
+					list.add(jsonArray.getString(i));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return list;
+	}
+
+	public List<DBObject> getLookupQuery(String startWith, String connectFromField, String connectToField,
+			String name) {
 		DBObject graphLookup = new BasicDBObject();
 		BasicDBObject lookupDetails = new BasicDBObject();
 
 		lookupDetails.put("from", "deviceGroup");
-		lookupDetails.put("startWith", "$name");
-		lookupDetails.put("connectFromField", "name");
-		lookupDetails.put("connectToField", "children.name");
+		lookupDetails.put("startWith", startWith);
+		lookupDetails.put("connectFromField", connectFromField);
+		lookupDetails.put("connectToField", connectToField);
 		lookupDetails.put("as", "ancestors");
 		graphLookup.put("$graphLookup", lookupDetails);
 
@@ -51,27 +93,10 @@ public class DeviceGroupRepositoryImpl implements DeviceGroupRepositoryCustom {
 		DBObject project = new BasicDBObject();
 		project.put("$addFields", ancestors);
 
-		
 		BasicDBObject filter = new BasicDBObject();
 		filter.put("$project", new BasicDBObject("ancestorsname", "$ancestors.name"));
-		
-		List<DBObject> pipeline = Arrays.asList(project,match, graphLookup, filter);
-		AggregationOutput output = mongoTemplate.getCollection("deviceGroup").aggregate(pipeline);
 
-		JSONArray jsonArray = new JSONArray();
-		List<String> list = new ArrayList<>();
-		for(DBObject a : output.results()) {
-			try {
-				jsonArray = new JSONArray(a.get("ancestorsname").toString());
-				for (int i=0; i<jsonArray.length(); i++) {
-					list.add( jsonArray.getString(i) );
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return list;
+		return Arrays.asList(project, match, graphLookup, filter);
 
 	}
 }
