@@ -34,6 +34,9 @@ public class DeviceService {
 	public void addGroupToGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
+		
+		if(isAncestors(grpParent.getName(), grpChild.getName())) return;
+		
 		if (!groupRepo.existsByChildrenId(new ObjectId(grpChild.getId()))) {
 			grpParent.add(grpChild);
 			groupRepo.save(grpParent);
@@ -41,8 +44,10 @@ public class DeviceService {
 		}
 	}
 	
-	public void findAllAncestors(String name) {
-		System.out.println(groupRepo.findAllAncestors(name));
+	private boolean isAncestors(String parent, String child) {
+		List<String> anchestors = groupRepo.findAllAncestors("child");
+		if(anchestors.contains(parent)) return true;
+		return false;
 	}
 
 	public void removeDeviceFromGroup(String groupId, String deviceId) {

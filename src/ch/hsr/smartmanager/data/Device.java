@@ -116,12 +116,6 @@ public class Device implements DeviceComponent {
 		// Leaf node. No Implementation needed
 	}
 
-	@Override
-	public boolean isChild(DeviceComponent deviceComponent) {
-		System.out.println("Device");
-		return false;
-	}
-
 	public boolean isNew() {
 		return (this.id == null);
 	}
