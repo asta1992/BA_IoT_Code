@@ -1,6 +1,8 @@
 package ch.hsr.smartmanager.data;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 import org.springframework.data.annotation.Id;
@@ -19,7 +21,8 @@ public class Device implements DeviceComponent {
 	private String password;
 	private TreeSet<Integer> objectLinks;
 	private boolean added;
-	private String jsonData;
+	//				3			0			1
+	private Map<Integer, Map<Integer, Map<Integer, String>>> dataMap;
 
 	public Device() {
 	}
@@ -37,6 +40,7 @@ public class Device implements DeviceComponent {
 		this.password = password;
 		this.objectLinks = objectLinks;
 		this.added = added;
+		this.dataMap = new HashMap<>();
 	}
 
 	public String getId() {
@@ -181,12 +185,12 @@ public class Device implements DeviceComponent {
 		return true;
 	}
 
-	public String getJsonData() {
-		return jsonData;
+	public Map<Integer, Map<Integer, Map<Integer, String>>> getDataMap() {
+		return dataMap;
 	}
 
-	public void setJsonData(String jsonData) {
-		this.jsonData = jsonData;
+	public void setDataMap(Map<Integer, Map<Integer, Map<Integer, String>>> dataMap) {
+		this.dataMap = dataMap;
 	}
 	
 	

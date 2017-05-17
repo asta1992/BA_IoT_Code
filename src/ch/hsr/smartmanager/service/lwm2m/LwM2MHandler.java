@@ -3,10 +3,19 @@ package ch.hsr.smartmanager.service.lwm2m;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
+import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.leshan.Link;
+import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ResourceModel;
+import org.eclipse.leshan.core.node.LwM2mMultipleResource;
+import org.eclipse.leshan.core.node.LwM2mNode;
+import org.eclipse.leshan.core.node.LwM2mObject;
+import org.eclipse.leshan.core.node.LwM2mObjectInstance;
+import org.eclipse.leshan.core.node.LwM2mSingleResource;
 import org.eclipse.leshan.core.request.DiscoverRequest;
 import org.eclipse.leshan.core.request.ExecuteRequest;
 import org.eclipse.leshan.core.request.ReadRequest;
@@ -16,6 +25,7 @@ import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
 import org.eclipse.leshan.server.californium.impl.LeshanServer;
+import org.eclipse.leshan.server.californium.impl.LwM2mBootstrapPskStore;
 import org.eclipse.leshan.server.registration.Registration;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +51,6 @@ public class LwM2MHandler {
 	public LwM2MHandler() {
 	}
 
-	
 	public ReadResponse read(String id, int objectId) {
 		ReadRequest req = new ReadRequest(objectId);
 		ReadResponse res;
@@ -54,23 +63,16 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
-		
-		JSONObject json = new JSONObject();
-		try {
-			json = new JSONObject(dev.getJsonData());
-		} catch (JSONException e) {
-			e.printStackTrace();
+
+		LwM2mObject node = (LwM2mObject) res.getContent();
+		Map<Integer, LwM2mObjectInstance> instance = node.getInstances();
+
+		for (Map.Entry<Integer, LwM2mObjectInstance> entry : instance.entrySet()) {
+			System.out.println(entry.getValue());
 		}
-		
-		if(json.has(Integer.toString(objectId))) {
-			try {
-				json.get(Integer.toString(objectId));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			
-		}
-		
+
+		System.out.println(instance.entrySet());
+
 		return res;
 	}
 
@@ -78,6 +80,7 @@ public class LwM2MHandler {
 		ReadRequest req = new ReadRequest(objectId + "/" + objectInstanceId + "/" + resourceId);
 		ReadResponse res;
 		server = lwM2MManagementServer.getServer();
+		Device dev = deviceService.getDevice(id);
 
 		try {
 			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
@@ -86,8 +89,27 @@ public class LwM2MHandler {
 			e.printStackTrace();
 		}
 		
-		//TODO Do something with it
+		Map<Integer, Map<Integer, Map<Integer, String>>> dataMap = dev.getDataMap();
+		Map<Integer, Map<Integer, String>> instanceMap = new HashMap<>();
+		Map<Integer, String> resourceMap = new HashMap<>();
 		
+		if (res.getContent() != null) {
+			if (res.getContent() instanceof LwM2mSingleResource) {
+				LwM2mSingleResource resource = (LwM2mSingleResource) res.getContent();
+				resourceMap.put(resourceId, resource.getValue().toString());
+				instanceMap.put(objectInstanceId, resourceMap);
+				dataMap.put(objectId, instanceMap);
+				System.out.println(dataMap);
+
+			} else if (res.getContent() instanceof LwM2mMultipleResource) {
+				LwM2mMultipleResource resources = (LwM2mMultipleResource) res.getContent();
+				resourceMap.put(resourceId, resources.getValue().toString());
+				instanceMap.put(objectInstanceId, resourceMap);
+				dataMap.put(objectId, instanceMap);
+				System.out.println(resources);
+			}
+		}
+
 		return res;
 	}
 
@@ -107,8 +129,8 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
-		
-		//TODO Do something with it
+
+		// TODO Do something with it
 
 		return res;
 	}
@@ -124,12 +146,11 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
-		
+
 		return res;
 	}
-	
 
-	public Link[] ressourceDiscovery(String path, String id) {		
+	public Link[] ressourceDiscovery(String path, String id) {
 		DiscoverRequest req = new DiscoverRequest(path);
 		DiscoverResponse res;
 		server = lwM2MManagementServer.getServer();

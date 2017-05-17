@@ -137,6 +137,13 @@ public class DeviceService {
 		if (!group.getChildren().isEmpty()) {
 			return false;
 		}
+		
+		
+		List<DeviceGroup> parents = groupRepo.findAllByChildrenId(new ObjectId(id));
+		for(DeviceGroup parent : parents) {
+			removeGroupFromGroup(parent.getId(), group.getId());			
+		}
+		
 		groupRepo.delete(id);
 		return true;
 	}
