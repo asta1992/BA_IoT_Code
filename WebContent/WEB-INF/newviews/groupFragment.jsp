@@ -6,7 +6,7 @@
 <div class=row>
 	<h2>
 		${group.name} <span class="pull-right"><button type="button"
-				class="btn btn-danger heading-button">Delete Group</button></span> <span
+				class="btn btn-danger heading-button" onclick="deleteGroup('${group.id}', '${group.name}')">Delete Group</button></span> <span
 			class="pull-right"><button type="button"
 				class="btn btn-primary heading-button" onclick="readAll()">Update
 				All Devices</button></span>
