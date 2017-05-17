@@ -104,6 +104,8 @@ public class DeviceGroup implements DeviceComponent {
 			return true;
 		if (obj == null)
 			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		DeviceGroup other = (DeviceGroup) obj;
 		if (name == null) {
 			if (other.name != null)
@@ -112,6 +114,7 @@ public class DeviceGroup implements DeviceComponent {
 			return false;
 		return true;
 	}
+
 
 	
 
