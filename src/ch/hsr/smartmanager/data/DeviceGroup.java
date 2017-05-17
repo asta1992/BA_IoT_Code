@@ -21,35 +21,7 @@ public class DeviceGroup implements DeviceComponent {
 
 	@Override
 	public void add(DeviceComponent deviceComponent) {
-		
-		
-		if(deviceComponent instanceof Device &&  (!children.contains(deviceComponent))){
-			children.add(deviceComponent);
-			return;
-		}
-		
-		
-		
-		
-		else if (!this.isChild(deviceComponent) && !deviceComponent.isChild(this)) {
-			this.children.add(deviceComponent);
-		} else
-			return;
-
-	}
-
-	@Override
-	public boolean isChild(DeviceComponent component) {
-//		System.out.println("This: " + this.getName() + " component: " + component.getName() + "This Children: " + this.getChildren());
-//
-//		if (children.isEmpty()) {
-//			return false;
-//		}
-//		if (children.contains(component)) {
-//			System.out.println("wird nicht passieren");
-//			return true;
-//		} 
-		return true;
+		this.children.add(deviceComponent);
 	}
 
 	@Override

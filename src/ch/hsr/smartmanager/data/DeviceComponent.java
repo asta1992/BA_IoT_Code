@@ -14,7 +14,6 @@ public interface DeviceComponent {
 	public void remove(DeviceComponent deviceComponent);
 	
 	public List<DeviceComponent> getChildren();
-	public boolean isChild(DeviceComponent deviceComponent);
 	public void print(String abstand);
 	public boolean equals(Object obj);
 	
