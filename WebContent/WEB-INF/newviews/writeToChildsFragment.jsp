@@ -11,20 +11,16 @@
 		<div class="col-lg-3 col-md-3 col-sm-3">
 			<select class="selectpicker" id="objectDropdown" onchange="getWriteableResources()">
             	<c:forEach var="objectMap" items="${objectMap}">
-            		<option>${objectMap.key} (${objectMap.value})</option>
+            		<option value="'${objectMap.key}'">${objectMap.key} (${objectMap.value})</option>
             	</c:forEach>
             </select>
 
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-3">
-			<select class="selectpicker">
-				<option value="0">0</option>
-			</select>
-
+				<input type="text" id="instanceIdField" class="form-control" value="0" disabled="true" onkeyup="updateCompleteObjectId()">
 		</div>
-		<div class="col-lg-3 col-md-3 col-sm-3" id="resourceDropdownDiv">
-			<select class="selectpicker" id="resourceDropdown">
-				<option value="0">0</option>
+		<div class="col-lg-3 col-md-3 col-sm-3">
+			<select class="selectpicker" id="resourceDropdown" onchange="updateCompleteObjectId()">
 			</select>
 		</div>
 	</div>
@@ -39,7 +35,7 @@
 			<label for="value" class="control-label">Value</label>
 		</div>
 		<div class="col-lg-9 col-md-9">
-			<input type="text" class="form-control" id="value">
+			<input type="text" class="form-control" id="writeValue">
 		</div>
 	</div>
 </form>
@@ -57,6 +53,11 @@
 	/*color: red !important;*/
 	
 }
+
+#instanceInput {
+/*	width: 30% !important;*/
+}
+
 </style>
 <script>
 	$('.selectpicker').selectpicker({
