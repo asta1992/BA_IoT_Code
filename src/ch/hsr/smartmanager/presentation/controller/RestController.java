@@ -1,7 +1,9 @@
 package ch.hsr.smartmanager.presentation.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
@@ -188,8 +190,13 @@ public class RestController {
 	}
 	
 	@RequestMapping(value = "/group/{objectId}/writeToChildren", method = RequestMethod.GET)
-	public List<ResourceModelAdapter> getGroupList(Model model, @PathVariable("objectId") String objectId) {
+	public List<ResourceModelAdapter> writeToChildren(Model model, @PathVariable("objectId") String objectId) {
 		return deviceService.allWritableResources(objectId);
+	}
+	
+	@RequestMapping(value = "/group/{objectId}/multiInstance", method = RequestMethod.GET)
+	public Map<String, Boolean> multiInstance(Model model, @PathVariable("objectId") String objectId) {
+		return Collections.singletonMap("value", deviceService.isMultiInstance(objectId));
 	}
 
 	@RequestMapping(value = "/group/getAll", method = RequestMethod.GET)

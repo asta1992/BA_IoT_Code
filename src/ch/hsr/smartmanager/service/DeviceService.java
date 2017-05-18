@@ -42,19 +42,21 @@ public class DeviceService {
 	public void addGroupToGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
-		
-		if(isAncestors(grpParent.getName(), grpChild.getName())) return;
-		
+
+		if (isAncestors(grpParent.getName(), grpChild.getName()))
+			return;
+
 		if (!groupRepo.existsByChildrenId(new ObjectId(grpChild.getId()))) {
 			grpParent.add(grpChild);
 			groupRepo.save(grpParent);
 			groupRepo.save(grpChild);
 		}
 	}
-	
+
 	private boolean isAncestors(String parent, String child) {
 		List<String> anchestors = groupRepo.findAllAncestors("child");
-		if(anchestors.contains(parent)) return true;
+		if (anchestors.contains(parent))
+			return true;
 		return false;
 	}
 
@@ -103,7 +105,7 @@ public class DeviceService {
 	public DeviceGroup getGroup(String id) {
 		return groupRepo.findOne(id);
 	}
-	
+
 	public DeviceComponent getComponent(String id) {
 		return groupRepo.findOne(id);
 	}
@@ -139,19 +141,18 @@ public class DeviceService {
 		}
 		deviceRepo.delete(id);
 	}
-	
+
 	public boolean deleteGroup(String id) {
 		DeviceGroup group = groupRepo.findOne(id);
 		if (!group.getChildren().isEmpty()) {
 			return false;
 		}
-		
-		
+
 		List<DeviceGroup> parents = groupRepo.findAllByChildrenId(new ObjectId(id));
-		for(DeviceGroup parent : parents) {
-			removeGroupFromGroup(parent.getId(), group.getId());			
+		for (DeviceGroup parent : parents) {
+			removeGroupFromGroup(parent.getId(), group.getId());
 		}
-		
+
 		groupRepo.delete(id);
 		return true;
 	}
@@ -175,23 +176,23 @@ public class DeviceService {
 	public List<Device> getAllDevices() {
 		return deviceRepo.findAll();
 	}
-	
+
 	public List<DeviceComponent> getAllComponents() {
 		List<DeviceComponent> allComponents = new ArrayList<DeviceComponent>();
-		for(DeviceComponent component : this.getAllDevices()){
+		for (DeviceComponent component : this.getAllDevices()) {
 			allComponents.add(component);
 		}
-		for(DeviceComponent component : this.getAllGroups()) {
+		for (DeviceComponent component : this.getAllGroups()) {
 			allComponents.add(component);
 		}
-		
+
 		return allComponents;
 	}
-	
+
 	public List<DeviceGroup> findAllGroupById(List<String> id) {
 		return groupRepo.findAllById(id);
 	}
-	
+
 	public Device updateDevice(Device device) {
 		return deviceRepo.save(device);
 	}
@@ -205,16 +206,14 @@ public class DeviceService {
 			deviceRepo.insert(device);
 		}
 	}
-	
 
-	
 	public Map<Integer, String> allWritableObjectIDs() {
 		Map<Integer, String> map = new TreeMap<>();
 		List<ObjectModel> models = lwM2MManagementServer.getModels();
-		
-		for(ObjectModel model : models)  {
-			for(Map.Entry<Integer, ResourceModel> resource : model.resources.entrySet()) {
-				if(resource.getValue().operations.toString().contains("W")) {
+
+		for (ObjectModel model : models) {
+			for (Map.Entry<Integer, ResourceModel> resource : model.resources.entrySet()) {
+				if (resource.getValue().operations.toString().contains("W")) {
 					map.put(model.id, model.name);
 					break;
 				}
@@ -222,25 +221,23 @@ public class DeviceService {
 		}
 		return map;
 	}
-	
+
 	public List<ResourceModelAdapter> allWritableResources(String objectId) {
 		List<ResourceModelAdapter> resources = new ArrayList<>();
 		List<ObjectModel> models = lwM2MManagementServer.getModels();
-		
-		for(ObjectModel model: models) {
-			if(model.id == Integer.parseInt(objectId)) {
-				for(Map.Entry<Integer, ResourceModel> resource : model.resources.entrySet()) {
-					if(resource.getValue().operations.toString().contains("W")) {
+
+		for (ObjectModel model : models) {
+			if (model.id == Integer.parseInt(objectId)) {
+				for (Map.Entry<Integer, ResourceModel> resource : model.resources.entrySet()) {
+					if (resource.getValue().operations.toString().contains("W")) {
 						resources.add(new ResourceModelAdapter(resource.getValue()));
 					}
 				}
 			}
 		}
-		
 		return resources;
 	}
-	
-	
+
 	public int countDiscoveredDevices() {
 		return getAllDiscoveredDevice().size();
 	}
@@ -252,6 +249,16 @@ public class DeviceService {
 			groupRepo.save(unassigned);
 		}
 		deviceRepo.removeDeviceByAddedIsFalse();
+	}
+
+	public boolean isMultiInstance(String objectId) {
+		List<ObjectModel> models = lwM2MManagementServer.getModels();
+		for (ObjectModel model : models) {
+			if (model.id == Integer.parseInt(objectId)) {
+				return model.multiple;
+			}
+		}
+		return false;
 	}
 
 }
