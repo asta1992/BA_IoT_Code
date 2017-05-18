@@ -18,6 +18,9 @@
 <link rel="stylesheet"
 	href="../smartmanager/resources/css/bootstrap-theme.min.css"
 	type="text/css">
+<link rel="stylesheet"
+	href="../smartmanager/resources/css/bootstrap-select.min.css"
+	type="text/css">
 <link rel="stylesheet" type="text/css"
 	href="../smartmanager/resources/css/prettify.min.css">
 <link rel="stylesheet" type="text/css"
@@ -32,11 +35,13 @@
 <script
 	src="../smartmanager/resources/js/jquery.bootstrap-duallistbox.js"
 	type="text/javascript"></script>
+<script src="../smartmanager/resources/js/bootstrap-select.min.js"
+	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/navigationdata.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/deviceData.js"
+<script src="../smartmanager/resources/js/deviceCommunication.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/groupData.js"
+<script src="../smartmanager/resources/js/groupCommunication.js"
 	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/groupManagement.js"
 	type="text/javascript"></script>

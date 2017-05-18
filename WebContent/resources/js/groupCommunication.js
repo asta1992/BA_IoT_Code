@@ -20,11 +20,12 @@ function writeAllChildDevices(groupId) {
 		url : "/smartmanager/groups/writeToChilds",
 		success : function(writeToChildsForm) {
 			bootbox.confirm({
+				size: "large",
 				title : "Prepare your command to write",
 				message : writeToChildsForm,
 				callback : function(ok) {
 					if(ok){
-						
+						alert($('.bootstrap-select > .dropdown-toggle'));
 					}
 				}
 			})

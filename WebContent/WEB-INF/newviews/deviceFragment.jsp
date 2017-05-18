@@ -29,6 +29,7 @@
 	<dd></dd>
 
 </dl>
+
 </div>
 <div class="panel-group" id="accordion">
 	<c:forEach var="model" items="${modelDescription}" varStatus="loop">
