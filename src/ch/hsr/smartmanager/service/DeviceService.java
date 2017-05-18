@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
+import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.data.repository.DeviceGroupRepository;
 import ch.hsr.smartmanager.data.repository.DeviceRepository;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
@@ -208,7 +210,7 @@ public class DeviceService {
 
 	
 	public Map<Integer, String> allWritableObjectIDs() {
-		Map<Integer, String> map = new HashMap<>();
+		Map<Integer, String> map = new TreeMap<>();
 		List<ObjectModel> models = lwM2MManagementServer.getModels();
 		
 		for(ObjectModel model : models)  {
@@ -220,6 +222,23 @@ public class DeviceService {
 			}
 		}
 		return map;
+	}
+	
+	public List<ResourceModelAdapter> allWritableResources(String objectId) {
+		List<ResourceModelAdapter> resources = new ArrayList<>();
+		List<ObjectModel> models = lwM2MManagementServer.getModels();
+		
+		for(ObjectModel model: models) {
+			if(model.id == Integer.parseInt(objectId)) {
+				for(Map.Entry<Integer, ResourceModel> resource : model.resources.entrySet()) {
+					if(resource.getValue().operations.toString().contains("W")) {
+						resources.add(new ResourceModelAdapter(resource.getValue()));
+					}
+				}
+			}
+		}
+		
+		return resources;
 	}
 	
 	
