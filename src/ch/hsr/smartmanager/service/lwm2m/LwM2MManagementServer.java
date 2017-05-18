@@ -40,6 +40,8 @@ public class LwM2MManagementServer {
 	private LeshanServer server;
 	private String address;
 	private int port;
+	private List<ObjectModel> models = ObjectLoader.loadDefault();
+
 
 	private String redisUrl = "redis://127.0.0.1:6379";
 	private Resource resource = new ClassPathResource("ch/hsr/smartmanager/resources/models/");
@@ -64,7 +66,6 @@ public class LwM2MManagementServer {
 		LwM2mNodeDecoder decoder = new DefaultLwM2mNodeDecoder();
 		builder.setDecoder(decoder);
 
-		List<ObjectModel> models = ObjectLoader.loadDefault();
 		File file;
 		try {
 			file = resource.getFile();
@@ -76,7 +77,7 @@ public class LwM2MManagementServer {
 		models.addAll(ObjectLoader.load(file));
 		LwM2mModelProvider modelProvider = new StaticModelProvider(models);
 		builder.setObjectModelProvider(modelProvider);
-
+		
 		Pool<Jedis> jedis = null;
 		if (redisUrl != null) {
 			try {
@@ -102,5 +103,9 @@ public class LwM2MManagementServer {
 
 	public LeshanServer getServer() {
 		return server;
+	}
+
+	public List<ObjectModel> getModels() {
+		return models;
 	}
 }

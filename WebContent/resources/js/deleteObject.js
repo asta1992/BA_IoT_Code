@@ -1,11 +1,14 @@
 function deleteDevice(id, name) {
 	bootbox.confirm({
-		title : "Do you really want to delete device " + name + "?",
+		message : "Do you really want to delete device " + name + "?",
 		callback : function(ok){
-			if(message){
+			if(ok){
 				$.ajax({
 					type: "DELETE",
 					url : "/smartmanager/devices/" + id + "/delete",
+					success : function() {
+						window.location.href = "/smartmanager/devices"
+					}
 				});
 			}
 		}
@@ -16,10 +19,13 @@ function deleteGroup(id, name) {
 	bootbox.confirm({
 		message : "Do you really want to delete group " + name + "?",
 		callback : function(ok){
-			if(message){
+			if(ok){
 				$.ajax({
 					type: "DELETE",
 					url : "/smartmanager/groups/" + id + "/delete",
+					success : function() {
+						window.location.href = "/smartmanager/devices"
+					}
 				});
 			}
 		}
