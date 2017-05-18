@@ -3,7 +3,6 @@ package ch.hsr.smartmanager.presentation.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
@@ -188,7 +187,7 @@ public class RestController {
 		return deviceService.getAllGroups();
 	}
 	
-	@RequestMapping(value = "/group/objectId/writeToChildren", method = RequestMethod.GET)
+	@RequestMapping(value = "/group/{objectId}/writeToChildren", method = RequestMethod.GET)
 	public List<ResourceModelAdapter> getGroupList(Model model, @PathVariable("objectId") String objectId) {
 		return deviceService.allWritableResources(objectId);
 	}
