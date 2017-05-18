@@ -31,7 +31,7 @@ public class RegistrationListenerImpl {
 				
 				
 				Device device = new Device(registration.getEndpoint(), registration.getId(),
-						"coap://" + registration.getAddress() + ";" + registration.getPort(), "", "",getObjectLinks(registration.getObjectLinks()), false);
+						"coap://" + registration.getAddress() + ":" + registration.getPort(), "", "",getObjectLinks(registration.getObjectLinks()), false);
 				deviceService.createOrUpdateDevice(device, registration);
 			}
 

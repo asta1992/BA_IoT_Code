@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
@@ -34,6 +36,7 @@ public class WebController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model) {
+		System.out.println(deviceService.allWritableObjectIDs());
 		return "index";
 	}
 
@@ -86,6 +89,7 @@ public class WebController {
 	
 	@RequestMapping(value = "/groups/writeToChilds", method = RequestMethod.GET)
 	public String showGroupDetails(Model model) {
+		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
 		return "writeToChildsFragment";
 	}
 	
@@ -146,6 +150,7 @@ public class WebController {
 	@RequestMapping(value = "/groups/{id}/delete", method = RequestMethod.DELETE)
 	public String removeGroup(Model model, @PathVariable("id") String id) {
 		deviceService.deleteGroup(id);
-		return "redirect:/devices";
+		return "forward:/devices";
+		
 	}
 }

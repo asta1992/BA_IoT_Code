@@ -1,11 +1,15 @@
 package ch.hsr.smartmanager.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
 import org.bson.types.ObjectId;
+import org.eclipse.leshan.core.model.ObjectModel;
+import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.repository.DeviceGroupRepository;
 import ch.hsr.smartmanager.data.repository.DeviceRepository;
+import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
 
 @Service("deviceService")
 public class DeviceService {
@@ -23,6 +28,8 @@ public class DeviceService {
 	private DeviceRepository deviceRepo;
 	@Autowired
 	private DeviceGroupRepository groupRepo;
+	@Autowired
+	private LwM2MManagementServer lwM2MManagementServer;
 
 	public void addDeviceToGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
@@ -183,6 +190,10 @@ public class DeviceService {
 	public List<DeviceGroup> findAllGroupById(List<String> id) {
 		return groupRepo.findAllById(id);
 	}
+	
+	public Device updateDevice(Device device) {
+		return deviceRepo.save(device);
+	}
 
 	public void createOrUpdateDevice(Device device, Registration registration) {
 		if (deviceRepo.existsByName(device.getName())) {
@@ -193,7 +204,25 @@ public class DeviceService {
 			deviceRepo.insert(device);
 		}
 	}
+	
 
+	
+	public Map<Integer, String> allWritableObjectIDs() {
+		Map<Integer, String> map = new HashMap<>();
+		List<ObjectModel> models = lwM2MManagementServer.getModels();
+		
+		for(ObjectModel model : models)  {
+			for(Map.Entry<Integer, ResourceModel> resource : model.resources.entrySet()) {
+				if(resource.getValue().operations.toString().contains("W")) {
+					map.put(model.id, model.name);
+					break;
+				}
+			}
+		}
+		return map;
+	}
+	
+	
 	public int countDiscoveredDevices() {
 		return getAllDiscoveredDevice().size();
 	}

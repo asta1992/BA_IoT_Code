@@ -79,6 +79,7 @@ public class RestController {
 
 		return deviceService.countDiscoveredDevices();
 	}
+	
 
 	@RequestMapping(value = "/devices/{id}/changeMembership", method = RequestMethod.POST)
 	public void addToGroups(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {

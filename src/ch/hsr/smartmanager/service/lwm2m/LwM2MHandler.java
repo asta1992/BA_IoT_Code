@@ -3,18 +3,15 @@ package ch.hsr.smartmanager.service.lwm2m;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.leshan.Link;
-import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.core.node.LwM2mMultipleResource;
-import org.eclipse.leshan.core.node.LwM2mNode;
 import org.eclipse.leshan.core.node.LwM2mObject;
 import org.eclipse.leshan.core.node.LwM2mObjectInstance;
+import org.eclipse.leshan.core.node.LwM2mResource;
 import org.eclipse.leshan.core.node.LwM2mSingleResource;
 import org.eclipse.leshan.core.request.DiscoverRequest;
 import org.eclipse.leshan.core.request.ExecuteRequest;
@@ -25,14 +22,9 @@ import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
 import org.eclipse.leshan.server.californium.impl.LeshanServer;
-import org.eclipse.leshan.server.californium.impl.LwM2mBootstrapPskStore;
 import org.eclipse.leshan.server.registration.Registration;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.eclipsesource.json.JsonArray;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.service.DeviceService;
@@ -64,14 +56,7 @@ public class LwM2MHandler {
 			e.printStackTrace();
 		}
 
-		LwM2mObject node = (LwM2mObject) res.getContent();
-		Map<Integer, LwM2mObjectInstance> instance = node.getInstances();
-
-		for (Map.Entry<Integer, LwM2mObjectInstance> entry : instance.entrySet()) {
-			System.out.println(entry.getValue());
-		}
-
-		System.out.println(instance.entrySet());
+		saveMultipleValueToDevice(res, dev, objectId);
 
 		return res;
 	}
@@ -88,29 +73,68 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
+
+		saveValueToDevice(res, dev, objectId + "/" + objectInstanceId + "/" + resourceId);
+
+		return res;
+
+	}
+
+	private void saveMultipleValueToDevice(ReadResponse res, Device dev, int objectId) {
+
+		if (res.getContent() == null)
+			return;
 		
-		Map<Integer, Map<Integer, Map<Integer, String>>> dataMap = dev.getDataMap();
-		Map<Integer, Map<Integer, String>> instanceMap = new HashMap<>();
-		Map<Integer, String> resourceMap = new HashMap<>();
-		
+		String path = Integer.toString(objectId);
+
+		LwM2mObject node = (LwM2mObject) res.getContent();
+
+		Map<Integer, LwM2mObjectInstance> instance = node.getInstances();
+		Map<String, String> dataMap = dev.getDataMap();
+
+		for (Map.Entry<Integer, LwM2mObjectInstance> entry : instance.entrySet()) {
+			Map<Integer, LwM2mResource> inst = entry.getValue().getResources();
+
+			for (Map.Entry<Integer, LwM2mResource> resource : inst.entrySet()) {
+				if (resource.getValue() instanceof LwM2mSingleResource) {
+					LwM2mSingleResource singleRes = (LwM2mSingleResource) resource.getValue();
+
+					dataMap.put(path + "/"+entry.getKey() + "/" + resource.getKey(), singleRes.getValue().toString());
+
+				} else if (resource.getValue() instanceof LwM2mMultipleResource) {
+					LwM2mMultipleResource resources = (LwM2mMultipleResource) resource.getValue();
+					Map<Integer, ?> a = resources.getValues();
+					dataMap.put(path, a.entrySet().toString());
+				}
+			}
+
+		}
+
+		System.out.println(dataMap);
+		dev.setDataMap(dataMap);
+		deviceService.updateDevice(dev);
+	}
+
+	private void saveValueToDevice(ReadResponse res, Device dev, String path) {
+
+		Map<String, String> dataMap = dev.getDataMap();
+
 		if (res.getContent() != null) {
 			if (res.getContent() instanceof LwM2mSingleResource) {
 				LwM2mSingleResource resource = (LwM2mSingleResource) res.getContent();
-				resourceMap.put(resourceId, resource.getValue().toString());
-				instanceMap.put(objectInstanceId, resourceMap);
-				dataMap.put(objectId, instanceMap);
-				System.out.println(dataMap);
+
+				dataMap.put(path, resource.getValue().toString());
 
 			} else if (res.getContent() instanceof LwM2mMultipleResource) {
 				LwM2mMultipleResource resources = (LwM2mMultipleResource) res.getContent();
-				resourceMap.put(resourceId, resources.getValue().toString());
-				instanceMap.put(objectInstanceId, resourceMap);
-				dataMap.put(objectId, instanceMap);
-				System.out.println(resources);
+
+				dataMap.put(path, resources.getValues().toString());
 			}
 		}
+		System.out.println(dataMap);
 
-		return res;
+		dev.setDataMap(dataMap);
+		deviceService.updateDevice(dev);
 	}
 
 	public WriteResponse write(String id, int objectId, int objectInstanceId, int resourceId, String value) {
