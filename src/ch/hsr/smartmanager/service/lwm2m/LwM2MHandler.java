@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.eclipse.leshan.Link;
+import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.core.node.LwM2mMultipleResource;
 import org.eclipse.leshan.core.node.LwM2mObject;
@@ -110,7 +111,6 @@ public class LwM2MHandler {
 
 		}
 
-		System.out.println(dataMap);
 		dev.setDataMap(dataMap);
 		deviceService.updateDevice(dev);
 	}
@@ -131,8 +131,6 @@ public class LwM2MHandler {
 				dataMap.put(path, resources.getValues().toString());
 			}
 		}
-		System.out.println(dataMap);
-
 		dev.setDataMap(dataMap);
 		deviceService.updateDevice(dev);
 	}
@@ -154,8 +152,9 @@ public class LwM2MHandler {
 			e.printStackTrace();
 		}
 
-		// TODO Do something with it
-
+		if(res.getCode() == ResponseCode.CHANGED) {
+			read(id, objectId, objectInstanceId, resourceId);
+		}
 		return res;
 	}
 
