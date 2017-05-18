@@ -21,6 +21,7 @@ import com.eclipsesource.json.Json;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
+import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 
@@ -184,6 +185,11 @@ public class RestController {
 	@RequestMapping(value = "/group/list", method = RequestMethod.GET)
 	public List<DeviceGroup> getGroupList(Model model) {
 		return deviceService.getAllGroups();
+	}
+	
+	@RequestMapping(value = "/group/{objectId}/writeToChildren", method = RequestMethod.GET)
+	public List<ResourceModelAdapter> getGroupList(Model model, @PathVariable("objectId") String objectId) {
+		return deviceService.allWritableResources(objectId);
 	}
 
 	@RequestMapping(value = "/group/getAll", method = RequestMethod.GET)
