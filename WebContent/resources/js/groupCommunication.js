@@ -1,3 +1,20 @@
+function getWriteableResources(){
+	var objectId = parseInt($('#objectDropdown').find(":selected").text());
+	var resourceDropdown = $('#resourceDropdown');
+	$.ajax({
+		type: "GET",
+		url : "/smartmanager/group/" + objectId + "/writeToChildren",
+		success : function(resources) {
+			
+			resourceDropdown.empty();
+			resources.forEach(function(entry){
+				resourceDropdown.append('<option value="' + entry.resourceModel.id + '">' + entry.resourceModel.id + " " + "(" +entry.resourceModel.name + ")" + '</option>');
+			})
+			resourceDropdown.selectpicker('refresh');
+		}
+	})
+}
+
 function updateAllChildDevices(groupId) {
 	bootbox.confirm({
 		title : "This action can cause high amount of traffic, are you sure?",

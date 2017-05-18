@@ -90,6 +90,7 @@ public class WebController {
 	@RequestMapping(value = "/groups/writeToChilds", method = RequestMethod.GET)
 	public String showGroupDetails(Model model) {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
+		System.out.println(deviceService.allWritableObjectIDs());
 		return "writeToChildsFragment";
 	}
 	
