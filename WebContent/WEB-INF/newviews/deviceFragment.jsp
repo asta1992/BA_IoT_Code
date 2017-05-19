@@ -52,7 +52,6 @@
 					<table width="99%" class="table-hover">
 
 						<tbody>
-						<c:out value="${device.objectLinks}"></c:out>
 							<c:forEach var="resource" items="${model.value}">
 								<spring:url
 									value="/devices/${device.id}/read/${objectLinks[loop.index]}/0/${resource.id}"

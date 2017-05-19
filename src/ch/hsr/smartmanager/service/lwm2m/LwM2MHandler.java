@@ -165,6 +165,7 @@ public class LwM2MHandler {
 		List<WriteResponse> responses = new ArrayList<>();
 		List<Device> devices = deviceService.findAllChildren(id);
 		for(Device dev : devices) {
+			System.out.println(dev.getName());
 			responses.add(write(dev.getId(), objectId, objectInstanceId, resourceId, value));
 		}
 		return responses;

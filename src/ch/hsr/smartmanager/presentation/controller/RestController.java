@@ -220,7 +220,8 @@ public class RestController {
 	public List<WriteResponse> writeChildDevices(Model model,@PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId,
 			@RequestParam("value") String value){
-		
+		System.out.println(value);
+		System.out.println(lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, value));
 		return lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, value);
 		
 	}

@@ -64,7 +64,20 @@ function writeAllChildDevices(groupId) {
 				message : writeToChildsForm,
 				callback : function(ok) {
 					if(ok){
-						alert("Writing " + $('#writeValue').val() + " to " +  $('#completeObjectId').text);
+						var objectId = parseInt($('#objectDropdown').find(":selected").text());
+						var objectInstanceId = $('#instanceIdField').val();
+						var resourceId = parseInt($('#resourceDropdown').find(":selected").text())
+						$.ajax({
+							type: "POST",
+							dataType : "json",
+							data : {
+								"value" : $('#writeValue').val()
+							},
+							url : "/smartmanager/groups/" + groupId + "/writeChildDevices/" + objectId + "/" + objectInstanceId + "/" + resourceId,
+							success : function(result) {
+								alert(result);
+							}
+						})
 					}
 				}
 			})
