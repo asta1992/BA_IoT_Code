@@ -46,6 +46,11 @@ public class WebController {
 		return "discovery";
 	}
 	
+	@RequestMapping(value = "/configurations")
+	public String showConfigurations(Model model) {
+		return "configurations";
+	}
+	
 	@RequestMapping(value = "/devices")
 	public String showDevices(Model model) {
 		return "devices";
@@ -87,11 +92,16 @@ public class WebController {
 		return "groupFragment";
 	}
 	
-	@RequestMapping(value = "/groups/writeToChilds", method = RequestMethod.GET)
+	@RequestMapping(value = "/groups/writeToChildsFragment", method = RequestMethod.GET)
 	public String showGroupDetails(Model model) {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
-		System.out.println(deviceService.allWritableObjectIDs());
 		return "writeToChildsFragment";
+	}
+	
+	@RequestMapping(value = "/configurations/createConfigurationFragment", method = RequestMethod.GET)
+	public String showConfigurationFragment(Model model) {
+		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
+		return "createConfigurationFragment";
 	}
 	
 	@RequestMapping(value = "/devices/{id}/memberships", method = RequestMethod.GET)

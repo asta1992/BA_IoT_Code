@@ -16,7 +16,7 @@
 				<li><a href="/smartmanager/">Home</a></li>
 				<li><a href="/smartmanager/devices">Devices</a></li>
 				<li><a href="/smartmanager/discovery">Discovery</a></li>
-				<li><a href="/smartmanager/templates">Templates</a></li>
+				<li><a href="/smartmanager/configurations">Configurations</a></li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">

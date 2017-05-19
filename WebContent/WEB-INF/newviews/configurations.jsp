@@ -8,10 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Smartmanager</title>
+<title>Smartmanager - Configurations</title>
 <link rel="stylesheet" href="../smartmanager/resources/css/style.css"
-	type="text/css">
-<link href="../smartmanager/resources/css/gijgo.css" rel="stylesheet"
 	type="text/css">
 <link rel="stylesheet"
 	href="../smartmanager/resources/css/bootstrap.min.css" type="text/css">
@@ -23,27 +21,18 @@
 	type="text/css">
 <link rel="stylesheet" type="text/css"
 	href="../smartmanager/resources/css/prettify.min.css">
-<link rel="stylesheet" type="text/css"
-	href="../smartmanager/resources/css/bootstrap-duallistbox.css">
 <script src="../smartmanager/resources/js/jquery-2.1.4.min.js"></script>
 <script src="../smartmanager/resources/js/bootstrap.min.js"></script>
-<script src="../smartmanager/resources/js/gijgo.js"
-	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/bootbox.min.js"></script>
-<script src="../smartmanager/resources/js/run_prettify.min.js"
-	type="text/javascript"></script>
-<script
-	src="../smartmanager/resources/js/jquery.bootstrap-duallistbox.js"
-	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/bootstrap-select.min.js"
-	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/navigationdata.js"
 	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/deviceCommunication.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/createConfigurationItem.js"
-	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/groupCommunication.js"
+	type="text/javascript"></script>
+<script src="../smartmanager/resources/js/createConfiguration.js"
+	type="text/javascript"></script>
+<script src="../smartmanager/resources/js/createConfigurationItem.js"
 	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/groupManagement.js"
 	type="text/javascript"></script>
@@ -57,20 +46,14 @@
 				<jsp:include page="../newviews/menuFragment.jsp" />
 			</div>
 		</div>
-
 		<div class="row">
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-				<h4>
-					Navigation <span class="pull-right">
-						<button type="button" class="btn btn-default btn-sm"
-							onclick="addNewRootGroup()">Add New Group</button>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<h3>
+					Configurations <span class="pull-right">
+						<button type="button" class="btn btn-default "
+							onclick="createConfiguration()">create new configuration</button>
 					</span>
-				</h4>
-				<br>
-				<div id="tree"></div>
-			</div>
-			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="main-content">
-
+				</h3>
 			</div>
 		</div>
 	</div>
