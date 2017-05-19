@@ -17,3 +17,7 @@ function createConfiguration(){
 		}
 	})
 }
+
+function addAnotherConfigurationItem(){
+	
+}
