@@ -7,22 +7,22 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class TemplateCollection {
+public class Configuration {
 	
 	@Id
 	private String id;
 	
 	private String name;
-	private List<Template> template = new ArrayList<>();
+	private List<ConfigurationItem> template = new ArrayList<>();
 	
-	public TemplateCollection(String name) {
+	public Configuration(String name) {
 		this.setName(name);
 	}
 	
-	public void add(Template templateObject) {
+	public void add(ConfigurationItem templateObject) {
 		template.add(templateObject);
 	}
-	public void remove(Template templateObject) {
+	public void remove(ConfigurationItem templateObject) {
 		template.remove(templateObject);
 	}
 
@@ -34,11 +34,11 @@ public class TemplateCollection {
 		this.name = name;
 	}
 
-	public List<Template> getTemplate() {
+	public List<ConfigurationItem> getTemplate() {
 		return template;
 	}
 
-	public void setTemplate(List<Template> template) {
+	public void setTemplate(List<ConfigurationItem> template) {
 		this.template = template;
 	}
 	

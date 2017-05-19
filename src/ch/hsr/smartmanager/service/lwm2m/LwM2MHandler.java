@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.pool2.impl.AbandonedConfig;
 import org.eclipse.leshan.Link;
 import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.model.ResourceModel;
@@ -53,8 +52,12 @@ public class LwM2MHandler {
 		server = lwM2MManagementServer.getServer();
 		Device dev = deviceService.getDevice(id);
 
+		Registration reg = server.getRegistrationService().getById(dev.getRegId());
+		
+		if(reg == null) return new ReadResponse(ResponseCode.NOT_FOUND, null, "Device is not reachable");
+		
 		try {
-			res = server.send(server.getRegistrationService().getById(dev.getRegId()), req);
+			res = server.send(reg, req);
 		} catch (InterruptedException e) {
 			res = null;
 			e.printStackTrace();
