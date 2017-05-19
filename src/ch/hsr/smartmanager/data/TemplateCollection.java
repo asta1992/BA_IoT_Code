@@ -1,5 +1,6 @@
 package ch.hsr.smartmanager.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -12,10 +13,17 @@ public class TemplateCollection {
 	private String id;
 	
 	private String name;
-	private List<Template> template;
+	private List<Template> template = new ArrayList<>();
 	
 	public TemplateCollection(String name) {
 		this.setName(name);
+	}
+	
+	public void add(Template templateObject) {
+		template.add(templateObject);
+	}
+	public void remove(Template templateObject) {
+		template.remove(templateObject);
 	}
 
 	public String getName() {

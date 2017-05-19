@@ -215,6 +215,16 @@ public class RestController {
 
 		return allJson.toString();
 	}
+	
+	@RequestMapping(value = "/groups/{id}/writeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
+	public List<WriteResponse> writeChildDevices(Model model,@PathVariable("id") String id, @PathVariable("objectId") int objectId,
+			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId,
+			@RequestParam("value") String value){
+		
+		return lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, value);
+		
+	}
+	
 
 	private List<JSONObject> allChildren(DeviceComponent deviceComponent) throws JSONException {
 		List<JSONObject> jsonObjects = new ArrayList<>();

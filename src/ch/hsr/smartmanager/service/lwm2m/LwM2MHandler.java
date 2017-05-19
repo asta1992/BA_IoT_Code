@@ -2,10 +2,13 @@ package ch.hsr.smartmanager.service.lwm2m;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.pool2.impl.AbandonedConfig;
 import org.eclipse.leshan.Link;
 import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.model.ResourceModel;
@@ -157,6 +160,17 @@ public class LwM2MHandler {
 		}
 		return res;
 	}
+	
+	public List<WriteResponse> writeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+		List<WriteResponse> responses = new ArrayList<>();
+		List<Device> devices = deviceService.findAllChildren(id);
+		for(Device dev : devices) {
+			responses.add(write(dev.getId(), objectId, objectInstanceId, resourceId, value));
+		}
+		return responses;
+		
+	}
+
 
 	public ExecuteResponse execute(String id, int objectId, int objectInstanceId, int resourceId) {
 		ExecuteRequest req = new ExecuteRequest(objectId, objectInstanceId, resourceId);
