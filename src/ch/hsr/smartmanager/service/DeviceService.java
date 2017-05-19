@@ -159,7 +159,9 @@ public class DeviceService {
 
 	public List<Device> findAllChildren(String id) {
 		List<Device> allSubDevices = new ArrayList<>();
-		List<String> childrenGroup = groupRepo.findAllChildren(groupRepo.findOne(id).getName());
+		DeviceGroup mainGroup = groupRepo.findOne(id);
+		List<String> childrenGroup = groupRepo.findAllChildren(mainGroup.getName());
+		childrenGroup.add(mainGroup.getName());
 		for(String name : childrenGroup) {
 			DeviceGroup group = groupRepo.findByName(name);
 			for(DeviceComponent dev : group.getChildren()) {

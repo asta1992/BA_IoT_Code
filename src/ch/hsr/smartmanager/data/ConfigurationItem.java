@@ -1,11 +1,11 @@
 package ch.hsr.smartmanager.data;
 
-public class Template {
+public class ConfigurationItem {
 	
 	private String path;
 	private String value;
 	
-	public Template(String path, String value) {
+	public ConfigurationItem(String path, String value) {
 		this.path = path;
 		this.value = value;
 	}
