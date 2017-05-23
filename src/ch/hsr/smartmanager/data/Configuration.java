@@ -13,17 +13,17 @@ public class Configuration {
 	private String id;
 	
 	private String name;
-	private List<ConfigurationItem> template = new ArrayList<>();
+	private List<ConfigurationItem> configurationItems = new ArrayList<>();
 	
 	public Configuration(String name) {
 		this.setName(name);
 	}
 	
-	public void add(ConfigurationItem templateObject) {
-		template.add(templateObject);
+	public void add(ConfigurationItem configurationItem) {
+		configurationItems.add(configurationItem);
 	}
-	public void remove(ConfigurationItem templateObject) {
-		template.remove(templateObject);
+	public void remove(ConfigurationItem configurationItem) {
+		configurationItems.remove(configurationItem);
 	}
 
 	public String getName() {
@@ -34,12 +34,12 @@ public class Configuration {
 		this.name = name;
 	}
 
-	public List<ConfigurationItem> getTemplate() {
-		return template;
+	public List<ConfigurationItem> getConfigurationItems() {
+		return configurationItems;
 	}
 
-	public void setTemplate(List<ConfigurationItem> template) {
-		this.template = template;
+	public void setConfigurationItems(List<ConfigurationItem> configurationItems) {
+		this.configurationItems = configurationItems;
 	}
 	
 	

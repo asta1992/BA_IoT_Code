@@ -1,6 +1,12 @@
 package ch.hsr.smartmanager.data;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class ConfigurationItem {
+	@Id
+	private String id;
 	
 	private String path;
 	private String value;

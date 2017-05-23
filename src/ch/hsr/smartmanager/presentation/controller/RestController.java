@@ -24,6 +24,7 @@ import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.ResourceModelAdapter;
+import ch.hsr.smartmanager.service.ConfigurationService;
 import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 
@@ -35,6 +36,9 @@ public class RestController {
 
 	@Autowired
 	DeviceService deviceService;
+	
+	@Autowired
+	ConfigurationService configService;
 
 	@RequestMapping(value = "/devices/{id}/read/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
 	public ReadResponse readResource(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
@@ -71,6 +75,8 @@ public class RestController {
 		devGroup = deviceService.findByName(Json.parse(groupName).asString());
 		deviceService.addGroupToGroup(id, devGroup.getId());
 	}
+	
+	
 	
 	@RequestMapping(value = "/groups/add", method = RequestMethod.POST)
 	public void addNewRootGroup(Model mode,@RequestParam("value") String groupName){
@@ -251,5 +257,10 @@ public class RestController {
 			}
 		}
 		return jsonObjects;
+	}
+	
+	@RequestMapping(value = "/configurations/add")
+	public void addConfiguration(Model model,@RequestParam("value") JSONArray value){
+		configService.saveConfiguration(value);
 	}
 }
