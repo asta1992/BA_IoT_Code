@@ -149,11 +149,18 @@ public class RestController {
 		List<DeviceComponent> postMembers = new ArrayList<>();
 		for (int i = 0; i < value.length(); i++) {
 			try {
-				postMembers.add(deviceService.getComponent(value.getString(i)));
+
+				DeviceComponent item = deviceService.getGroup((value.getString(i)));
+				if(item == null) {
+					item = deviceService.getDevice((value.getString(i)));
+				}
+				postMembers.add(item);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
+		
+		postMembers.removeAll(Collections.singleton(null));
 		
 		DeviceGroup group = deviceService.getGroup(id);
 		List<DeviceComponent> preMembers = group.getChildren();
@@ -161,10 +168,10 @@ public class RestController {
 		for (DeviceComponent comp : preMembers) {
 			if (!postMembers.contains(comp)) {
 				if(comp instanceof Device){
-					deviceService.removeDeviceFromGroup(comp.getId(), group.getId());
+					deviceService.removeDeviceFromGroup(group.getId(), comp.getId());
 				}
 				if(comp instanceof DeviceGroup){
-					deviceService.removeGroupFromGroup(comp.getId(), group.getId());
+					deviceService.removeGroupFromGroup(group.getId(), comp.getId());
 				}
 			}
 		}
@@ -175,7 +182,6 @@ public class RestController {
 					deviceService.addDeviceToGroup(group.getId(), comp.getId());
 				}
 				if(comp instanceof DeviceGroup){
-					System.out.println("Group to Group");
 					deviceService.addGroupToGroup(group.getId(), comp.getId());
 				}
 			}

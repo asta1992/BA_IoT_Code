@@ -1,5 +1,6 @@
 package ch.hsr.smartmanager.service;
 
+import java.nio.file.attribute.GroupPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,18 +44,31 @@ public class DeviceService {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
 
-		if (isAncestors(grpParent.getName(), grpChild.getName()))
+		if (isAncestors(grpParent.getName(), grpChild.getName()) || isAncestors(grpChild.getName(), grpParent.getName())) {
 			return;
+		}
 
 		if (!groupRepo.existsByChildrenId(new ObjectId(grpChild.getId()))) {
 			grpParent.add(grpChild);
 			groupRepo.save(grpParent);
 			groupRepo.save(grpChild);
 		}
+		else {
+			System.out.println("Else");
+			List<DeviceGroup> group = groupRepo.findAllByChildrenId(new ObjectId(grpChild.getId()));
+			for(DeviceGroup grp : group) {
+				grp.remove(grpChild);
+				groupRepo.save(grp);
+			}
+			grpParent.add(grpChild);
+			groupRepo.save(grpParent);
+			groupRepo.save(grpChild);
+		}
+
 	}
 
 	private boolean isAncestors(String parent, String child) {
-		List<String> anchestors = groupRepo.findAllAncestors("child");
+		List<String> anchestors = groupRepo.findAllAncestors(child);
 		if (anchestors.contains(parent))
 			return true;
 		return false;
@@ -63,6 +77,7 @@ public class DeviceService {
 	public void removeDeviceFromGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
 		Device device = deviceRepo.findOne(deviceId);
+		System.out.println(group + ":" + device);
 		group.remove(device);
 		groupRepo.save(group);
 		deviceRepo.save(device);
