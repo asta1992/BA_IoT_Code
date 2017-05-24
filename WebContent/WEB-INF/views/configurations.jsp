@@ -9,10 +9,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smartmanager - Configurations</title>
-<link rel="stylesheet" href="../smartmanager/resources/css/smartmanager/style.css"
+<link rel="stylesheet"
+	href="../smartmanager/resources/css/smartmanager/style.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/bootstrap.min.css" type="text/css">
+	href="../smartmanager/resources/css/lib/bootstrap.min.css"
+	type="text/css">
 <link rel="stylesheet"
 	href="../smartmanager/resources/css/lib/bootstrap-theme.min.css"
 	type="text/css">
@@ -26,13 +28,17 @@
 <script src="../smartmanager/resources/js/lib/bootbox.min.js"></script>
 <script src="../smartmanager/resources/js/lib/bootstrap-select.min.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/deviceCommunication.js"
+<script
+	src="../smartmanager/resources/js/smartmanager/deviceCommunication.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/groupCommunication.js"
+<script
+	src="../smartmanager/resources/js/smartmanager/groupCommunication.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/configurations.js"
+<script
+	src="../smartmanager/resources/js/smartmanager/configurations.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/groupManagement.js"
+<script
+	src="../smartmanager/resources/js/smartmanager/groupManagement.js"
 	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/smartmanager/deleteObject.js"
 	type="text/javascript"></script>
@@ -56,6 +62,7 @@
 					<thead>
 						<tr>
 							<th>Config</th>
+							<th>Description</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -63,6 +70,12 @@
 							<c:forEach var="configurations" items="${configurations}">
 								<tr>
 									<td>${configurations.name}</td>
+									<td>${configurations.description}<span class="pull-right">
+											<button type="button" class="btn btn-danger btn-xs"
+												onclick="deleteConfiguration('${configurations.id}')">Delete
+											</button>
+									</span>
+									</td>
 								</tr>
 							</c:forEach>
 						</c:if>

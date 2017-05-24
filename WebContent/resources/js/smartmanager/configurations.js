@@ -17,6 +17,7 @@ function createConfiguration() {
 					if (save) {
 						saveConfiguration();
 					}
+					parent.location.reload();
 				}
 			})
 		}
@@ -43,6 +44,7 @@ function removeConfigurationItem(rowNumber) {
 function saveConfiguration() {
 	var config = [];
 	config.push($('#configName').val());
+	config.push($('#description').val());
 	var headers = [];
 	$('#configurationItems th').each(function(index, item) {
 	    headers[index] = $(item).text();
@@ -60,24 +62,29 @@ function saveConfiguration() {
 		data : {
 			value : JSON.stringify(config)
 		},
-		url : "/smartmanager/configurations/add",
-		success : function() {
-			window.location.href = "/smartmanager/configurations"
-		}
-	})
+		url : "/smartmanager/configurations/add"
+	});
 }
 
 function deleteConfiguration(configurationId) {
 	bootbox.confirm({
-		title : "Do you really want to delete this configuration?",
+		message : "Do you really want to delete this configuration?",
 		callback : function(ok) {
 			if (ok) {
 				$.ajax({
+					type : "POST",
+					dataType : "json",
+					data : {
+						value : configurationId
+					},
+					url : "/smartmanager/configurations/delete"
 					
-				})
+				});
 			}
+			parent.location.reload();
 		}
-	})
+	});
+	
 }
 
 function updateCompleteObjectId() {

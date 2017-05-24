@@ -43,15 +43,15 @@
 							<th>Registration Id</th>
 							<th>Devicename</th>
 							<th>Group Membership</th>
-							<th>Configuration</th>
+							<th>Initial Configuration</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:if test="${not empty devices}">
 							<c:forEach var="row" items="${devices}">
 								<tr>
-									<td><a href="/smartmanager/devices/${row.id}">${row.id}</a></td>
 									<td>${row.name}</td>
+									<td>${row.id}</td>
 									<td><select class="selectpicker">
 											<c:forEach var="groups" items="${groups}">
 												<option value="'${groups.name}'">${groups.name}</option>

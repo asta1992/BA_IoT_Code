@@ -13,10 +13,12 @@ public class Configuration {
 	private String id;
 	
 	private String name;
+	private String description;
 	private List<ConfigurationItem> configurationItems = new ArrayList<>();
 	
-	public Configuration(String name) {
+	public Configuration(String name, String description) {
 		this.setName(name);
+		this.setDescription(description);
 	}
 	
 	public void add(ConfigurationItem configurationItem) {
@@ -26,12 +28,24 @@ public class Configuration {
 		configurationItems.remove(configurationItem);
 	}
 
+	public String getId() {
+		return id;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public List<ConfigurationItem> getConfigurationItems() {

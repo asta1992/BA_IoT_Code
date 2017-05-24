@@ -270,4 +270,9 @@ public class RestController {
 	public void addConfiguration(Model model,@RequestParam("value") JSONArray value){
 		configService.saveConfiguration(value);
 	}
+	
+	@RequestMapping(value = "/configurations/delete")
+	public void deleteConfiguration(Model model,@RequestParam("value") String value){
+		configService.deleteConfiguration(value);
+	}
 }

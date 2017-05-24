@@ -10,7 +10,14 @@
 	<div class="col-lg-9 col-md-9">
 		<input type="text" class="form-control" id="configName">
 	</div>
-
+</div>
+<div class="row form-group">
+	<div class="col-lg-3 col-md-3">
+		<label for="value" class="control-label">Description</label>
+	</div>
+	<div class="col-lg-9 col-md-9">
+		<input type="text" class="form-control" id="description">
+	</div>
 </div>
 <div class="row form-group">
 	<div class="col-lg-3 col-md-3 col-sm-3">
@@ -53,7 +60,9 @@
 	<div class="col-lg-12 col-md-12">
 		<span class="pull-right">
 			<button type="button" class="btn btn-success btn-md"
-				onclick="addConfigurationItem()"><span class="glyphicon glyphicon-plus"></span></button>
+				onclick="addConfigurationItem()">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
 		</span>
 	</div>
 </div>
@@ -61,10 +70,10 @@
 	id="configurationItemsDiv">
 	<h4>Configuration Items</h4>
 	<table class="table table-hover" id="configurationItems">
-			<tr id="0Row">
-				<th width="25%">Object Link</th>
-				<th width="75%">Value</th>
-			</tr>
+		<tr id="0Row">
+			<th width="25%">Object Link</th>
+			<th width="75%">Value</th>
+		</tr>
 	</table>
 </div>
 
