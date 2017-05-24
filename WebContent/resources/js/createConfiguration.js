@@ -6,7 +6,7 @@ function createConfiguration() {
 		success : function(createConfigurationFragment) {
 			bootbox.confirm({
 				size : "large",
-				title : "Prepare your command to write",
+				title : "Prepare your configuration",
 				message : createConfigurationFragment,
 				buttons : {
 					confirm : {

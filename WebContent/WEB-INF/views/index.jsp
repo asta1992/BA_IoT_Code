@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -7,59 +7,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Smartmanager - Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smartmanager</title>
+<link rel="stylesheet" href="../smartmanager/resources/css/style.css"
+	type="text/css">
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="resources/js/main.js"></script>
-
-
+	href="../smartmanager/resources/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet"
+	href="../smartmanager/resources/css/bootstrap-theme.min.css"
+	type="text/css">
+<script src="../smartmanager/resources/js/jquery-2.1.4.min.js"></script>
+<script src="../smartmanager/resources/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<div class="container-fluid">
-		<div class="row">
-
-			<jsp:include page="../views/fragments/menu.jsp" />
-
-			<div class="col-xs-12 col-xm-6 col-md-6 col-lg-7">
-				<h2>Devices</h2>
-				<p>Bereits erfasste Devices:</p>
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th>Registration Id</th>
-							<th>Devicename</th>
-							<th>Endpoint</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="row" items="${devices}">
-							<tr>
-									<td><a href="/smartmanager/devices/${row.regId}">${row.regId}</a></td>
-									<td>${row.name}</td>
-									<td>${row.endpoint}</td>
-									<td><spring:url value="/devices/${row.regId}" var="showUrl" />
-										<spring:url value="/devices/${row.regId}/delete"
-											var="deleteUrl" /></td>
-									<td>
-										<button class="btn btn-info"
-											onclick="location.href='${showUrl}'">Show</button>
-										<button class="btn btn-danger"
-											onclick="location.href='${deleteUrl}'">Delete</button>
-									</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+		<div class="row-fluid">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+				style="padding: 0 0 0 0;">
+				<jsp:include page="../views/menuFragment.jsp" />
 			</div>
-			<div class="col-xs-12 col-xm-3 col-md-4 col-lg-3">
-				<div class="row">
-					<div style="height: 50%;">
-						<h2>Device Details</h2>
-					</div>
-				</div>
-			</div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
 		</div>
 	</div>
 </body>
