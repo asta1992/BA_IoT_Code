@@ -42,7 +42,7 @@ function removeConfigurationItem(rowNumber) {
 
 function saveConfiguration() {
 	var config = [];
-	config.push("Config Name:" + $('#configName').val());
+	config.push($('#configName').val());
 	var headers = [];
 	$('#configurationItems th').each(function(index, item) {
 	    headers[index] = $(item).text();
@@ -63,6 +63,56 @@ function saveConfiguration() {
 		url : "/smartmanager/configurations/add",
 		success : function() {
 			window.location.href = "/smartmanager/configurations"
+		}
+	})
+}
+
+function deleteConfiguration(configurationId) {
+	bootbox.confirm({
+		title : "Do you really want to delete this configuration?",
+		callback : function(ok) {
+			if (ok) {
+				$.ajax({
+					
+				})
+			}
+		}
+	})
+}
+
+function updateCompleteObjectId() {
+	$('#completeObjectId').html(parseInt($('#objectDropdown').find(":selected").text()) + "/" + $('#instanceIdField').val() + "/" + parseInt($('#resourceDropdown').find(":selected").text()));
+}
+
+function getWriteableResources(){
+	var objectId = parseInt($('#objectDropdown').find(":selected").text());
+	var instanceIdField = $('#instanceIdField');
+	$.ajax({
+		type: "GET",
+		url: "/smartmanager/group/" + objectId + "/multiInstance",
+		success : function(multiInstance){
+			if(multiInstance.value){
+				instanceIdField.prop('disabled', false);
+			}
+			else {
+				instanceIdField.val("0");
+				instanceIdField.prop('disabled', true);
+			}
+			updateCompleteObjectId();
+		}
+	})
+	
+	var resourceDropdown = $('#resourceDropdown');
+	$.ajax({
+		type: "GET",
+		url : "/smartmanager/group/" + objectId + "/writeToChildren",
+		success : function(resources) {
+			resourceDropdown.empty();
+			resources.forEach(function(entry){
+				resourceDropdown.append('<option value="' + entry.resourceModel.id + '">' + entry.resourceModel.id + " " + "(" +entry.resourceModel.name + ")" + '</option>');
+			})
+			resourceDropdown.selectpicker('refresh');
+			updateCompleteObjectId();
 		}
 	})
 }

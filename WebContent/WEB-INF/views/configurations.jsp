@@ -9,34 +9,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smartmanager - Configurations</title>
-<link rel="stylesheet" href="../smartmanager/resources/css/style.css"
+<link rel="stylesheet" href="../smartmanager/resources/css/smartmanager/style.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="../smartmanager/resources/css/bootstrap.min.css" type="text/css">
+	href="../smartmanager/resources/css/lib/bootstrap.min.css" type="text/css">
 <link rel="stylesheet"
-	href="../smartmanager/resources/css/bootstrap-theme.min.css"
+	href="../smartmanager/resources/css/lib/bootstrap-theme.min.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="../smartmanager/resources/css/bootstrap-select.min.css"
+	href="../smartmanager/resources/css/lib/bootstrap-select.min.css"
 	type="text/css">
 <link rel="stylesheet" type="text/css"
-	href="../smartmanager/resources/css/prettify.min.css">
-<script src="../smartmanager/resources/js/jquery-2.1.4.min.js"></script>
-<script src="../smartmanager/resources/js/bootstrap.min.js"></script>
-<script src="../smartmanager/resources/js/bootbox.min.js"></script>
-<script src="../smartmanager/resources/js/bootstrap-select.min.js"
+	href="../smartmanager/resources/css/lib/prettify.min.css">
+<script src="../smartmanager/resources/js/lib/jquery-2.1.4.min.js"></script>
+<script src="../smartmanager/resources/js/lib/bootstrap.min.js"></script>
+<script src="../smartmanager/resources/js/lib/bootbox.min.js"></script>
+<script src="../smartmanager/resources/js/lib/bootstrap-select.min.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/deviceCommunication.js"
+<script src="../smartmanager/resources/js/smartmanager/deviceCommunication.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/groupCommunication.js"
+<script src="../smartmanager/resources/js/smartmanager/groupCommunication.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/createConfiguration.js"
+<script src="../smartmanager/resources/js/smartmanager/configurations.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/createConfigurationItem.js"
+<script src="../smartmanager/resources/js/smartmanager/groupManagement.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/groupManagement.js"
-	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/deleteObject.js"
+<script src="../smartmanager/resources/js/smartmanager/deleteObject.js"
 	type="text/javascript"></script>
 </head>
 <body>
@@ -54,6 +52,22 @@
 							onclick="createConfiguration()">create new configuration</button>
 					</span>
 				</h3>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Config</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${not empty configurations}">
+							<c:forEach var="configurations" items="${configurations}">
+								<tr>
+									<td>${configurations.name}</td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

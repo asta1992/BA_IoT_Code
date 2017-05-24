@@ -20,6 +20,7 @@ import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.ResourceModelAdapter;
+import ch.hsr.smartmanager.service.ConfigurationService;
 import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
@@ -29,6 +30,8 @@ public class WebController {
 
 	@Autowired
 	private DeviceService deviceService;
+	@Autowired
+	private ConfigurationService configService;
 	@Autowired
 	private LwM2MManagementServer lwM2MManagementServer;
 	@Autowired
@@ -42,12 +45,15 @@ public class WebController {
 
 	@RequestMapping(value = "/discovery")
 	public String showDiscovery(Model model) {
+		model.addAttribute("groups", deviceService.getAllGroups());
 		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
+		model.addAttribute("configurations", configService.getAllConfigurations());
 		return "discovery";
 	}
 	
 	@RequestMapping(value = "/configurations")
 	public String showConfigurations(Model model) {
+		model.addAttribute("configurations", configService.getAllConfigurations());
 		return "configurations";
 	}
 	

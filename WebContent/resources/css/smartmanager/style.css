@@ -29,6 +29,11 @@ body {
 	padding: 5px !important;
 }
 
+.bootstrap-select > .btn-default { 
+	background-image: none !important;
+    background-color: white !important;
+}
+
 
 
 

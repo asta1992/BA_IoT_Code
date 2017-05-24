@@ -1,5 +1,7 @@
 package ch.hsr.smartmanager.service;
 
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +26,18 @@ public class ConfigurationService {
 				ConfigurationItem configurationItem = new ConfigurationItem(path, value);
 				configuration.add(configurationItem);
 			}
-			//Todo: Save in DB
+			configRepo.save(configuration);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public List<Configuration> getAllConfigurations(){
+		return configRepo.findAll();
+	}
 
 	public void getConfiguration() {
-
+		
 	}
 
 }
