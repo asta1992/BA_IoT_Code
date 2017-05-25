@@ -1,6 +1,8 @@
 package ch.hsr.smartmanager.data;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -19,7 +21,8 @@ public class Device implements DeviceComponent {
 	private String endpoint;
 	private String username;
 	private String password;
-	private TreeSet<Integer> objectLinks;
+	private Date lastUpdate;
+	private TreeSet<String> objectLinks;
 	private boolean added;
 	private Map<String, String> dataMap;
 
@@ -31,7 +34,7 @@ public class Device implements DeviceComponent {
 	}
 
 	public Device(String name, String regId, String endpoint, String username, String password,
-			TreeSet<Integer> objectLinks, boolean added) {
+			TreeSet<String> objectLinks, boolean added) {
 		this.name = name;
 		this.regId = regId;
 		this.endpoint = endpoint;
@@ -40,6 +43,7 @@ public class Device implements DeviceComponent {
 		this.objectLinks = objectLinks;
 		this.added = added;
 		this.setDataMap(new HashMap<>());
+		this.lastUpdate = new Date();
 	}
 
 	public String getId() {
@@ -102,11 +106,11 @@ public class Device implements DeviceComponent {
 		this.added = added;
 	}
 
-	public TreeSet<Integer> getObjectLinks() {
+	public TreeSet<String> getObjectLinks() {
 		return objectLinks;
 	}
 
-	public void setObjectLinks(TreeSet<Integer> objectLinks) {
+	public void setObjectLinks(TreeSet<String> objectLinks) {
 		this.objectLinks = objectLinks;
 	}
 
@@ -128,11 +132,12 @@ public class Device implements DeviceComponent {
 	public void print(String abstand) {
 		System.out.println(abstand + toString());
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Device [id=" + id + ", name=" + name + ", regId=" + regId + ", endpoint=" + endpoint + ", username="
-				+ username + ", password=" + password + ", added=" + added + "]";
+		return "Device [name=" + name + ", regId=" + regId + ", endpoint=" + endpoint + ", username=" + username
+				+ ", password=" + password + ", objectLinks=" + objectLinks + ", added=" + added + ", dataMap="
+				+ dataMap + "]";
 	}
 
 	@Override
@@ -190,6 +195,23 @@ public class Device implements DeviceComponent {
 
 	public void setDataMap(Map<String, String> dataMap) {
 		this.dataMap = dataMap;
+	}
+
+	public List<String> getObjectLinksDiv() {
+		List<String> divLinks = new LinkedList<>();
+		
+		for(String s : this.getObjectLinks()) {
+			divLinks.add(s.replace("/", ""));
+		}
+		return divLinks;
+	}
+
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 
 }

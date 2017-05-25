@@ -17,12 +17,44 @@ function writeAllChildDevices(groupId) {
 	$.ajax({
 		type: "GET",
 		dataType : "html",
-		url : "/smartmanager/groups/writeToChildsFragment",
+		url : "/smartmanager/groups/writeCommandToChildsFragment",
 		success : function(writeToChildsForm) {
 			bootbox.confirm({
 				size: "large",
 				title : "Prepare your command to write",
 				message : writeToChildsForm,
+				callback : function(ok) {
+					if(ok){
+						var objectId = parseInt($('#objectDropdown').find(":selected").text());
+						var objectInstanceId = $('#instanceIdField').val();
+						var resourceId = parseInt($('#resourceDropdown').find(":selected").text())
+						$.ajax({
+							type: "POST",
+							dataType : "json",
+							data : {
+								"value" : $('#writeValue').val()
+							},
+							url : "/smartmanager/groups/" + groupId + "/writeChildDevices/" + objectId + "/" + objectInstanceId + "/" + resourceId,
+							success : function(result) {
+								alert("Here comes the Result!");
+							}
+						})
+					}
+				}
+			})
+		}
+	})
+}
+
+function writeConfigToChildDevices(groupId, groupName) {
+	$.ajax({
+		type: "GET",
+		dataType : "html",
+		url : "/smartmanager/groups/writeConfigToChildsFragment",
+		success : function(writeConfigToChildsFragment) {
+			bootbox.confirm({
+				title : "Write Configuration to Group " + groupName,
+				message : writeConfigToChildsFragment,
 				callback : function(ok) {
 					if(ok){
 						var objectId = parseInt($('#objectDropdown').find(":selected").text());

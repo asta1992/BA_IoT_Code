@@ -28,7 +28,7 @@ public class RegistrationListenerImpl {
 
 			public void registered(Registration registration) {
 				
-				
+				System.out.println(registration);
 				
 				Device device = new Device(registration.getEndpoint(), registration.getId(),
 						"coap://" + registration.getAddress() + ":" + registration.getPort(), "", "",getObjectLinks(registration.getObjectLinks()), false);
@@ -44,26 +44,22 @@ public class RegistrationListenerImpl {
 			@Override
 			public void updated(RegistrationUpdate registrationUpdate, Registration registration) {
 				Device device = new Device(registration.getEndpoint(), registration.getId(),
-						"coap://" + registration.getAddress() + ";" + registration.getPort(), "", "",getObjectLinks(registration.getObjectLinks()), false);
+						"coap://" + registration.getAddress() + ";" + registration.getPort(), "", "",
+						getObjectLinks(registration.getObjectLinks()), false);
 				deviceService.createOrUpdateDevice(device, registration);
 			}
 
 		};
 	}
 	
-	private TreeSet<Integer> getObjectLinks(Link[] links) {
-		TreeSet<Integer> objectId = new TreeSet<Integer>();
-
-		final String regex = "\\/([0-9]*)\\/";
-		final Pattern pattern = Pattern.compile(regex);
-		Matcher matcher;
+	private TreeSet<String> getObjectLinks(Link[] links) {
+		TreeSet<String> objectId = new TreeSet<String>();
 
 		for (Link linkId : links) {
-			matcher = pattern.matcher(linkId.getUrl());
-			if (matcher.find()) {
-				objectId.add(Integer.parseInt(matcher.group(1)));
+			
+			if(linkId.getUrl().length() > 2)
+				objectId.add(linkId.getUrl());
 			}
-		}
 		return objectId;
 	}
 }

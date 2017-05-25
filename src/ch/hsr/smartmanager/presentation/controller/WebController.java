@@ -3,7 +3,8 @@ package ch.hsr.smartmanager.presentation.controller;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
@@ -51,18 +52,18 @@ public class WebController {
 		model.addAttribute("configurations", configService.getAllConfigurations());
 		return "discovery";
 	}
-	
+
 	@RequestMapping(value = "/configurations")
 	public String showConfigurations(Model model) {
 		model.addAttribute("configurations", configService.getAllConfigurations());
 		return "configurations";
 	}
-	
+
 	@RequestMapping(value = "/devices")
 	public String showDevices(Model model) {
 		return "devices";
 	}
-	
+
 	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
 	public String showDeviceDetails(Model model, @PathVariable("id") String id) {
 
@@ -74,8 +75,18 @@ public class WebController {
 		LinkedHashMap<String, ArrayList<ResourceModelAdapter>> objectModelList = new LinkedHashMap<String, ArrayList<ResourceModelAdapter>>();
 		ArrayList<ResourceModelAdapter> resourceModelList = new ArrayList<ResourceModelAdapter>();
 
-		for (int objId : dev.getObjectLinks()) {
-			ObjectModel objectModel = regModel.getObjectModel(objId);
+		final String regex = "\\/([0-9]*)\\/";
+		final Pattern pattern = Pattern.compile(regex);
+		Matcher matcher;
+		
+		for (String objId : dev.getObjectLinks()) {
+			matcher = pattern.matcher(objId);
+			String parseId = "1";
+			if (matcher.find()) {
+				parseId = matcher.group(1);
+			}
+			
+			ObjectModel objectModel = regModel.getObjectModel(Integer.parseInt(parseId));
 			resourceModelList = new ArrayList<ResourceModelAdapter>();
 
 			for (ResourceModel entry : objectModel.resources.values()) {
@@ -83,76 +94,83 @@ public class WebController {
 			}
 			objectModelList.put(objectModel.name, resourceModelList);
 		}
-		
+
 		model.addAttribute("modelDescription", objectModelList);
+		model.addAttribute("objectLinksDiv", dev.getObjectLinksDiv().toArray());
 		model.addAttribute("objectLinks", dev.getObjectLinks().toArray());
 		model.addAttribute("registration", reg);
 		model.addAttribute("device", dev);
-		
+
 		return "deviceFragment";
 	}
-	
+
 	@RequestMapping(value = "/groups/{id}", method = RequestMethod.GET)
 	public String showGroupDetails(Model model, @PathVariable("id") String id) {
 		DeviceGroup group = deviceService.getGroup(id);
 		model.addAttribute("group", group);
 		return "groupFragment";
 	}
-	
-	@RequestMapping(value = "/groups/writeToChildsFragment", method = RequestMethod.GET)
-	public String showGroupDetails(Model model) {
+
+	@RequestMapping(value = "/groups/writeCommandToChildsFragment", method = RequestMethod.GET)
+	public String writeCommandToChildsFragment(Model model) {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
-		return "writeToChildsFragment";
+		return "writeCommandToChildsFragment";
 	}
-	
+
+	@RequestMapping(value = "/groups/writeConfigToChildsFragment", method = RequestMethod.GET)
+	public String writeConfigToChildsFragment(Model model) {
+		model.addAttribute("configurations", configService.getAllConfigurations());
+		return "writeConfigToChildsFragment";
+	}
+
 	@RequestMapping(value = "/configurations/createConfigurationFragment", method = RequestMethod.GET)
 	public String showConfigurationFragment(Model model) {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
 		return "createConfigurationFragment";
 	}
-	
+
 	@RequestMapping(value = "/devices/{id}/memberships", method = RequestMethod.GET)
 	public String getDeviceMemberships(Model model, @PathVariable("id") String id) {
 		List<DeviceGroup> groups = deviceService.getAllGroups();
 		List<DeviceGroup> deviceGroups = deviceService.listAllGroupsForComponents(id);
-		
+
 		groups.removeAll(deviceGroups);
-		
+
 		model.addAttribute("componentName", deviceService.getDevice(id).getName());
 		model.addAttribute("allGroups", groups);
 		model.addAttribute("deviceGroups", deviceGroups);
 
 		return "groupMembershipsFragment";
 	}
-	
+
 	@RequestMapping(value = "/groups/{id}/memberships", method = RequestMethod.GET)
 	public String getGroupMembership(Model model, @PathVariable("id") String id) {
 		List<DeviceGroup> allGroups = deviceService.getAllGroups();
 		List<DeviceGroup> groupMembership = deviceService.listAllGroupsForComponents(id);
-		if(groupMembership.size() != 0) {
+		if (groupMembership.size() != 0) {
 			allGroups.remove(groupMembership);
 		}
-		
+
 		model.addAttribute("componentName", deviceService.getGroup(id).getName());
 		model.addAttribute("allGroups", allGroups);
 		model.addAttribute("deviceGroups", groupMembership);
 
 		return "groupMembershipsFragment";
 	}
-	
+
 	@RequestMapping(value = "/groups/{id}/members", method = RequestMethod.GET)
 	public String getGroupMembers(Model model, @PathVariable("id") String id) {
 		List<DeviceComponent> allComponents = deviceService.getAllComponents();
 		List<DeviceComponent> groupMembers = deviceService.getGroup(id).getChildren();
 		allComponents.removeAll(groupMembers);
-		
+
 		model.addAttribute("groupName", deviceService.getGroup(id).getName());
 		model.addAttribute("allComponents", allComponents);
 		model.addAttribute("groupMembers", groupMembers);
 
 		return "groupMembersFragment";
 	}
-	
+
 	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.GET)
 	public String addDevice(Model model, @PathVariable("id") String id) {
 		deviceService.addToManagement(id);
@@ -164,11 +182,11 @@ public class WebController {
 		deviceService.removeFromManagement(id);
 		return "redirect:/devices";
 	}
-	
+
 	@RequestMapping(value = "/groups/{id}/delete", method = RequestMethod.DELETE)
 	public String removeGroup(Model model, @PathVariable("id") String id) {
 		deviceService.deleteGroup(id);
 		return "forward:/devices";
-		
+
 	}
 }

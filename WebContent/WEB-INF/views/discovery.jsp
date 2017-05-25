@@ -40,8 +40,8 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th>Registration Id</th>
 							<th>Devicename</th>
+							<th>Registration Id</th>
 							<th>Group Membership</th>
 							<th>Initial Configuration</th>
 						</tr>
@@ -66,7 +66,7 @@
 									</td>
 									<td>
 										<button class="btn btn-success btn-sm"
-											onclick="location.href='/devices/${row.id}/add">Add</button>
+											onclick="location.href='/smartmanager/devices/${row.id}/add'">Add</button>
 									</td>
 								</tr>
 							</c:forEach>

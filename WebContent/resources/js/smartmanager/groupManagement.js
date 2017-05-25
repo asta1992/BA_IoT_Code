@@ -18,14 +18,16 @@ function addNewChildGroup(parentId) {
 	bootbox.prompt({
 		title : "Please enter a group name",
 		callback : function(message){
-			$.ajax({
-				type: "POST",
-				dataType : "json",
-				data : {
-					value : JSON.stringify(message)
-				},
-				url : "/smartmanager/groups/"+parentId+"/add",
-			});
+			if(message){
+				$.ajax({
+					type: "POST",
+					dataType : "json",
+					data : {
+						value : JSON.stringify(message)
+					},
+					url : "/smartmanager/groups/"+parentId+"/add",
+				});
+			}
 		}
 	});
 }

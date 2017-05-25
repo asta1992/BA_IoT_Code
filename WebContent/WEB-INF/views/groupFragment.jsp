@@ -12,7 +12,7 @@
 				All Devices</button></span>
 				<span
 			class="pull-right"><button type="button"
-				class="btn btn-warning heading-button" onclick="writeAllChildDevices('${group.id}')">Write to Childs</button></span>
+				class="btn btn-warning heading-button" onclick="writeAllChildDevices('${group.id}')">Write Command</button></span>
 	</h2>
 </div>
 <div class=row>
@@ -34,6 +34,10 @@
 			<button type="button" class="btn btn-sm btn-default heading-button"
 				onclick="addNewChildGroup('${group.id}')">Add New Child Group</button>
 		</dt>
+		<dd>
+			<button type="button" class="btn btn-sm btn-default heading-button"
+				onclick="writeConfigToChildDevices('${group.id}', '${group.name}')">Write Configuration</button>
+		</dd>
 
 	</dl>
 </div>

@@ -62,7 +62,7 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
-
+		
 		saveMultipleValueToDevice(res, dev, objectId);
 
 		return res;
@@ -81,7 +81,7 @@ public class LwM2MHandler {
 			e.printStackTrace();
 		}
 
-		saveValueToDevice(res, dev, objectId + "/" + objectInstanceId + "/" + resourceId);
+		saveValueToDevice(res, dev, Integer.toString(objectId) + Integer.toString(objectInstanceId) + Integer.toString(resourceId));
 
 		return res;
 
@@ -106,7 +106,7 @@ public class LwM2MHandler {
 				if (resource.getValue() instanceof LwM2mSingleResource) {
 					LwM2mSingleResource singleRes = (LwM2mSingleResource) resource.getValue();
 
-					dataMap.put(path + "/"+entry.getKey() + "/" + resource.getKey(), singleRes.getValue().toString());
+					dataMap.put(path + entry.getKey() + resource.getKey(), singleRes.getValue().toString());
 
 				} else if (resource.getValue() instanceof LwM2mMultipleResource) {
 					LwM2mMultipleResource resources = (LwM2mMultipleResource) resource.getValue();
@@ -117,6 +117,7 @@ public class LwM2MHandler {
 
 		}
 
+		dev.setLastUpdate(new Date());
 		dev.setDataMap(dataMap);
 		deviceService.updateDevice(dev);
 	}
@@ -137,6 +138,7 @@ public class LwM2MHandler {
 				dataMap.put(path, resources.getValues().toString());
 			}
 		}
+		dev.setLastUpdate(new Date());
 		dev.setDataMap(dataMap);
 		deviceService.updateDevice(dev);
 	}
