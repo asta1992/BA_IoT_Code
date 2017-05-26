@@ -70,7 +70,7 @@ g<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 									</td>
 									<td>
 										<button class="btn btn-success btn-sm"
-											onclick="addDevice('${row.id}')">Add</button>
+											onclick="location.href='/smartmanager/devices/${row.id}/add'">Add</button>
 									</td>
 								</tr>
 							</c:forEach>

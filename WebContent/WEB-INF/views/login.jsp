@@ -8,11 +8,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link rel="stylesheet" href="../smartmanager/resources/css/style.css" type="text/css">
-<link rel="stylesheet" href="../smartmanager/resources/css/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="../smartmanager/resources/css/bootstrap-theme.min.css" type="text/css">
-<script src="../smartmanager/resources/js/jquery-2.1.4.min.js"></script>
-<script src="../smartmanager/resources/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="../smartmanager/resources/css/smartmanager/style.css" type="text/css">
+<link rel="stylesheet" href="../smartmanager/resources/css/lib/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="../smartmanager/resources/css/lib/bootstrap-theme.min.css" type="text/css">
+<script src="../smartmanager/resources/js/lib/jquery-2.1.4.min.js"></script>
+<script src="../smartmanager/resources/js/lib/bootstrap.min.js"></script>
 <title>Login</title>
 </head>
 <body onload='document.f.j_username.focus();'>

@@ -104,5 +104,4 @@
 			</div>
 		</div>
 	</c:forEach>
-	<c:out value="${device}"></c:out>
 </div>
