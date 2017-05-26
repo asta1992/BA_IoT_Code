@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -27,7 +29,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="/smartmanager/users">Settings</a></li>
 						<li role="separator" class="divider"></li>
-						<li><a href="<c:url value='j_spring_security_logout' />">Logout</a></li>
+						<li><a href="<c:url value='j_spring_security_logout'/>">Logout</a></li>
 					</ul></li>
 			</ul>
 		</div>
