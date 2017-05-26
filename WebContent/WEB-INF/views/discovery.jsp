@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+g<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -27,6 +27,10 @@
 	type="text/javascript"></script>
 <script src="../smartmanager/resources/js/lib/bootstrap-select.min.js"
 	type="text/javascript"></script>
+<script src="../smartmanager/resources/js/smartmanager/discovery.js"
+	type="text/javascript"></script>
+<script src="../smartmanager/resources/js/smartmanager/groupManagement.js"
+	type="text/javascript"></script>
 </head>
 <body>
 	<div class="container-fluid">
@@ -52,21 +56,21 @@
 								<tr>
 									<td>${row.name}</td>
 									<td>${row.id}</td>
-									<td><select class="selectpicker">
+									<td><select class="selectpicker" id="groupSelector">
 											<c:forEach var="groups" items="${groups}">
-												<option value="'${groups.name}'">${groups.name}</option>
+												<option value="'${groups.name}'" id="${groups.id}">${groups.name}</option>
 											</c:forEach>
 									</select></td>
 									<td>
-										<select class="selectpicker">
+										<select class="selectpicker" id="configSelector">
 											<c:forEach var="configurations" items="${configurations}">
-												<option value="'${configurations.name}'">${configurations.name}</option>
+												<option value="'${configurations.name}'" id="${configurations.id}">${configurations.name}</option>
 											</c:forEach>
 									</select>
 									</td>
 									<td>
 										<button class="btn btn-success btn-sm"
-											onclick="location.href='/smartmanager/devices/${row.id}/add'">Add</button>
+											onclick="addDevice('${row.id}')">Add</button>
 									</td>
 								</tr>
 							</c:forEach>

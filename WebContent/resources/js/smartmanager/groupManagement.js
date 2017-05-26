@@ -44,18 +44,21 @@ function openDeviceMemberships(id) {
 					$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
 						updatedMemberships.push(this.id);
 					});
-
-					$.ajax({
-						type : "POST",
-						dataType : "json",
-						data : {
-							value : JSON.stringify(updatedMemberships)
-						},
-						url : "/smartmanager/devices/" + id + "/changeMembership"
-					});
+					changeMembership(id, updatedMemberships);
 				}
 			});
 		}
+	});
+}
+
+function changeMembership(deviceId, memberships) {
+	$.ajax({
+		type : "POST",
+		dataType : "json",
+		data : {
+			value : JSON.stringify(memberships)
+		},
+		url : "/smartmanager/devices/" + id + "/changeMembership"
 	});
 }
 
