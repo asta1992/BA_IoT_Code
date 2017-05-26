@@ -40,10 +40,7 @@
 			<div class="panel-heading">
 				<h5>
 					<a data-toggle="collapse" href="#collapse${loop.index}">${model.key}</a>
-					<span class="pull-right"><button type="button"
-							class="btn btn-primary btn-xs"
-							id="btn-read-multiple${objectLinks[loop.index]}"
-							onclick="readMultiple('${readMultiple}')">Read Multiple</button></span>
+					<span class="pull-right"><button type="button" class="btn btn-primary btn-xs" id="btn-read-multiple${objectLinks[loop.index]}" onclick="readMultiple('${readMultiple}')">Read Multiple</button></span>
 				</h5>
 			</div>
 

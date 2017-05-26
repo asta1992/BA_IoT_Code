@@ -1,5 +1,6 @@
 package ch.hsr.smartmanager.presentation.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,24 +36,27 @@ public class WebController {
 	LwM2MHandler lwM2MHandler;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String showIndex(Model model) {
-		System.out.println(deviceService.allWritableObjectIDs());
+	public String showIndex(Model model, Principal principal) {
+		model.addAttribute("username", principal.getName());
 		return "index";
 	}
 
 	@RequestMapping(value = "/discovery")
-	public String showDiscovery(Model model) {
+	public String showDiscovery(Model model, Principal principal) {
 		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
+		model.addAttribute("username", principal.getName());
 		return "discovery";
 	}
 	
 	@RequestMapping(value = "/configurations")
-	public String showConfigurations(Model model) {
+	public String showConfigurations(Model model, Principal principal) {
+		model.addAttribute("username", principal.getName());
 		return "configurations";
 	}
 	
 	@RequestMapping(value = "/devices")
-	public String showDevices(Model model) {
+	public String showDevices(Model model, Principal principal) {
+		model.addAttribute("username", principal.getName());
 		return "devices";
 	}
 	
@@ -81,6 +85,7 @@ public class WebController {
 		model.addAttribute("objectLinks", dev.getObjectLinks().toArray());
 		model.addAttribute("registration", reg);
 		model.addAttribute("device", dev);
+
 		
 		return "deviceFragment";
 	}

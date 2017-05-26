@@ -1,4 +1,4 @@
-body { 
+body {
 	padding-top: 70px;
 }
 
@@ -10,6 +10,7 @@ body {
 .panel-heading .btn {
 	width: 110px !important;
 }
+
 .panel-body .btn {
 	width: 80px !important;
 	margin: 3px !important;
@@ -28,7 +29,3 @@ body {
 	font-size: 85% !important;
 	padding: 5px !important;
 }
-
-
-
-
