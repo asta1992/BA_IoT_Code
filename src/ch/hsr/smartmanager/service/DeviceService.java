@@ -1,6 +1,5 @@
 package ch.hsr.smartmanager.service;
 
-import java.nio.file.attribute.GroupPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

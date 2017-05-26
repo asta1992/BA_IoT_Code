@@ -1,0 +1,31 @@
+body {
+	padding-top: 70px;
+}
+
+.heading-button {
+	width: 150px !important;
+	margin: 10px !important;
+}
+
+.panel-heading .btn {
+	width: 110px !important;
+}
+
+.panel-body .btn {
+	width: 80px !important;
+	margin: 3px !important;
+}
+
+#accordion .panel-heading {
+	background-image: none !important;
+	background-color: white !important;
+}
+
+.panel-heading a {
+	font-weight: bold !important;
+}
+
+#accordion .panel-body {
+	font-size: 85% !important;
+	padding: 5px !important;
+}

@@ -8,6 +8,7 @@
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.10.xsd">
 
 
+	<import resource="security-config.xml" />
 
 	<mvc:annotation-driven></mvc:annotation-driven>
 	<bean id="jspViewResolver"
@@ -16,6 +17,8 @@
 		<property name="prefix" value="/WEB-INF/views/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+
+
 
 	<mvc:resources mapping="/resources/**" location="/resources/"
 		cache-period="31556926" />
@@ -31,6 +34,8 @@
 		<constructor-arg ref="mongoDbFactory" />
 	</bean>
 
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	</bean>
 
 
 	<mongo:repositories base-package="ch.hsr.smartmanager.data.repository" />
@@ -46,4 +51,5 @@
 
 	<context:component-scan base-package="ch.hsr.smartmanager.presentation.controller">
 	</context:component-scan>
+
 </beans>
