@@ -91,11 +91,6 @@
 	width: 100% !important;
 }
 
-.bootstrap-select>.dropdown-toggle {
-	/*color: red !important;*/
-	
-}
-
 .glyphicon {
 	padding: 5px !important;
 }

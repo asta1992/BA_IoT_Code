@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.hsr.smartmanager.data.ManagementUser;
+import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.ManagementUserService;
 
 @Controller
 public class LoginWebController {
+	
+	@Autowired
+	DeviceService deviceService;
 	
 	@Autowired
 	ManagementUserService managementUserService;
@@ -23,6 +27,7 @@ public class LoginWebController {
 		if(principal == null) return doLogout();
 		ManagementUser user = managementUserService.findUserByName(principal.getName());
 		model.addAttribute("username", user.getUsername());
+		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		model.addAttribute("user", user);
 		return "userSettings";
 	}

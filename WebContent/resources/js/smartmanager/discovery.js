@@ -1,10 +1,15 @@
 function addDevice(deviceId){
-	var groupId = $('#groupSelector').find(":selected").text()
-	console.log(groupId);
-	
+	var groupId = $('#groupSelector option:selected').attr('id');
+	var configId = $('#configSelector option:selected').attr('id');
+	console.log($('#groupSelector option:selected').text());
+	$.ajax({
+		type : "POST",
+		dataType : "json",
+		data : {
+			groupId : groupId,
+			configId: configId
+		},
+		url : "/smartmanager/devices/" + deviceId + "/add"
+	});
 	
 }
-
-
-
-/*/smartmanager/devices/${row.id}/add'*/

@@ -11,6 +11,7 @@ import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.server.registration.Registration;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +44,7 @@ public class WebController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showIndex(Model model, Principal principal) {
 		model.addAttribute("username", principal.getName());
+		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		return "index";
 	}
 
@@ -52,6 +54,7 @@ public class WebController {
 		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
 		model.addAttribute("configurations", configService.getAllConfigurations());
 		model.addAttribute("username", principal.getName());
+		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		return "discovery";
 	}
 
@@ -59,12 +62,14 @@ public class WebController {
 	public String showConfigurations(Model model, Principal principal) {
 		model.addAttribute("username", principal.getName());
 		model.addAttribute("configurations", configService.getAllConfigurations());
+		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		return "configurations";
 	}
 
 	@RequestMapping(value = "/devices")
 	public String showDevices(Model model, Principal principal) {
 		model.addAttribute("username", principal.getName());
+		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		return "devices";
 	}
 
@@ -82,14 +87,14 @@ public class WebController {
 		final String regex = "\\/([0-9]*)\\/";
 		final Pattern pattern = Pattern.compile(regex);
 		Matcher matcher;
-		
+
 		for (String objId : dev.getObjectLinks()) {
 			matcher = pattern.matcher(objId);
 			String parseId = "1";
 			if (matcher.find()) {
 				parseId = matcher.group(1);
 			}
-			
+
 			ObjectModel objectModel = regModel.getObjectModel(Integer.parseInt(parseId));
 			resourceModelList = new ArrayList<ResourceModelAdapter>();
 
@@ -175,9 +180,11 @@ public class WebController {
 		return "groupMembersFragment";
 	}
 
-	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.GET)
-	public String addDevice(Model model, @PathVariable("id") String id) {
-		deviceService.addToManagement(id);
+	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.POST)
+	public String addDevice(Model model, @PathVariable("id") String id, @RequestParam("groupId") String groupId,
+			@RequestParam("configId") String configId) {
+		deviceService.addToManagement(id, groupId, configId);
+
 		return "redirect:/discovery";
 	}
 

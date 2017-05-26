@@ -90,8 +90,13 @@ public class DeviceService {
 		groupRepo.save(grpChild);
 	}
 
-	public void addToManagement(String id) {
-		DeviceGroup group = (DeviceGroup) groupRepo.findByName("_unassigned");
+	public void addToManagement(String id, String groupId, String configId) {
+		if(!configId.equals("none")){
+			//TODO
+		}
+		System.out.println("Request PARAM: " + groupId);
+		DeviceGroup group = groupRepo.findOne(groupId);
+		System.out.println(group.getName());
 		Device device = deviceRepo.findOne(id);
 		device.setAdded(true);
 		deviceRepo.save(device);

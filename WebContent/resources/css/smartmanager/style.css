@@ -29,11 +29,12 @@ body {
 	padding: 5px !important;
 }
 
-.bootstrap-select > .btn-default { 
+.btn-default { 
 	background-image: none !important;
     background-color: white !important;
+    color: #337ab7 !important;
+    font-weight: bold !important;
 }
-
 
 
 
