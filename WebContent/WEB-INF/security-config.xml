@@ -25,8 +25,8 @@
 		<sec:intercept-url pattern="/" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/devices" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/devices/**" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/groups" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/groups/**" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/groups" access="permitAll" />
+		<sec:intercept-url pattern="/groups/**" access="permitAll" />
 		<sec:intercept-url pattern="/group" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/group/**" access="isAuthenticated()" />
 

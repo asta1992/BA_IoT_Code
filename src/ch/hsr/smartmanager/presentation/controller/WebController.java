@@ -4,9 +4,11 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
@@ -123,6 +125,12 @@ public class WebController {
 	public String writeCommandToChildsFragment(Model model) {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
 		return "writeCommandToChildsFragment";
+	}
+	
+	@RequestMapping(value = "/groups/{id}/writeConfiguration", method = RequestMethod.POST)
+	public String writeConfiguration(Model model, @PathVariable("id") String id, @RequestParam("value") String configurationId){
+		model.addAttribute("result", configService.writeConfigurationToGroup(id, configurationId));
+		return "writeConfigResultFragment";
 	}
 	
 	@RequestMapping(value = "/groups/executeCommandToChildsFragment", method = RequestMethod.GET)

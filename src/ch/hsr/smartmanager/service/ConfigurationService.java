@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.response.WriteResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,23 +68,21 @@ public class ConfigurationService {
 		configRepo.delete(configRepo.findOne(configurationId));
 	}
 	
-	public Map<String, List<Map<String, WriteResponse>>> writeConfigurationToGroup(String id, Configuration configuration) {
-		Map<String, List<Map<String, WriteResponse>>> responseMap = new HashMap<>();
-		List<Device> devices = deviceService.findAllChildren(id);
+	public Map<String, List<Map<String, ResponseCode>>> writeConfigurationToGroup(String groupId, String configurationId) {
+		Map<String, List<Map<String, ResponseCode>>> responseMap = new HashMap<>();
+		List<Device> devices = deviceService.findAllChildren(groupId);
 		for(Device device : devices) {
-			responseMap.put(device.getName(), writeConfigurationToDevice(device.getId(), configuration));
+			responseMap.put(device.getName(), writeConfigurationToDevice(device.getId(), configurationId));
 		}
 		return responseMap;
 	}
 	
-	public List<Map<String, WriteResponse>> writeConfigurationToDevice(String id, Configuration configuration) {
-		List<Map<String, WriteResponse>> responseList = new ArrayList<>();
+	public List<Map<String, ResponseCode>> writeConfigurationToDevice(String deviceId, String configurationId) {
+		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
+		Configuration configuration = configRepo.findOne(configurationId);
 		for(ConfigurationItem item : configuration.getConfigurationItems()) {
-			responseList.add(lwM2MHandler.write(id, item.getPathPart(1), item.getPathPart(2), item.getPathPart(3), item.getValue()));
+			responseList.add(lwM2MHandler.write(deviceId, item.getPathPart(1), item.getPathPart(2), item.getPathPart(3), item.getValue()));
 		}
 		return responseList;
 	}
-		
-	
-
 }

@@ -96,8 +96,7 @@ public class DeviceService {
 		DeviceGroup group = groupRepo.findOne(groupId);
 		
 		if(!configId.equals("none")){
-			Configuration configuration = configurationService.findOne(configId);
-			configurationService.writeConfigurationToDevice(id, configuration);
+			configurationService.writeConfigurationToDevice(id, configId);
 		}
 
 		Device device = deviceRepo.findOne(id);
