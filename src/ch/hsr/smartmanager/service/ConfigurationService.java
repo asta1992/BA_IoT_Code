@@ -67,8 +67,8 @@ public class ConfigurationService {
 		configRepo.delete(configRepo.findOne(configurationId));
 	}
 	
-	public Map<String, List<WriteResponse>> writeConfigurationToGroup(String groupId, String configurationId) {
-		Map<String, List<WriteResponse>> responseMap = new HashMap<>();
+	public Map<String, List<Map<String, WriteResponse>>> writeConfigurationToGroup(String groupId, String configurationId) {
+		Map<String, List<Map<String, WriteResponse>>> responseMap = new HashMap<>();
 		List<Device> devices = deviceService.findAllChildren(groupId);
 		for(Device device : devices) {
 			responseMap.put(device.getName(), writeConfigurationToDevice(device.getId(), configurationId));
@@ -76,11 +76,11 @@ public class ConfigurationService {
 		return responseMap;
 	}
 	
-	public List<WriteResponse> writeConfigurationToDevice(String id, String configurationId) {
-		List<WriteResponse> responseList = new ArrayList<>();
+	public List<Map<String, WriteResponse>> writeConfigurationToDevice(String deviceId, String configurationId) {
+		List<Map<String, WriteResponse>> responseList = new ArrayList<>();
 		Configuration configuration = configRepo.findOne(configurationId);
 		for(ConfigurationItem item : configuration.getConfigurationItems()) {
-			responseList.add(lwM2MHandler.write(id, item.getPathPart(1), item.getPathPart(2), item.getPathPart(3), item.getValue()));
+			responseList.add(lwM2MHandler.write(deviceId, item.getPathPart(1), item.getPathPart(2), item.getPathPart(3), item.getValue()));
 		}
 		return responseList;
 	}
