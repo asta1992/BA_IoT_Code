@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -143,7 +144,7 @@ public class LwM2MHandler {
 		deviceService.updateDevice(dev);
 	}
 
-	public WriteResponse write(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+	public Map<String, WriteResponse> write(String id, int objectId, int objectInstanceId, int resourceId, String value) {
 		server = lwM2MManagementServer.getServer();
 
 		Registration reg = server.getRegistrationService().getById(deviceService.getDevice(id).getRegId());
@@ -163,11 +164,14 @@ public class LwM2MHandler {
 		if(res.getCode() == ResponseCode.CHANGED) {
 			read(id, objectId, objectInstanceId, resourceId);
 		}
-		return res;
+		Map<String, WriteResponse> response = new HashMap<>();
+		
+		
+		return response;
 	}
 	
-	public List<WriteResponse> writeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId, String value) {
-		List<WriteResponse> responses = new ArrayList<>();
+	public List<Map<String, WriteResponse>> writeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+		List<Map<String, WriteResponse>> responses = new ArrayList<>();
 		List<Device> devices = deviceService.findAllChildren(id);
 		for(Device dev : devices) {
 			responses.add(write(dev.getId(), objectId, objectInstanceId, resourceId, value));

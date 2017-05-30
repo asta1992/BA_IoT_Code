@@ -54,7 +54,7 @@ public class RestController {
 	}
 
 	@RequestMapping(value = "/devices/{id}/write/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
-	public WriteResponse write(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
+	public Map<String, WriteResponse> write(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId,
 			@RequestParam("value") String value) {
 
@@ -234,7 +234,7 @@ public class RestController {
 	}
 	
 	@RequestMapping(value = "/groups/{id}/writeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
-	public List<WriteResponse> writeChildDevices(Model model,@PathVariable("id") String id, @PathVariable("objectId") int objectId,
+	public List<Map<String, WriteResponse>> writeChildDevices(Model model,@PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId,
 			@RequestParam("value") String value){
 		return lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, value);
