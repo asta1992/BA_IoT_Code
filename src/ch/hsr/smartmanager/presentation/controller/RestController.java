@@ -267,6 +267,19 @@ public class RestController {
 		return jsonObjects;
 	}
 	
+	
+	@RequestMapping(value = "/groups/{id}/executeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method=RequestMethod.POST)
+	public void writeChildDevices(Model model,@PathVariable("id") String id, @PathVariable("objectId") int objectId,
+			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
+		List<Device> devices = deviceService.findAllChildren(id);
+		for(Device device : devices) {
+			lwM2MHandler.execute(device.getId(), objectId, objectInstanceId, resourceId);
+		}
+	}
+
+
+	
+	
 	@RequestMapping(value = "/configurations/add")
 	public void addConfiguration(Model model,@RequestParam("value") JSONArray value){
 		configService.saveConfiguration(value);

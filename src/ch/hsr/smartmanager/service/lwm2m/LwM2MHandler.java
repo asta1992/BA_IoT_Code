@@ -192,7 +192,6 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
-
 		return res;
 	}
 
