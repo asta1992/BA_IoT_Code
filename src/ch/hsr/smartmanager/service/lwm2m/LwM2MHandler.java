@@ -144,7 +144,7 @@ public class LwM2MHandler {
 		deviceService.updateDevice(dev);
 	}
 
-	public Map<String, WriteResponse> write(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+	public Map<String, ResponseCode> write(String id, int objectId, int objectInstanceId, int resourceId, String value) {
 		server = lwM2MManagementServer.getServer();
 
 		Registration reg = server.getRegistrationService().getById(deviceService.getDevice(id).getRegId());
@@ -164,14 +164,15 @@ public class LwM2MHandler {
 		if(res.getCode() == ResponseCode.CHANGED) {
 			read(id, objectId, objectInstanceId, resourceId);
 		}
-		Map<String, WriteResponse> response = new HashMap<>();
+		Map<String, ResponseCode> response = new HashMap<>();
+		response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
 		
 		
 		return response;
 	}
 	
-	public List<Map<String, WriteResponse>> writeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId, String value) {
-		List<Map<String, WriteResponse>> responses = new ArrayList<>();
+	public List<Map<String, ResponseCode>> writeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+		List<Map<String, ResponseCode>> responses = new ArrayList<>();
 		List<Device> devices = deviceService.findAllChildren(id);
 		for(Device dev : devices) {
 			responses.add(write(dev.getId(), objectId, objectInstanceId, resourceId, value));

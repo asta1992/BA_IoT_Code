@@ -14,11 +14,6 @@ function createUser() {
 	console.log("Add User");
 }
 
-
-
-
-
-
 function deleteUser() {
 	$.ajax({
 		dataType : "html",

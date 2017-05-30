@@ -104,8 +104,6 @@ function writeData(url, objectLink, type) {
 					default:
 
 					}
-					console.log("Wert: " + result);
-					console.log("URL: " + url);
 					$.ajax({
 						type : "POST",
 						dataType : "json",
@@ -115,7 +113,7 @@ function writeData(url, objectLink, type) {
 						url : url,
 						success : function(data) {
 							$("#readResponse" + objectLink).text(result);
-							$("#writeResponse" + objectLink).text(data.coapResponse.code);
+							$("#writeResponse" + objectLink).text(Object.values(data));
 							$("#writeResponse" + objectLink).fadeIn("slow").delay(2000).fadeOut('slow');
 						}
 					});
