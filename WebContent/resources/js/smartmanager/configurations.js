@@ -87,6 +87,32 @@ function deleteConfiguration(configurationId) {
 	
 }
 
+function editConfiguration(configurationId) {
+	$.ajax({
+		type : "GET",
+		dataType : "html",
+		url : "/smartmanager/configurations/" + configurationId + "/editConfigurationFragment",
+		success : function(createConfigurationFragment) {
+			bootbox.confirm({
+				size : "large",
+				title : "Prepare your configuration",
+				message : createConfigurationFragment,
+				buttons : {
+					confirm : {
+						label : 'Save',
+					}
+				},
+				callback : function(save) {
+					if (save) {
+						saveConfiguration();
+					}
+					parent.location.reload();
+				}
+			})
+		}
+	})
+}
+
 function updateCompleteObjectId() {
 	$('#completeObjectId').html(parseInt($('#objectDropdown').find(":selected").text()) + "/" + $('#instanceIdField').val() + "/" + parseInt($('#resourceDropdown').find(":selected").text()));
 }

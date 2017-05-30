@@ -27,15 +27,25 @@ public class ConfigurationService {
 	private LwM2MHandler lwM2MHandler;
 
 	public void saveConfiguration(JSONArray config) {
+		
 		try {
-			Configuration configuration = new Configuration(config.getString(0), config.getString(1));
+			String configurationName = config.getString(0);
+			String configurationDescription = config.getString(1);
+			Configuration configuration = new Configuration(configurationName, configurationDescription);
 			for (int i = 2; i < config.length(); i++) {
 				String path = (String)config.getJSONObject(i).get("Object Link");
 				String value = (String)config.getJSONObject(i).get("Value");
 				ConfigurationItem configurationItem = new ConfigurationItem(path, value);
 				configuration.add(configurationItem);
 			}
-			configRepo.save(configuration);
+			if (configRepo.existsByName(configurationName)) {
+				Configuration updatedConfiguration = configRepo.findByName(configurationName);
+				configuration.setId(updatedConfiguration.getId());
+				updatedConfiguration = configuration;
+				configRepo.save(updatedConfiguration);
+			} else {
+				configRepo.insert(configuration);
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

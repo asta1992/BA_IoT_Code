@@ -70,7 +70,13 @@
 							<c:forEach var="configurations" items="${configurations}">
 								<tr>
 									<td>${configurations.name}</td>
-									<td>${configurations.description}<span class="pull-right">
+									<td>${configurations.description}
+									<span class="pull-right">
+											<button type="button" class="btn btn-primary btn-xs"
+												onclick="editConfiguration('${configurations.id}')">Edit
+											</button>
+									</span>
+									<span class="pull-right">
 											<button type="button" class="btn btn-danger btn-xs"
 												onclick="deleteConfiguration('${configurations.id}')">Delete
 											</button>
