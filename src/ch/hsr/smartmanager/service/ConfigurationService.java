@@ -1,7 +1,11 @@
 package ch.hsr.smartmanager.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.eclipse.leshan.core.response.WriteResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,17 +67,21 @@ public class ConfigurationService {
 		configRepo.delete(configRepo.findOne(configurationId));
 	}
 	
-	public void writeConfigurationToGroup(String id, Configuration configuration) {
+	public Map<String, List<WriteResponse>> writeConfigurationToGroup(String id, Configuration configuration) {
+		Map<String, List<WriteResponse>> responseMap = new HashMap<>();
 		List<Device> devices = deviceService.findAllChildren(id);
 		for(Device device : devices) {
-			writeConfigurationToDevice(device.getId(), configuration);
+			responseMap.put(device.getName(), writeConfigurationToDevice(device.getId(), configuration));
 		}
+		return responseMap;
 	}
 	
-	public void writeConfigurationToDevice(String id, Configuration configuration) {
+	public List<WriteResponse> writeConfigurationToDevice(String id, Configuration configuration) {
+		List<WriteResponse> responseList = new ArrayList<>();
 		for(ConfigurationItem item : configuration.getConfigurationItems()) {
-			lwM2MHandler.write(id, item.getPathPart(1), item.getPathPart(2), item.getPathPart(3), item.getValue());
+			responseList.add(lwM2MHandler.write(id, item.getPathPart(1), item.getPathPart(2), item.getPathPart(3), item.getValue()));
 		}
+		return responseList;
 	}
 		
 	
