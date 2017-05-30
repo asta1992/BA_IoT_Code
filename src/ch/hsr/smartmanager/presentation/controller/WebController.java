@@ -125,6 +125,12 @@ public class WebController {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
 		return "writeCommandToChildsFragment";
 	}
+	
+	@RequestMapping(value = "/groups/executeCommandToChildsFragment", method = RequestMethod.GET)
+	public String executeCommandToChildsFragment(Model model) {
+		model.addAttribute("objectMap", deviceService.allExecutableObjectIDs());
+		return "executeCommandToChildsFragment";
+	}
 
 	@RequestMapping(value = "/groups/writeConfigToChildsFragment", method = RequestMethod.GET)
 	public String writeConfigToChildsFragment(Model model) {

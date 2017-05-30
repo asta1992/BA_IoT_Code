@@ -255,6 +255,21 @@ public class DeviceService {
 		}
 		return map;
 	}
+	
+	public Map<Integer, String> allExecutableObjectIDs() {
+		Map<Integer, String> map = new TreeMap<>();
+		List<ObjectModel> models = lwM2MManagementServer.getModels();
+
+		for (ObjectModel model : models) {
+			for (Map.Entry<Integer, ResourceModel> resource : model.resources.entrySet()) {
+				if (resource.getValue().operations.toString().contains("E")) {
+					map.put(model.id, model.name);
+					break;
+				}
+			}
+		}
+		return map;
+	}
 
 	public List<ResourceModelAdapter> allWritableResources(String objectId) {
 		List<ResourceModelAdapter> resources = new ArrayList<>();
@@ -264,6 +279,22 @@ public class DeviceService {
 			if (model.id == Integer.parseInt(objectId)) {
 				for (Map.Entry<Integer, ResourceModel> resource : model.resources.entrySet()) {
 					if (resource.getValue().operations.toString().contains("W")) {
+						resources.add(new ResourceModelAdapter(resource.getValue()));
+					}
+				}
+			}
+		}
+		return resources;
+	}
+	
+	public List<ResourceModelAdapter> allExecuteableResources(String objectId) {
+		List<ResourceModelAdapter> resources = new ArrayList<>();
+		List<ObjectModel> models = lwM2MManagementServer.getModels();
+
+		for (ObjectModel model : models) {
+			if (model.id == Integer.parseInt(objectId)) {
+				for (Map.Entry<Integer, ResourceModel> resource : model.resources.entrySet()) {
+					if (resource.getValue().operations.toString().contains("E")) {
 						resources.add(new ResourceModelAdapter(resource.getValue()));
 					}
 				}

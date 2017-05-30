@@ -13,6 +13,33 @@ function updateAllChildDevices(groupId) {
 	})
 }
 
+function executeAllChildDevices(groupId) {
+	$.ajax({
+		type: "GET",
+		dataType : "html",
+		url : "/smartmanager/groups/executeCommandToChildsFragment",
+		success : function(executeToChildsForm) {
+			bootbox.confirm({
+				size: "large",
+				title : "choose your command to execute",
+				message : executeToChildsForm,
+				callback : function(ok) {
+					if(ok){
+						var objectId = parseInt($('#objectDropdown').find(":selected").text());
+						var objectInstanceId = $('#instanceIdField').val();
+						var resourceId = parseInt($('#resourceDropdown').find(":selected").text())
+						$.ajax({
+							type: "POST",
+							dataType : "json",
+							url : "/smartmanager/groups/" + groupId + "/executeChildDevices/" + objectId + "/" + objectInstanceId + "/" + resourceId,
+						})
+					}
+				}
+			})
+		}
+	})
+}
+
 function writeAllChildDevices(groupId) {
 	$.ajax({
 		type: "GET",
@@ -35,9 +62,6 @@ function writeAllChildDevices(groupId) {
 								"value" : $('#writeValue').val()
 							},
 							url : "/smartmanager/groups/" + groupId + "/writeChildDevices/" + objectId + "/" + objectInstanceId + "/" + resourceId,
-							success : function(result) {
-								alert("Here comes the Result!");
-							}
 						})
 					}
 				}
@@ -72,6 +96,39 @@ function writeConfigToChildDevices(groupId, groupName) {
 					}
 				}
 			})
+		}
+	})
+}
+
+function getExecuteableResources(){
+	var objectId = parseInt($('#objectDropdown').find(":selected").text());
+	var instanceIdField = $('#instanceIdField');
+	$.ajax({
+		type: "GET",
+		url: "/smartmanager/group/" + objectId + "/multiInstance",
+		success : function(multiInstance){
+			if(multiInstance.value){
+				instanceIdField.prop('disabled', false);
+			}
+			else {
+				instanceIdField.val("0");
+				instanceIdField.prop('disabled', true);
+			}
+			updateCompleteObjectId();
+		}
+	})
+	
+	var resourceDropdown = $('#resourceDropdown');
+	$.ajax({
+		type: "GET",
+		url : "/smartmanager/group/" + objectId + "/executeToChildren",
+		success : function(resources) {
+			resourceDropdown.empty();
+			resources.forEach(function(entry){
+				resourceDropdown.append('<option value="' + entry.resourceModel.id + '">' + entry.resourceModel.id + " " + "(" +entry.resourceModel.name + ")" + '</option>');
+			})
+			resourceDropdown.selectpicker('refresh');
+			updateCompleteObjectId();
 		}
 	})
 }

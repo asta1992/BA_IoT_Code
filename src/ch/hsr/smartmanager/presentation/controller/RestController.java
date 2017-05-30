@@ -207,6 +207,11 @@ public class RestController {
 		return deviceService.allWritableResources(objectId);
 	}
 	
+	@RequestMapping(value = "/group/{objectId}/executeToChildren", method = RequestMethod.GET)
+	public List<ResourceModelAdapter> executeToChildren(Model model, @PathVariable("objectId") String objectId) {
+		return deviceService.allExecuteableResources(objectId);
+	}
+	
 	@RequestMapping(value = "/group/{objectId}/multiInstance", method = RequestMethod.GET)
 	public Map<String, Boolean> multiInstance(Model model, @PathVariable("objectId") String objectId) {
 		return Collections.singletonMap("value", deviceService.isMultiInstance(objectId));
