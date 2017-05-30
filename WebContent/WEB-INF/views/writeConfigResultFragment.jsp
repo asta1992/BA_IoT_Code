@@ -1,24 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<c:forEach var="result" items="${result}">
-	<h3>
-		${result.key}
-	</h3>		
+
+
+<c:forEach var="entry" items="${result}">
+	<h3>${entry.key}</h3>
+	<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Path</th>
+			<th>Result</th>
+		</tr>
+	</thead>
+	<tbody>
+		<c:forEach var="item" items="${entry.value}">
+			<c:forEach var="map" items="${item}">
+						<tr>
+							<td>${map.key}</td>
+							<td>${map.value}</td>
+						</tr>
+					</c:forEach>
+		</c:forEach>
+	</tbody>
+	</table>
 </c:forEach>
-
-
-<style>
-
-</style>
-
-
-
-
-<script>
-	$('.selectpicker').selectpicker({
-		size : 10
-	});
-</script>

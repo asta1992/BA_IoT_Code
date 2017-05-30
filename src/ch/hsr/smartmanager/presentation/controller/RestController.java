@@ -276,9 +276,6 @@ public class RestController {
 			lwM2MHandler.execute(device.getId(), objectId, objectInstanceId, resourceId);
 		}
 	}
-
-
-	
 	
 	@RequestMapping(value = "/configurations/add")
 	public void addConfiguration(Model model,@RequestParam("value") JSONArray value){

@@ -6,7 +6,8 @@ function updateAllChildDevices(groupId) {
 				$.ajax({
 					type : "GET",
 					dataType : "json",
-					url : "/smartmanager/groups/" + groupId + "/readChildDevices",
+					url : "/smartmanager/groups/" + groupId
+							+ "/readChildDevices",
 				});
 			}
 		}
@@ -25,12 +26,16 @@ function executeAllChildDevices(groupId) {
 				message : executeToChildsForm,
 				callback : function(ok) {
 					if (ok) {
-						var objectId = parseInt($('#objectDropdown').find(":selected").text());
+						var objectId = parseInt($('#objectDropdown').find(
+								":selected").text());
 						var objectInstanceId = $('#instanceIdField').val();
-						var resourceId = parseInt($('#resourceDropdown').find(":selected").text())
+						var resourceId = parseInt($('#resourceDropdown').find(
+								":selected").text())
 						$.ajax({
 							type : "POST",
-							url : "/smartmanager/groups/" + groupId + "/executeChildDevices/" + objectId + "/" + objectInstanceId + "/" + resourceId,
+							url : "/smartmanager/groups/" + groupId
+									+ "/executeChildDevices/" + objectId + "/"
+									+ objectInstanceId + "/" + resourceId,
 						})
 					}
 				}
@@ -51,16 +56,20 @@ function writeAllChildDevices(groupId) {
 				message : writeToChildsForm,
 				callback : function(ok) {
 					if (ok) {
-						var objectId = parseInt($('#objectDropdown').find(":selected").text());
+						var objectId = parseInt($('#objectDropdown').find(
+								":selected").text());
 						var objectInstanceId = $('#instanceIdField').val();
-						var resourceId = parseInt($('#resourceDropdown').find(":selected").text())
+						var resourceId = parseInt($('#resourceDropdown').find(
+								":selected").text())
 						$.ajax({
 							type : "POST",
 							dataType : "json",
 							data : {
 								"value" : $('#writeValue').val()
 							},
-							url : "/smartmanager/groups/" + groupId + "/writeChildDevices/" + objectId + "/" + objectInstanceId + "/" + resourceId,
+							url : "/smartmanager/groups/" + groupId
+									+ "/writeChildDevices/" + objectId + "/"
+									+ objectInstanceId + "/" + resourceId,
 						})
 					}
 				}
@@ -80,28 +89,33 @@ function writeConfigToChildDevices(groupId, groupName) {
 				message : writeConfigToChildsFragment,
 				callback : function(ok) {
 					if (ok) {
-						callback = function(result){
-							console.log("YAY");
-						}
-						$.when(getResult(groupId, callback)).done(function(data){
-							console.log(data);
+						getResult(groupId, function(data) {
+							bootbox.alert({
+								title : "Your Results",
+								message : data,
+								callback : function() {}
+							});
 						});
-						
 					}
 				}
-			})
+			});
 		}
-	})
+	});
 }
 
 function getResult(groupId, callback) {
 	$.ajax({
-		type : "POST",
-		dataType : "json",
+		type : "GET",
+		dataType : "html",
 		data : {
-			"value" : $('#configSelector option:selected').val()
+			value : $('#configSelector option:selected').val()
 		},
 		url : "/smartmanager/groups/" + groupId + "/writeConfiguration",
-		done : callback
+		success : function(res) {
+			callback(res);
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError);
+		}
 	})
 }
