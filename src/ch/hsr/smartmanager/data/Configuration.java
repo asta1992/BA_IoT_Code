@@ -31,6 +31,10 @@ public class Configuration {
 	public String getId() {
 		return id;
 	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -55,7 +59,9 @@ public class Configuration {
 	public void setConfigurationItems(List<ConfigurationItem> configurationItems) {
 		this.configurationItems = configurationItems;
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "Configuration [id=" + id + ", name=" + name + ", description=" + description + "]";
+	}
 }

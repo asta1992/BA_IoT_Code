@@ -57,9 +57,7 @@ function writeConfigToChildDevices(groupId, groupName) {
 				message : writeConfigToChildsFragment,
 				callback : function(ok) {
 					if(ok){
-						var objectId = parseInt($('#objectDropdown').find(":selected").text());
-						var objectInstanceId = $('#instanceIdField').val();
-						var resourceId = parseInt($('#resourceDropdown').find(":selected").text())
+						
 						$.ajax({
 							type: "POST",
 							dataType : "json",

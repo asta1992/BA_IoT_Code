@@ -137,6 +137,13 @@ public class WebController {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
 		return "createConfigurationFragment";
 	}
+	
+	@RequestMapping(value = "/configurations/{id}/editConfigurationFragment", method = RequestMethod.GET)
+	public String editConfigurationFragment(Model model, @PathVariable("id") String id) {
+		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
+		model.addAttribute("configuration", configService.getConfiguration(id));
+		return "editConfigurationFragment";
+	}
 
 	@RequestMapping(value = "/devices/{id}/memberships", method = RequestMethod.GET)
 	public String getDeviceMemberships(Model model, @PathVariable("id") String id) {

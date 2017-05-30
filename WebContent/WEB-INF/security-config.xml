@@ -32,7 +32,7 @@
 
 		<sec:intercept-url pattern="/group/*" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/configurations" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/configurations/*"
+		<sec:intercept-url pattern="/configurations/**"
 			access="isAuthenticated()" />
 
 		<sec:intercept-url pattern="/discovery" access="isAuthenticated()" />
