@@ -123,7 +123,7 @@ public class LwM2MHandler {
 	}
 
 	private void saveValueToDevice(ReadResponse res, Device dev, String path) {
-
+		
 		Map<String, String> dataMap = dev.getDataMap();
 
 		if (res.getContent() != null) {
@@ -159,7 +159,7 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
-
+		
 		if(res.getCode() == ResponseCode.CHANGED) {
 			read(id, objectId, objectInstanceId, resourceId);
 		}

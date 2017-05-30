@@ -2,8 +2,6 @@ package ch.hsr.smartmanager.service.lwm2m;
 
 import java.util.Collection;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.leshan.Link;
 import org.eclipse.leshan.core.observation.Observation;
