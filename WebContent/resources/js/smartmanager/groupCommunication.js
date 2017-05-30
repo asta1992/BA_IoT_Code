@@ -88,47 +88,11 @@ function writeConfigToChildDevices(groupId, groupName) {
 							data : {
 								"value" : $('#writeValue').val()
 							},
-							url : "/smartmanager/groups/" + groupId + "/writeChildDevices/" + objectId + "/" + objectInstanceId + "/" + resourceId,
-							success : function(result) {
-								alert("Here comes the Result!");
-							}
+							url : "/smartmanager/",
 						})
 					}
 				}
 			})
-		}
-	})
-}
-
-function getExecuteableResources(){
-	var objectId = parseInt($('#objectDropdown').find(":selected").text());
-	var instanceIdField = $('#instanceIdField');
-	$.ajax({
-		type: "GET",
-		url: "/smartmanager/group/" + objectId + "/multiInstance",
-		success : function(multiInstance){
-			if(multiInstance.value){
-				instanceIdField.prop('disabled', false);
-			}
-			else {
-				instanceIdField.val("0");
-				instanceIdField.prop('disabled', true);
-			}
-			updateCompleteObjectId();
-		}
-	})
-	
-	var resourceDropdown = $('#resourceDropdown');
-	$.ajax({
-		type: "GET",
-		url : "/smartmanager/group/" + objectId + "/executeToChildren",
-		success : function(resources) {
-			resourceDropdown.empty();
-			resources.forEach(function(entry){
-				resourceDropdown.append('<option value="' + entry.resourceModel.id + '">' + entry.resourceModel.id + " " + "(" +entry.resourceModel.name + ")" + '</option>');
-			})
-			resourceDropdown.selectpicker('refresh');
-			updateCompleteObjectId();
 		}
 	})
 }

@@ -146,7 +146,7 @@ public class WebController {
 	@RequestMapping(value = "/configurations/{id}/editConfigurationFragment", method = RequestMethod.GET)
 	public String editConfigurationFragment(Model model, @PathVariable("id") String id) {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
-		model.addAttribute("configuration", configService.getConfiguration(id));
+		model.addAttribute("configuration", configService.findOne(id));
 		return "editConfigurationFragment";
 	}
 
