@@ -30,7 +30,6 @@ function executeAllChildDevices(groupId) {
 						var resourceId = parseInt($('#resourceDropdown').find(":selected").text())
 						$.ajax({
 							type: "POST",
-							dataType : "json",
 							url : "/smartmanager/groups/" + groupId + "/executeChildDevices/" + objectId + "/" + objectInstanceId + "/" + resourceId,
 						})
 					}
@@ -81,14 +80,16 @@ function writeConfigToChildDevices(groupId, groupName) {
 				message : writeConfigToChildsFragment,
 				callback : function(ok) {
 					if(ok){
-						
 						$.ajax({
 							type: "POST",
 							dataType : "json",
 							data : {
-								"value" : $('#writeValue').val()
+								"value" : $('#configSelector option:selected').val()
 							},
-							url : "/smartmanager/",
+							url : "/smartmanager/groups/" + groupId + "/writeConfiguration",
+							success : function(res) {
+								console.log(res);
+							}
 						})
 					}
 				}

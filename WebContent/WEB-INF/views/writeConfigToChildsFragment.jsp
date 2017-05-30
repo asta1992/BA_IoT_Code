@@ -10,9 +10,9 @@
 		</div>
 		<div class="col-lg-8 col-md-8 col-sm-8">
 			
-			<select class="selectpicker">
+			<select id="configSelector" class="selectpicker">
 				<c:forEach var="configurations" items="${configurations}">
-					<option value="'${configurations.name}'">${configurations.name}</option>
+					<option value="${configurations.id}">${configurations.name}</option>
 				</c:forEach>
 			</select>
 		</div>

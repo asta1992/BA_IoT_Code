@@ -276,4 +276,9 @@ public class RestController {
 	public void deleteConfiguration(Model model,@RequestParam("value") String value){
 		configService.deleteConfiguration(value);
 	}
+	
+	@RequestMapping(value = "/groups/{id}/writeConfiguration", method = RequestMethod.POST)
+	public Map<String, List<WriteResponse>> writeConfiguration(Model model, @PathVariable("id") String id, @RequestParam("value") String configurationId){
+		return configService.writeConfigurationToGroup(id, configurationId);
+	}
 }
