@@ -3,8 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-
-<form id="loginForm" method="post" class="form-horizontal"">
+<form id="loginForm" method="post" class="form-horizontal">
 	<div class="form-group">
 		<label class="col-xs-3 control-label">Username</label>
 		<div class="col-xs-5">

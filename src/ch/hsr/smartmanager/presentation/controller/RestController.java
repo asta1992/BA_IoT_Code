@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.eclipsesource.json.Json;
 
-import ch.hsr.smartmanager.data.Configuration;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;

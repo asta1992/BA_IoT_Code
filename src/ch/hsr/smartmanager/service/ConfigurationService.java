@@ -9,13 +9,22 @@ import org.springframework.stereotype.Service;
 
 import ch.hsr.smartmanager.data.Configuration;
 import ch.hsr.smartmanager.data.ConfigurationItem;
+import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.repository.ConfigurationItemRepository;
+import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
+import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
 
 @Service
 public class ConfigurationService {
 
 	@Autowired
 	private ConfigurationItemRepository configRepo;
+	
+	@Autowired
+	private DeviceService deviceService;
+
+	@Autowired
+	private LwM2MHandler lwM2MHandler;
 
 	public void saveConfiguration(JSONArray config) {
 		
@@ -46,12 +55,27 @@ public class ConfigurationService {
 		return configRepo.findAll();
 	}
 	
-	public Configuration getConfiguration(String id){
+	public Configuration findOne(String id){
 		return configRepo.findOne(id);
 	}
 
 	public void deleteConfiguration(String configurationId) {
 		configRepo.delete(configRepo.findOne(configurationId));
 	}
+	
+	public void writeConfigurationToGroup(String id, Configuration configuration) {
+		List<Device> devices = deviceService.findAllChildren(id);
+		for(Device device : devices) {
+			writeConfigurationToDevice(device.getId(), configuration);
+		}
+	}
+	
+	public void writeConfigurationToDevice(String id, Configuration configuration) {
+		for(ConfigurationItem item : configuration.getConfigurationItems()) {
+			lwM2MHandler.write(id, item.getPathPart(1), item.getPathPart(2), item.getPathPart(3), item.getValue());
+		}
+	}
+		
+	
 
 }

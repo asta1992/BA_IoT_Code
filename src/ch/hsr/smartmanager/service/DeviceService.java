@@ -14,6 +14,7 @@ import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ch.hsr.smartmanager.data.Configuration;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
@@ -29,6 +30,8 @@ public class DeviceService {
 	private DeviceRepository deviceRepo;
 	@Autowired
 	private DeviceGroupRepository groupRepo;
+	@Autowired
+	private ConfigurationService configurationService;
 	@Autowired
 	private LwM2MManagementServer lwM2MManagementServer;
 
@@ -53,7 +56,6 @@ public class DeviceService {
 			groupRepo.save(grpChild);
 		}
 		else {
-			System.out.println("Else");
 			List<DeviceGroup> group = groupRepo.findAllByChildrenId(new ObjectId(grpChild.getId()));
 			for(DeviceGroup grp : group) {
 				grp.remove(grpChild);
@@ -91,13 +93,15 @@ public class DeviceService {
 	}
 
 	public void addToManagement(String id, String groupId, String configId) {
-		if(!configId.equals("none")){
-			//TODO
-		}
-		System.out.println("Request PARAM: " + groupId);
 		DeviceGroup group = groupRepo.findOne(groupId);
-		System.out.println(group.getName());
+		
+		if(!configId.equals("none")){
+			Configuration configuration = configurationService.findOne(configId);
+			configurationService.writeConfigurationToDevice(id, configuration);
+		}
+
 		Device device = deviceRepo.findOne(id);
+
 		device.setAdded(true);
 		deviceRepo.save(device);
 		addDeviceToGroup(group.getId(), id);
