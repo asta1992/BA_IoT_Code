@@ -6,7 +6,11 @@ function readData(url, objectLink) {
 			if (data.code == "CONTENT") {
 				$("#readResponse" + objectLink).text(data.content.value);
 			} else {
-				alert(data.code);
+				bootbox.alert({
+					title : "Error",
+					message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
+					callback : function() {	}
+				});
 			}
 		}
 	});
@@ -50,7 +54,11 @@ function readMultiple(url) {
 				}
 				
 			} else {
-				alert(data.code);
+				bootbox.alert({
+					title : "Error",
+					message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
+					callback : function() {	}
+				});
 			}
 		}
 	});
@@ -68,6 +76,7 @@ function writeData(url, objectLink, type) {
 			} else {
 				defaultValue = data.code;
 			}
+			
 			bootbox.prompt({
 				title : "Please enter the value",
 				inputType : 'text',
@@ -108,13 +117,23 @@ function writeData(url, objectLink, type) {
 						type : "POST",
 						dataType : "json",
 						data : {
-							"value" : result
+							value : result
 						},
 						url : url,
 						success : function(data) {
-							$("#readResponse" + objectLink).text(result);
-							$("#writeResponse" + objectLink).text(Object.values(data));
-							$("#writeResponse" + objectLink).fadeIn("slow").delay(2000).fadeOut('slow');
+							if (data.code == "CHANGED") {
+								$("#readResponse" + objectLink).text(result);
+								$("#writeResponse" + objectLink).text(Object.values(data));
+								$("#writeResponse" + objectLink).fadeIn("slow").delay(2000).fadeOut('slow');
+								
+							} else {
+								bootbox.alert({
+									title : "Error",
+									message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
+									callback : function() {	}
+								});
+							}
+							
 						}
 					});
 				}
@@ -122,15 +141,27 @@ function writeData(url, objectLink, type) {
 		}
 	});
 
-}
+	}
+
 
 function execute(url, objectLink) {
 	$.ajax({
 		dataType : "json",
 		url : url,
 		success : function(data) {
-			$("#writeResponse" + objectLink).text("Accomplished!");
-			$("#writeResponse" + objectLink).fadeIn("slow").delay(1000).fadeOut('slow');
+			if (data.code == "CHANGED") {
+				$("#writeResponse" + objectLink).text("Accomplished!");
+				$("#writeResponse" + objectLink).fadeIn("slow").delay(1000).fadeOut('slow');
+				
+			} else {
+				bootbox.alert({
+					title : "Error",
+					message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
+					callback : function() {	}
+				});
+			}
+
+			
 		}
 	});
 }
