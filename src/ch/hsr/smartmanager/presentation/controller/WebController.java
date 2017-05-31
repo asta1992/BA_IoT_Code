@@ -44,6 +44,7 @@ public class WebController {
 	public String showIndex(Model model, Principal principal) {
 		model.addAttribute("username", principal.getName());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
+		model.addAttribute("deviceCounter", deviceService.countAllDevices());
 		return "index";
 	}
 
