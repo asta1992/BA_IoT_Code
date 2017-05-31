@@ -293,12 +293,12 @@ public class RestController {
 		configService.deleteConfiguration(value);
 	}
 	
-	@RequestMapping(value ="/smartmanager/devices/locations/{id}", method=RequestMethod.GET)
+	@RequestMapping(value ="/devices/locations/{id}", method=RequestMethod.GET)
 	public List<List<String>> getAllLocation(Model model, @PathVariable("id") String id){
 		return deviceService.getAllLocationByGroup(id);
 	}
-	
-	@RequestMapping(value ="/smartmanager/devices/locations/all", method=RequestMethod.GET)
+
+	@RequestMapping(value ="/devices/locations/all", method=RequestMethod.GET)
 	public List<List<String>> getAllLocation(Model model){
 		return deviceService.getAllLocation();
 	}
