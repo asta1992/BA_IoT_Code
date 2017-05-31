@@ -83,11 +83,11 @@
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
-									<i class="fa fa-eye fa-5x"></i>
+									<i class="fa fa-user fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">${discoveredDeviceCounter}</div>
-									<div>Discovered Devices</div>
+									<div class="huge">${registeredUsers}</div>
+									<div>Registered Users</div>
 								</div>
 							</div>
 						</div>

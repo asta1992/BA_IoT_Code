@@ -25,6 +25,7 @@ import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.service.ConfigurationService;
 import ch.hsr.smartmanager.service.DeviceService;
+import ch.hsr.smartmanager.service.ManagementUserService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
 
@@ -36,6 +37,8 @@ public class WebController {
 	@Autowired
 	private ConfigurationService configService;
 	@Autowired
+	private ManagementUserService mangementUserService;
+	@Autowired
 	private LwM2MManagementServer lwM2MManagementServer;
 	@Autowired
 	LwM2MHandler lwM2MHandler;
@@ -46,6 +49,7 @@ public class WebController {
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		model.addAttribute("deviceCounter", deviceService.countAllDevices());
 		model.addAttribute("unrechableDevices", deviceService.getUnreachableDevices());
+		model.addAttribute("registeredUsers", mangementUserService.findAll().size());
 		return "index";
 	}
 
