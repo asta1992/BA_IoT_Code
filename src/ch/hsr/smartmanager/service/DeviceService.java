@@ -2,6 +2,7 @@ package ch.hsr.smartmanager.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -10,11 +11,19 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 
 import org.bson.types.ObjectId;
+import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
+import org.eclipse.leshan.core.node.LwM2mNode;
+import org.eclipse.leshan.core.node.LwM2mSingleResource;
+import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.server.registration.Registration;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.mongodb.ReadConcernLevel;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
@@ -22,6 +31,7 @@ import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.data.repository.DeviceGroupRepository;
 import ch.hsr.smartmanager.data.repository.DeviceRepository;
+import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
 
 @Service("deviceService")
@@ -35,6 +45,8 @@ public class DeviceService {
 	private ConfigurationService configurationService;
 	@Autowired
 	private LwM2MManagementServer lwM2MManagementServer;
+	@Autowired
+	private LwM2MHandler lwM2MHandler;
 
 	public void addDeviceToGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
@@ -47,7 +59,8 @@ public class DeviceService {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
 
-		if (isAncestors(grpParent.getName(), grpChild.getName()) || isAncestors(grpChild.getName(), grpParent.getName())) {
+		if (isAncestors(grpParent.getName(), grpChild.getName())
+				|| isAncestors(grpChild.getName(), grpParent.getName())) {
 			return;
 		}
 
@@ -55,10 +68,9 @@ public class DeviceService {
 			grpParent.add(grpChild);
 			groupRepo.save(grpParent);
 			groupRepo.save(grpChild);
-		}
-		else {
+		} else {
 			List<DeviceGroup> group = groupRepo.findAllByChildrenId(new ObjectId(grpChild.getId()));
-			for(DeviceGroup grp : group) {
+			for (DeviceGroup grp : group) {
 				grp.remove(grpChild);
 				groupRepo.save(grp);
 			}
@@ -79,7 +91,8 @@ public class DeviceService {
 	public void removeDeviceFromGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
 		Device device = deviceRepo.findOne(deviceId);
-		if(group == null || device == null) return;
+		if (group == null || device == null)
+			return;
 		group.remove(device);
 		groupRepo.save(group);
 		deviceRepo.save(device);
@@ -88,7 +101,8 @@ public class DeviceService {
 	public void removeGroupFromGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
-		if(grpParent == null || grpChild == null) return;
+		if (grpParent == null || grpChild == null)
+			return;
 		grpParent.remove(grpChild);
 		groupRepo.save(grpParent);
 		groupRepo.save(grpChild);
@@ -96,8 +110,8 @@ public class DeviceService {
 
 	public void addToManagement(String id, String groupId, String configId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
-		
-		if(!configId.equals("none")){
+
+		if (!configId.equals("none")) {
 			configurationService.writeConfigurationToDevice(id, configId);
 		}
 
@@ -186,15 +200,15 @@ public class DeviceService {
 		DeviceGroup mainGroup = groupRepo.findOne(id);
 		List<String> childrenGroup = groupRepo.findAllChildren(mainGroup.getName());
 		childrenGroup.add(mainGroup.getName());
-		for(String name : childrenGroup) {
+		for (String name : childrenGroup) {
 			DeviceGroup group = groupRepo.findByName(name);
-			for(DeviceComponent dev : group.getChildren()) {
-				if(dev instanceof Device) allSubDevices.add((Device)dev);
+			for (DeviceComponent dev : group.getChildren()) {
+				if (dev instanceof Device)
+					allSubDevices.add((Device) dev);
 			}
 		}
 		return allSubDevices;
 	}
-	
 
 	public void deleteDeviceByRegistration(Registration registration) {
 		deviceRepo.removeDeviceByName(registration.getEndpoint());
@@ -236,14 +250,56 @@ public class DeviceService {
 		return deviceRepo.save(device);
 	}
 
-	public void createOrUpdateDevice(Device device, Registration registration) {
-		if (deviceRepo.existsByName(device.getName())) {
-			Device dev = deviceRepo.findByName(device.getName());
-			dev.setRegId(registration.getId());
-			dev = deviceRepo.save(dev);
-		} else {
-			deviceRepo.insert(device);
+	public List<List<String>> getAllLocation() {
+		return getLocationMap(getAllDevices());
+	}
+	
+	public List<List<String>> getAllLocationByGroup(String groupId) {
+		return getLocationMap(findAllChildren(groupId));
+	}
+	
+	public List<List<String>> getLocationMap(List<Device> devices) {
+		List<List<String>> list = new ArrayList<>();
+
+		for (Device device : devices) {
+			List<String> devValue = new ArrayList<>();
+			
+			devValue.add(device.getName());
+			devValue.add(device.getLatitude());
+			devValue.add(device.getLongitude());
+			devValue.add("0");
+
+			list.add(devValue);
 		}
+		return list;
+	}
+
+	
+
+	public void createOrUpdateDevice(Device device, Registration registration) {
+		Device dev;
+		if (deviceRepo.existsByName(device.getName())) {
+			dev = deviceRepo.findByName(device.getName());
+			dev.setRegId(registration.getId());
+		} else {
+			dev = deviceRepo.insert(device);
+		}
+		dev = deviceRepo.save(dev);
+
+		if (dev.getObjectLinks().contains("/6/0")) {
+			ReadResponse latitude = lwM2MHandler.read(dev.getId(), 6, 0, 0);
+			ReadResponse longitude = lwM2MHandler.read(dev.getId(), 6, 0, 1);
+			if (latitude.getCode() == ResponseCode.CONTENT) {
+				LwM2mSingleResource resource = (LwM2mSingleResource) latitude.getContent();
+
+				dev.setLatitude(resource.getValue().toString());
+			}
+			if (longitude.getCode() == ResponseCode.CONTENT) {
+				LwM2mSingleResource resource = (LwM2mSingleResource) longitude.getContent();
+				dev.setLongitude(resource.getValue().toString());
+			}
+		}
+		dev = deviceRepo.save(dev);
 	}
 
 	public Map<Integer, String> allWritableObjectIDs() {
@@ -260,7 +316,7 @@ public class DeviceService {
 		}
 		return map;
 	}
-	
+
 	public Map<Integer, String> allExecutableObjectIDs() {
 		Map<Integer, String> map = new TreeMap<>();
 		List<ObjectModel> models = lwM2MManagementServer.getModels();
@@ -291,7 +347,7 @@ public class DeviceService {
 		}
 		return resources;
 	}
-	
+
 	public List<ResourceModelAdapter> allExecuteableResources(String objectId) {
 		List<ResourceModelAdapter> resources = new ArrayList<>();
 		List<ObjectModel> models = lwM2MManagementServer.getModels();
@@ -330,12 +386,12 @@ public class DeviceService {
 		}
 		return false;
 	}
-	
+
 	public List<Device> getUnreachableDevices() {
 		long MAX_DURATION = TimeUnit.MILLISECONDS.convert(30, TimeUnit.MINUTES);
 		List<Device> allDevices = deviceRepo.findAll();
 		List<Device> unreachableDevices = new ArrayList<>();
-		for(Device device : allDevices) {
+		for (Device device : allDevices) {
 			long duration = new Date().getTime() - device.getLastRegistrationUpdate().getTime();
 			if (duration >= MAX_DURATION) {
 				unreachableDevices.add(device);

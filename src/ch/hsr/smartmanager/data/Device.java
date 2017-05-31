@@ -19,9 +19,9 @@ public class Device implements DeviceComponent {
 	private String name;
 	private String regId;
 	private String endpoint;
-	private String username;
-	private String password;
 	private Date lastUpdate;
+	private String latitude;
+	private String longitude;
 	private Date lastRegistrationUpdate;
 	private TreeSet<String> objectLinks;
 	private boolean added;
@@ -30,13 +30,10 @@ public class Device implements DeviceComponent {
 	public Device() {
 	}
 
-	public Device(String name, String regId, String endpoint, String username, String password,
-			TreeSet<String> objectLinks, Date lastRegistrationUpdate, boolean added) {
+	public Device(String name, String regId, String endpoint, TreeSet<String> objectLinks, Date lastRegistrationUpdate, boolean added) {
 		this.name = name;
 		this.regId = regId;
 		this.endpoint = endpoint;
-		this.username = username;
-		this.password = password;
 		this.objectLinks = objectLinks;
 		this.lastRegistrationUpdate = lastRegistrationUpdate;
 		this.added = added;
@@ -70,22 +67,6 @@ public class Device implements DeviceComponent {
 
 	public void setEntpoint(String endpoint) {
 		this.endpoint = endpoint;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getRegId() {
@@ -133,8 +114,7 @@ public class Device implements DeviceComponent {
 	
 	@Override
 	public String toString() {
-		return "Device [name=" + name + ", regId=" + regId + ", endpoint=" + endpoint + ", username=" + username
-				+ ", password=" + password + ", objectLinks=" + objectLinks + ", added=" + added + ", dataMap="
+		return "Device [name=" + name + ", regId=" + regId + ", endpoint=" + endpoint + ", objectLinks=" + objectLinks + ", added=" + added + ", dataMap="
 				+ dataMap + "]";
 	}
 
@@ -152,9 +132,7 @@ public class Device implements DeviceComponent {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((objectLinks == null) ? 0 : objectLinks.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((regId == null) ? 0 : regId.hashCode());
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -218,6 +196,22 @@ public class Device implements DeviceComponent {
 
 	public void setLastRegistrationUpdate(Date lastRegistrationUpdate) {
 		this.lastRegistrationUpdate = lastRegistrationUpdate;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 
 }
