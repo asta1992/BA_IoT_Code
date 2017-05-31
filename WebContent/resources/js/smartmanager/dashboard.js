@@ -7,11 +7,13 @@ function initMap() {
 		zoom : 8,
 		center : initLocation
 	});
+	getLocations(map);
 	
 
 }
 
-function getLocations(groupId) {
+function getLocations(map, groupId) {
+	
 	var url = "";
 	if (groupId == null){
 		url = "/smartmanager/devices/locations/all";
@@ -22,14 +24,14 @@ function getLocations(groupId) {
 	$.ajax({
 		type : "GET",
 		dataType : "json",
-		url : "/smartmanager/device/allLocations",
+		url : url,
 		success : function(locations) {
-			insertLocations(locations);
+			insertLocations(map, locations);
 		}
 	});
 }
 
-function insertLocations() {
+function insertLocations(map, locations) {
 	var infowindow = new google.maps.InfoWindow();
 
 	var marker, i;

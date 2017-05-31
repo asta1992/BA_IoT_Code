@@ -367,7 +367,7 @@ public class DeviceService {
 	}
 
 	public int countAllDevices() {
-		return getAllDevices().size();
+		return getAllDevices().size() - getAllDiscoveredDevice().size();
 	}
 
 	@PostConstruct
