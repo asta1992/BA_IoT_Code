@@ -3,11 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<div class="row">
-	<div class ="col-md-12">
-		<h2>Users</h2>
-	</div>
-</div>
 <div class="form-group">
   <select class="form-control" id="selectedUser">
   <c:forEach var="user" items="${userList}">

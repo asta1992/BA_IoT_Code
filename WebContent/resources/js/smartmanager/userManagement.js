@@ -1,17 +1,161 @@
 function showForm() {
-	$.ajax({
-		dataType : "html",
-		url : "/smartmanager/users/userAddFragment",
-		success : function(users) {
-			dialog = bootbox.dialog({
-				message : users
+	$
+			.ajax({
+				dataType : "html",
+				url : "/smartmanager/users/userAddFragment",
+				success : function(users) {
+					bootbox
+							.confirm({
+								title : "Create a new User",
+								message : users,
+								callback : function(ok) {
+									if (ok) {
+										var username = $("#username").val();
+										var firstPassword = $("#firstPassword")
+												.val();
+										var secondPassword = $(
+												"#secondPassword").val();
+
+										createUser(
+												username,
+												firstPassword,
+												secondPassword,
+												function(data) {
+													if (data.map.usernameLength) {
+														createUserAlert("The username is too short. The minimum length is 4");
+													} else if (data.map.existsError) {
+														createUserAlert("User already exists! Please choose another Username.");
+													} else if (data.map.passwordLength) {
+														createUserAlert("The password is too short, The minimum length is 8");
+													} else if (data.map.matchError) {
+														createUserAlert("Password doesn't match!")
+													} else {
+														bootbox
+																.alert({
+																	size : "small",
+																	title : "Success",
+																	message : "New User '"
+																			+ data.map.username
+																			+ "' created",
+																	callback : function() {
+																	}
+																})
+													}
+												});
+									}
+								}
+
+							});
+				}
 			});
+}
+function editForm(id) {
+	$
+			.ajax({
+				dataType : "html",
+				url : "/smartmanager/users/userEditFragment",
+				success : function(users) {
+					bootbox
+							.confirm({
+								title : "Change password",
+								message : users,
+								callback : function(ok) {
+									if (ok) {
+										var oldPassword = $("#oldPassword").val();
+										var firstPassword = $("#firstPassword")
+												.val();
+										var secondPassword = $(
+												"#secondPassword").val();
+
+										editUser(
+												id,
+												oldPassword,
+												firstPassword,
+												secondPassword,
+												function(data) {
+													if (data.map.oldPasswordError) {
+														createEditAlert(id, "Please check the old password");
+													} else if (data.map.passwordLength) {
+														createEditAlert(id, "The password is too short, The minimum length is 8");
+													} else if (data.map.matchError) {
+														createEditAlert(id, "Password doesn't match!")
+													} else {
+														bootbox
+																.alert({
+																	size : "small",
+																	title : "Success",
+																	message : "Successfully changed password",
+																	callback : function() {
+																	}
+																})
+													}
+												});
+									}
+								}
+
+							});
+				}
+			});
+}
+
+function createUserAlert(message) {
+	bootbox.alert({
+		size : "small",
+		title : "Error",
+		message : message,
+		callback : function() {
+			showForm()
 		}
 	});
 }
 
-function createUser() {
-	console.log("Add User");
+function createEditAlert(id, message) {
+	bootbox.alert({
+		size : "small",
+		title : "Error",
+		message : message,
+		callback : function() {
+			editForm(id)
+		}
+	});
+}
+
+function createUser(username, firstPassword, secondPassword, callback) {
+	$.ajax({
+		type : "POST",
+		dataType : "json",
+		data : {
+			username : username,
+			firstPassword : firstPassword,
+			secondPassword : secondPassword
+		},
+		url : "/smartmanager/users/add",
+		success : function(res) {
+			callback(res);
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError);
+		}
+	});
+}
+
+function editUser(id, oldPassword, firstPassword, secondPassword, callback) {
+	$.ajax({
+		type : "POST",
+		dataType : "json",
+		data : {
+			oldPassword: oldPassword,
+			firstPassword : firstPassword,
+			secondPassword : secondPassword
+		},
+		url : "users/" + id + "/edit",
+		success : function(res) {
+			callback(res);
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError);
+		}
+	});
 }
 
 function deleteUser() {
@@ -20,6 +164,7 @@ function deleteUser() {
 		url : "/smartmanager/users/userDeleteFragment",
 		success : function(users) {
 			bootbox.confirm({
+				title : "Delete a User",
 				message : users,
 				callback : function(ok) {
 					if (ok) {

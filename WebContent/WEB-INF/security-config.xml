@@ -18,7 +18,7 @@
 
 	<sec:http use-expressions="true">
 		<sec:intercept-url pattern="/users" access="permitAll" />
-		<sec:intercept-url pattern="/users/*" access="permitAll" />
+		<sec:intercept-url pattern="/users/**" access="permitAll" />
 		<sec:intercept-url pattern="/resources/**" access="permitAll" />
 		<sec:intercept-url pattern="/login" access="permitAll" />
 		<sec:intercept-url pattern="/logout" access="permitAll" />

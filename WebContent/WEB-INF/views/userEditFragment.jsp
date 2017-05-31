@@ -3,17 +3,25 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<div class="row">
-	<div class ="col-md-12">
-		<h2>Users</h2>
+<form id="loginForm" method="post" class="form-horizontal">
+	<div class="form-group">
+		<label class="col-xs-3 control-label">Old Password</label>
+		<div class="col-xs-5">
+			<input id='oldPassword' value="" type="password" class="form-control" name="oldPassword" required />
+		</div>
 	</div>
-</div>
-<div class="form-group">
-  <label for="selectedUser">Select list:</label>
-  <select class="form-control" id="selectedUser">
-  <c:forEach var="user" items="${userList}">
-			<option>${user.username}</option>
-		</c:forEach>
-    
-  </select>
-</div>
+
+	<div class="form-group">
+		<label class="col-xs-3 control-label">Password</label>
+		<div class="col-xs-5">
+			<input id="firstPassword" type="password" class="form-control" name="firstPassword" required />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-xs-3 control-label">Confirm Password</label>
+		<div class="col-xs-5">
+			<input id="secondPassword" type="password" class="form-control" name="secondPassword" required />
+		</div>
+	</div>
+</form>

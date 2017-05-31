@@ -1,5 +1,7 @@
 package ch.hsr.smartmanager.presentation.controller;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,21 +25,30 @@ public class LoginRestController {
 	}
 
 	@RequestMapping(value = "users/{id}/edit", method = RequestMethod.POST)
-	public String editUser(Model model, @PathVariable("id") String id, @RequestParam("oldPassword") String oldPassword,
+	public JSONObject editUser(Model model, @PathVariable("id") String id, @RequestParam("oldPassword") String oldPassword,
 			@RequestParam("firstPassword") String firstPassword,
 			@RequestParam("secondPassword") String secondPassword) {
 
-		if (!managementUserService.checkOldPassword(id, oldPassword))
-			return Boolean.toString(false);
-		return Boolean.toString(managementUserService.updateUser(id, firstPassword, secondPassword));
+			JSONObject result = new JSONObject();
+			try {
+				result = managementUserService.updateUser(id, oldPassword, firstPassword, secondPassword);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		return result;
 	}
 	
 	@RequestMapping(value = "/users/add", method = RequestMethod.POST)
-	public String addUser(Model model, @RequestParam("username") String username,
+	public JSONObject addUser(Model model, @RequestParam("username") String username,
 			@RequestParam("firstPassword") String firstPassword,
 			@RequestParam("secondPassword") String secondPassword) {
-		boolean result = managementUserService.addUser(username, firstPassword, secondPassword);
-		return Boolean.toString(result);
+		JSONObject result = new JSONObject();
+		try {
+			result = managementUserService.addUser(username.toLowerCase(), firstPassword, secondPassword);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	@RequestMapping(value = "/users/checkUser", method = RequestMethod.POST)

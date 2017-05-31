@@ -22,11 +22,6 @@
 
 </head>
 <body>
-
-
-
-
-
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0 0 0 0;">
@@ -45,7 +40,7 @@
 						</span>
 					</c:if>
 					<span class="pull-right">
-						<button type="button" class="btn btn-primary heading-button" onclick="updateUser('${user.id}', '${user.username }')">Change Password</button>
+						<button type="button" class="btn btn-primary heading-button" onclick="editForm('${user.id}')">Change Password</button>
 					</span>
 				</div>
 			</div>

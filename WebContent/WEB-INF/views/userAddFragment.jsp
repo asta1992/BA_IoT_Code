@@ -7,27 +7,21 @@
 	<div class="form-group">
 		<label class="col-xs-3 control-label">Username</label>
 		<div class="col-xs-5">
-			<input id="username" type="text" class="form-control" name="username" required minlength=6/>
+			<input id='username' value="" type="text" class="form-control" name="username" required />
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label class="col-xs-3 control-label">Password</label>
 		<div class="col-xs-5">
-			<input id="firstPassword" type="password" class="form-control" name="password"  required minlength=8/>
+			<input id="firstPassword" type="password" class="form-control" name="password" required />
 		</div>
 	</div>
 
 	<div class="form-group">
-		<label class="col-xs-3 control-label">Password</label>
+		<label class="col-xs-3 control-label">Confirm Password</label>
 		<div class="col-xs-5">
-			<input id="secondPassword" type="password" class="form-control" name="password" required minlength=8/>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<div class="col-xs-5 col-xs-offset-3">
-			<button id="loginButton" type="button"  onclick="createUser()" class="btn btn-default">Sign in</button>
+			<input id="secondPassword" type="password" class="form-control" name="password" required />
 		</div>
 	</div>
 </form>
