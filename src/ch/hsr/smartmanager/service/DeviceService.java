@@ -2,6 +2,7 @@ package ch.hsr.smartmanager.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -10,11 +11,19 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 
 import org.bson.types.ObjectId;
+import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
+import org.eclipse.leshan.core.node.LwM2mNode;
+import org.eclipse.leshan.core.node.LwM2mSingleResource;
+import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.server.registration.Registration;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.mongodb.ReadConcernLevel;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
@@ -22,6 +31,7 @@ import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.data.repository.DeviceGroupRepository;
 import ch.hsr.smartmanager.data.repository.DeviceRepository;
+import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
 
 @Service("deviceService")
@@ -35,6 +45,8 @@ public class DeviceService {
 	private ConfigurationService configurationService;
 	@Autowired
 	private LwM2MManagementServer lwM2MManagementServer;
+	@Autowired
+	private LwM2MHandler lwM2MHandler;
 
 	public void addDeviceToGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
@@ -238,14 +250,56 @@ public class DeviceService {
 		return deviceRepo.save(device);
 	}
 
-	public void createOrUpdateDevice(Device device, Registration registration) {
-		if (deviceRepo.existsByName(device.getName())) {
-			Device dev = deviceRepo.findByName(device.getName());
-			dev.setRegId(registration.getId());
-			dev = deviceRepo.save(dev);
-		} else {
-			deviceRepo.insert(device);
+	public List<List<String>> getAllLocation() {
+		return getLocationMap(getAllDevices());
+	}
+	
+	public List<List<String>> getAllLocationByGroup(String groupId) {
+		return getLocationMap(findAllChildren(groupId));
+	}
+	
+	public List<List<String>> getLocationMap(List<Device> devices) {
+		List<List<String>> list = new ArrayList<>();
+
+		for (Device device : devices) {
+			List<String> devValue = new ArrayList<>();
+			
+			devValue.add(device.getName());
+			devValue.add(device.getLatitude());
+			devValue.add(device.getLongitude());
+			devValue.add("0");
+
+			list.add(devValue);
 		}
+		return list;
+	}
+
+	
+
+	public void createOrUpdateDevice(Device device, Registration registration) {
+		Device dev;
+		if (deviceRepo.existsByName(device.getName())) {
+			dev = deviceRepo.findByName(device.getName());
+			dev.setRegId(registration.getId());
+		} else {
+			dev = deviceRepo.insert(device);
+		}
+		dev = deviceRepo.save(dev);
+
+		if (dev.getObjectLinks().contains("/6/0")) {
+			ReadResponse latitude = lwM2MHandler.read(dev.getId(), 6, 0, 0);
+			ReadResponse longitude = lwM2MHandler.read(dev.getId(), 6, 0, 1);
+			if (latitude.getCode() == ResponseCode.CONTENT) {
+				LwM2mSingleResource resource = (LwM2mSingleResource) latitude.getContent();
+
+				dev.setLatitude(resource.getValue().toString());
+			}
+			if (longitude.getCode() == ResponseCode.CONTENT) {
+				LwM2mSingleResource resource = (LwM2mSingleResource) longitude.getContent();
+				dev.setLongitude(resource.getValue().toString());
+			}
+		}
+		dev = deviceRepo.save(dev);
 	}
 
 	public Map<Integer, String> allWritableObjectIDs() {
@@ -342,11 +396,16 @@ public class DeviceService {
 		List<Device> allDevices = deviceRepo.findAll();
 		List<Device> unreachableDevices = new ArrayList<>();
 		for (Device device : allDevices) {
+<<<<<<< HEAD
 			long duration = 0;
 			if(device.getLastRegistrationUpdate() != null){
 				duration = new Date().getTime() - device.getLastRegistrationUpdate().getTime();
 			}
 			if (device.getLastRegistrationUpdate() == null || duration >= MAX_DURATION) {
+=======
+			long duration = new Date().getTime() - device.getLastRegistrationUpdate().getTime();
+			if (duration >= MAX_DURATION) {
+>>>>>>> branch 'master' of https://github.com/asta1992/BA_IoT_Code
 				unreachableDevices.add(device);
 			}
 		}

@@ -26,9 +26,9 @@ public class RegistrationListenerImpl {
 
 			public void registered(Registration registration) {
 				Device device = new Device(registration.getEndpoint(), registration.getId(),
-						"coap:/" + registration.getAddress() + ":" + registration.getPort(), "", "",
+						"coap:/" + registration.getAddress() + ":" + registration.getPort(),
 						getObjectLinks(registration.getObjectLinks()), registration.getLastUpdate(), false);
-				
+
 				deviceService.createOrUpdateDevice(device, registration);
 			}
 
@@ -40,12 +40,9 @@ public class RegistrationListenerImpl {
 
 			@Override
 			public void updated(RegistrationUpdate registrationUpdate, Registration registration) {
-				System.out.println(registration);
-				System.out.println(registrationUpdate);
-
 				Device device = new Device(registration.getEndpoint(), registration.getId(),
-						"coap:/" + registration.getAddress() + ";" + registration.getPort(), "", "",
-						getObjectLinks(registration.getObjectLinks()),registration.getLastUpdate(), false);
+						"coap:/" + registration.getAddress() + ";" + registration.getPort(),
+						getObjectLinks(registration.getObjectLinks()), registration.getLastUpdate(), false);
 				deviceService.createOrUpdateDevice(device, registration);
 			}
 
