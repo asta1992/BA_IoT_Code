@@ -25,9 +25,10 @@ public class RegistrationListenerImpl {
 		return new RegistrationListener() {
 
 			public void registered(Registration registration) {
-				
 				Device device = new Device(registration.getEndpoint(), registration.getId(),
-						"coap:/" + registration.getAddress() + ":" + registration.getPort(), "", "",getObjectLinks(registration.getObjectLinks()), false);
+						"coap:/" + registration.getAddress() + ":" + registration.getPort(), "", "",
+						getObjectLinks(registration.getObjectLinks()), registration.getLastUpdate(), false);
+				
 				deviceService.createOrUpdateDevice(device, registration);
 			}
 
@@ -39,24 +40,26 @@ public class RegistrationListenerImpl {
 
 			@Override
 			public void updated(RegistrationUpdate registrationUpdate, Registration registration) {
+				System.out.println(registration);
+				System.out.println(registrationUpdate);
+
 				Device device = new Device(registration.getEndpoint(), registration.getId(),
 						"coap:/" + registration.getAddress() + ";" + registration.getPort(), "", "",
-						getObjectLinks(registration.getObjectLinks()), false);
+						getObjectLinks(registration.getObjectLinks()),registration.getLastUpdate(), false);
 				deviceService.createOrUpdateDevice(device, registration);
 			}
 
 		};
 	}
-	
+
 	private TreeSet<String> getObjectLinks(Link[] links) {
 		TreeSet<String> objectId = new TreeSet<String>();
 
 		for (Link linkId : links) {
-			
-			if(linkId.getUrl().length() > 2)
+
+			if (linkId.getUrl().length() > 2)
 				objectId.add(linkId.getUrl());
-			}
+		}
 		return objectId;
 	}
 }
-

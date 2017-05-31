@@ -1,9 +1,11 @@
 package ch.hsr.smartmanager.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
@@ -327,6 +329,19 @@ public class DeviceService {
 			}
 		}
 		return false;
+	}
+	
+	public List<Device> getUnreachableDevices() {
+		long MAX_DURATION = TimeUnit.MILLISECONDS.convert(30, TimeUnit.MINUTES);
+		List<Device> allDevices = deviceRepo.findAll();
+		List<Device> unreachableDevices = new ArrayList<>();
+		for(Device device : allDevices) {
+			long duration = new Date().getTime() - device.getLastRegistrationUpdate().getTime();
+			if (duration >= MAX_DURATION) {
+				unreachableDevices.add(device);
+			}
+		}
+		return unreachableDevices;
 	}
 
 }
