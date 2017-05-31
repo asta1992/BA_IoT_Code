@@ -279,6 +279,7 @@ public class DeviceService {
 		if (deviceRepo.existsByName(device.getName())) {
 			dev = deviceRepo.findByName(device.getName());
 			dev.setRegId(registration.getId());
+			dev.setLastRegistrationUpdate(registration.getLastUpdate());
 		} else {
 			dev = deviceRepo.insert(device);
 		}
@@ -390,7 +391,7 @@ public class DeviceService {
 	}
 
 	public List<Device> getUnreachableDevices() {
-		long MAX_DURATION = TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTES);
+		long MAX_DURATION = TimeUnit.MILLISECONDS.convert(30, TimeUnit.MINUTES);
 		List<Device> allDevices = deviceRepo.findAll();
 		List<Device> unreachableDevices = new ArrayList<>();
 		for (Device device : allDevices) {

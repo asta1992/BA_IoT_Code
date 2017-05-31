@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -9,33 +8,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smartmanager</title>
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/smartmanager/style.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/bootstrap.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/bootstrap-theme.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/metisMenu.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/font-awesome.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/morris.css" type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/sb-admin-2.min.css"
-	type="text/css">
+<link rel="stylesheet" href="../smartmanager/resources/css/smartmanager/style.css" type="text/css">
+<link rel="stylesheet" href="../smartmanager/resources/css/lib/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="../smartmanager/resources/css/lib/bootstrap-theme.min.css" type="text/css">
+<link rel="stylesheet" href="../smartmanager/resources/css/lib/metisMenu.min.css" type="text/css">
+<link rel="stylesheet" href="../smartmanager/resources/css/lib/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="../smartmanager/resources/css/lib/morris.css" type="text/css">
+<link rel="stylesheet" href="../smartmanager/resources/css/lib/sb-admin-2.min.css" type="text/css">
 <script src="../smartmanager/resources/js/lib/jquery-2.1.4.min.js"></script>
 <script src="../smartmanager/resources/js/lib/bootstrap.min.js"></script>
 <script src="../smartmanager/resources/js/lib/metisMenu.js"></script>
 <script src="../smartmanager/resources/js/lib/sb-admin-2.js"></script>
 <script src="../smartmanager/resources/js/smartmanager/dashboard.js"></script>
-<script async defer
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7w-HEi_KCBCkCJNEKJzB2L7NJGl1CF4Y&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7w-HEi_KCBCkCJNEKJzB2L7NJGl1CF4Y&callback=initMap"></script>
 <style>
 .dashboard>.panel-body {
 	height: 350px;
@@ -45,8 +30,7 @@
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
-				style="padding: 0 0 0 0;">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0 0 0 0;">
 				<jsp:include page="../views/menuFragment.jsp" />
 			</div>
 			<div class="row">
@@ -65,8 +49,7 @@
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">View Details</span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
 						</a>
@@ -88,8 +71,7 @@
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">View Details</span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
 						</a>
@@ -111,8 +93,7 @@
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">View Details</span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
 						</a>
@@ -134,8 +115,7 @@
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">View Details</span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
 						</a>
@@ -161,15 +141,15 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="unreachableDevices"
-										items="${unrechableDevices}">
+									<c:forEach var="unreachableDevices" items="${unrechableDevices}">
 										<tr>
+											<c:out value="${unreachableDevices.lastRegistrationUpdate}"></c:out>
+											<c:out value="${unreachableDevices.lastUpdate}"></c:out>
+
 											<td>${unreachableDevices.name}</td>
 											<td>${unreachableDevices.lastRegistrationUpdate}</td>
 											<td><span class="pull-right">
-													<button type="button" class="btn btn-danger btn-xs"
-														onclick="deleteDevice('${configurations.id}')">Delete
-													</button>
+													<button type="button" class="btn btn-danger btn-xs" onclick="deleteDevice('${configurations.id}')">Delete</button>
 											</span></td>
 										</tr>
 									</c:forEach>
