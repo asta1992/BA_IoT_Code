@@ -253,17 +253,17 @@ public class DeviceService {
 	public List<List<String>> getAllLocation() {
 		return getLocationMap(getAllDevices());
 	}
-	
+
 	public List<List<String>> getAllLocationByGroup(String groupId) {
 		return getLocationMap(findAllChildren(groupId));
 	}
-	
+
 	public List<List<String>> getLocationMap(List<Device> devices) {
 		List<List<String>> list = new ArrayList<>();
 
 		for (Device device : devices) {
 			List<String> devValue = new ArrayList<>();
-			
+
 			devValue.add(device.getName());
 			devValue.add(device.getLatitude());
 			devValue.add(device.getLongitude());
@@ -273,8 +273,6 @@ public class DeviceService {
 		}
 		return list;
 	}
-
-	
 
 	public void createOrUpdateDevice(Device device, Registration registration) {
 		Device dev;
@@ -396,16 +394,8 @@ public class DeviceService {
 		List<Device> allDevices = deviceRepo.findAll();
 		List<Device> unreachableDevices = new ArrayList<>();
 		for (Device device : allDevices) {
-<<<<<<< HEAD
-			long duration = 0;
-			if(device.getLastRegistrationUpdate() != null){
-				duration = new Date().getTime() - device.getLastRegistrationUpdate().getTime();
-			}
-			if (device.getLastRegistrationUpdate() == null || duration >= MAX_DURATION) {
-=======
 			long duration = new Date().getTime() - device.getLastRegistrationUpdate().getTime();
 			if (duration >= MAX_DURATION) {
->>>>>>> branch 'master' of https://github.com/asta1992/BA_IoT_Code
 				unreachableDevices.add(device);
 			}
 		}
