@@ -19,7 +19,7 @@ public class Device implements DeviceComponent {
 	private String name;
 	private String regId;
 	private String endpoint;
-	private Date lastUpdate;
+	private Date lastUpdate = new Date();
 	private String latitude;
 	private String longitude;
 	private Date lastRegistrationUpdate;
@@ -38,7 +38,6 @@ public class Device implements DeviceComponent {
 		this.lastRegistrationUpdate = lastRegistrationUpdate;
 		this.added = added;
 		this.setDataMap(new HashMap<>());
-		this.lastUpdate = new Date();
 	}
 
 	public String getId() {
