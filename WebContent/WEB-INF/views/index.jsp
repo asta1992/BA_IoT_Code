@@ -1,7 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,8 +22,10 @@
 	href="../smartmanager/resources/css/lib/metisMenu.min.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/morris.css"
+	href="../smartmanager/resources/css/lib/font-awesome.min.css"
 	type="text/css">
+<link rel="stylesheet"
+	href="../smartmanager/resources/css/lib/morris.css" type="text/css">
 <link rel="stylesheet"
 	href="../smartmanager/resources/css/lib/sb-admin-2.min.css"
 	type="text/css">
@@ -47,37 +50,71 @@
 				<jsp:include page="../views/menuFragment.jsp" />
 			</div>
 			<div class="row">
-				<div class="col-lg-3 col-md-6 col-sm-6">
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
 					<div class="panel panel-primary">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
-									<i class="fa fa-comments fa-5x"></i>
+									<i class="fa fa-mobile fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">26</div>
-									<div>New Comments!</div>
+									<div class="huge">${deviceCounter}</div>
+									<div>Devices</div>
 								</div>
 							</div>
 						</div>
-						<div class="panel-footer">
-							<span class="pull-left">View Details</span> <span
-								class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
+						<a href="#">
+							<div class="panel-footer">
+								<span class="pull-left">View Details</span> <span
+									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
 					</div>
 				</div>
-
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-eye fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge">${discoveredDeviceCounter}</div>
+									<div>Discovered Devices!</div>
+								</div>
+							</div>
+						</div>
+						<a href="#">
+							<div class="panel-footer">
+								<span class="pull-left">View Details</span> <span
+									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
 			</div>
+
 		</div>
 		<div class="row">
-			<div class="row">
-				<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7"></div>
-				<div id="map" class="col-lg-5 col-md-5 col-sm-5 col-xs-5">MAP</div>
-			</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<div class="panel panel-primary">
+                        <div class="panel-heading">
+                            All Devices
+                        </div>
+                        <div class="panel-body">
+                            <div id="morris-area-chart">
+                            	<div id="map"></div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
 		</div>
 
-	</div>
 	</div>
 </body>
 </html>

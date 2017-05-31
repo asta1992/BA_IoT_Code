@@ -309,6 +309,10 @@ public class DeviceService {
 	public int countDiscoveredDevices() {
 		return getAllDiscoveredDevice().size();
 	}
+	
+	public int countAllDevices() {
+		return getAllDevices().size();
+	}
 
 	@PostConstruct
 	public void removeOldDiscoveries() {
