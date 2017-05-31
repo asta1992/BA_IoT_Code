@@ -106,7 +106,6 @@ public class RestController {
 
 		for (DeviceGroup devGroups : preGroups) {
 			if (!postGroups.contains(devGroups)) {
-				System.out.println("REMOVE");
 				deviceService.removeDeviceFromGroup(devGroups.getId(), device.getId());
 			}
 		}
@@ -131,16 +130,23 @@ public class RestController {
 		if(value.length() == 1) {
 			try {
 				DeviceGroup newParentGroup = deviceService.getGroup(value.getString(0));
-				DeviceGroup oldParentGroup = deviceService.listAllGroupsForComponents(id).get(0);
 				DeviceGroup group = deviceService.getGroup(id);
+
+				List<DeviceGroup> oldParentGroups = deviceService.listAllGroupsForComponents(id);
 				
-				deviceService.removeGroupFromGroup(oldParentGroup.getId(), group.getId());
-				
+				if(!oldParentGroups.isEmpty()) {
+					deviceService.removeGroupFromGroup(oldParentGroups.get(0).getId(), group.getId());
+				}
 				deviceService.addGroupToGroup(newParentGroup.getId(), group.getId());
 				
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+		}
+		if(value.length() == 0) {
+			DeviceGroup group = deviceService.getGroup(id);
+			DeviceGroup oldParentGroup = deviceService.listAllGroupsForComponents(id).get(0);
+			deviceService.removeGroupFromGroup(oldParentGroup.getId(), group.getId());
 		}
 	}
 	

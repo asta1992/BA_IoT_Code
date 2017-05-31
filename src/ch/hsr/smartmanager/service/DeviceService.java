@@ -78,7 +78,6 @@ public class DeviceService {
 	public void removeDeviceFromGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
 		Device device = deviceRepo.findOne(deviceId);
-		System.out.println(group + ":" + device);
 		group.remove(device);
 		groupRepo.save(group);
 		deviceRepo.save(device);
