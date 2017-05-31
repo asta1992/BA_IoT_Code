@@ -22,6 +22,7 @@ public class Device implements DeviceComponent {
 	private String username;
 	private String password;
 	private Date lastUpdate;
+	private Date lastRegistrationUpdate;
 	private TreeSet<String> objectLinks;
 	private boolean added;
 	private Map<String, String> dataMap;
@@ -29,18 +30,15 @@ public class Device implements DeviceComponent {
 	public Device() {
 	}
 
-	public Device(String name) {
-		this.name = name;
-	}
-
 	public Device(String name, String regId, String endpoint, String username, String password,
-			TreeSet<String> objectLinks, boolean added) {
+			TreeSet<String> objectLinks, Date lastRegistrationUpdate, boolean added) {
 		this.name = name;
 		this.regId = regId;
 		this.endpoint = endpoint;
 		this.username = username;
 		this.password = password;
 		this.objectLinks = objectLinks;
+		this.lastRegistrationUpdate = lastRegistrationUpdate;
 		this.added = added;
 		this.setDataMap(new HashMap<>());
 		this.lastUpdate = new Date();
@@ -212,6 +210,14 @@ public class Device implements DeviceComponent {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	public Date getLastRegistrationUpdate() {
+		return lastRegistrationUpdate;
+	}
+
+	public void setLastRegistrationUpdate(Date lastRegistrationUpdate) {
+		this.lastRegistrationUpdate = lastRegistrationUpdate;
 	}
 
 }
