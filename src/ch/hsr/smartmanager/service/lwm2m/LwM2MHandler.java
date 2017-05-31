@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.eclipse.leshan.Link;
 import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.core.node.LwM2mMultipleResource;
@@ -17,11 +16,9 @@ import org.eclipse.leshan.core.node.LwM2mObject;
 import org.eclipse.leshan.core.node.LwM2mObjectInstance;
 import org.eclipse.leshan.core.node.LwM2mResource;
 import org.eclipse.leshan.core.node.LwM2mSingleResource;
-import org.eclipse.leshan.core.request.DiscoverRequest;
 import org.eclipse.leshan.core.request.ExecuteRequest;
 import org.eclipse.leshan.core.request.ReadRequest;
 import org.eclipse.leshan.core.request.WriteRequest;
-import org.eclipse.leshan.core.response.DiscoverResponse;
 import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
@@ -53,17 +50,18 @@ public class LwM2MHandler {
 		server = lwM2MManagementServer.getServer();
 		Device dev = deviceService.getDevice(id);
 
-		Registration reg = server.getRegistrationService().getById(dev.getRegId());
-		
-		if(reg == null) return new ReadResponse(ResponseCode.NOT_FOUND, null, "Device is not reachable");
-		
+		Registration registration = server.getRegistrationService().getById(deviceService.getDevice(id).getRegId());
+
+		if (registration == null)
+			return new ReadResponse(ResponseCode.NOT_FOUND, null, "Device is not reachable");
+
 		try {
-			res = server.send(reg, req);
+			res = server.send(registration, req);
 		} catch (InterruptedException e) {
 			res = null;
 			e.printStackTrace();
 		}
-		
+
 		saveMultipleValueToDevice(res, dev, objectId);
 
 		return res;
@@ -74,15 +72,20 @@ public class LwM2MHandler {
 		ReadResponse res;
 		server = lwM2MManagementServer.getServer();
 		Device dev = deviceService.getDevice(id);
+		Registration registration = server.getRegistrationService().getById(deviceService.getDevice(id).getRegId());
+
+		if (registration == null)
+			return new ReadResponse(ResponseCode.NOT_FOUND, null, "Device is not reachable");
 
 		try {
-			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
+			res = server.send(registration, req);
 		} catch (InterruptedException e) {
 			res = null;
 			e.printStackTrace();
 		}
 
-		saveValueToDevice(res, dev, Integer.toString(objectId) + Integer.toString(objectInstanceId) + Integer.toString(resourceId));
+		saveValueToDevice(res, dev,
+				Integer.toString(objectId) + Integer.toString(objectInstanceId) + Integer.toString(resourceId));
 
 		return res;
 
@@ -92,7 +95,7 @@ public class LwM2MHandler {
 
 		if (res.getContent() == null)
 			return;
-		
+
 		String path = Integer.toString(objectId);
 
 		LwM2mObject node = (LwM2mObject) res.getContent();
@@ -124,7 +127,7 @@ public class LwM2MHandler {
 	}
 
 	private void saveValueToDevice(ReadResponse res, Device dev, String path) {
-		
+
 		Map<String, String> dataMap = dev.getDataMap();
 
 		if (res.getContent() != null) {
@@ -144,70 +147,68 @@ public class LwM2MHandler {
 		deviceService.updateDevice(dev);
 	}
 
-	public Map<String, ResponseCode> write(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+	public Map<String, ResponseCode> write(String id, int objectId, int objectInstanceId, int resourceId,
+			String value) {
 		server = lwM2MManagementServer.getServer();
 
-		Registration reg = server.getRegistrationService().getById(deviceService.getDevice(id).getRegId());
-		ResourceModel.Type type = server.getModelProvider().getObjectModel(reg).getResourceModel(objectId,
+		Map<String, ResponseCode> response = new HashMap<>();
+
+		Registration registration = server.getRegistrationService().getById(deviceService.getDevice(id).getRegId());
+
+		if (registration == null) {
+			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, ResponseCode.NOT_FOUND);
+			return response;
+		}
+
+		ResourceModel.Type type = server.getModelProvider().getObjectModel(registration).getResourceModel(objectId,
 				resourceId).type;
 
 		WriteRequest req = getWriteRequest(objectId, objectInstanceId, resourceId, value, type);
 		WriteResponse res;
 
 		try {
-			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
+			res = server.send(registration, req);
 		} catch (InterruptedException e) {
 			res = null;
 			e.printStackTrace();
 		}
-		
-		if(res.getCode() == ResponseCode.CHANGED) {
+
+		if (res.getCode() == ResponseCode.CHANGED) {
 			read(id, objectId, objectInstanceId, resourceId);
 		}
-		Map<String, ResponseCode> response = new HashMap<>();
+
 		response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
-		
-		
 		return response;
 	}
-	
-	public List<Map<String, ResponseCode>> writeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+
+	public List<Map<String, ResponseCode>> writeToAllChildren(String id, int objectId, int objectInstanceId,
+			int resourceId, String value) {
 		List<Map<String, ResponseCode>> responses = new ArrayList<>();
 		List<Device> devices = deviceService.findAllChildren(id);
-		for(Device dev : devices) {
+		for (Device dev : devices) {
 			responses.add(write(dev.getId(), objectId, objectInstanceId, resourceId, value));
 		}
 		return responses;
-		
-	}
 
+	}
 
 	public ExecuteResponse execute(String id, int objectId, int objectInstanceId, int resourceId) {
 		ExecuteRequest req = new ExecuteRequest(objectId, objectInstanceId, resourceId);
 		ExecuteResponse res;
 		server = lwM2MManagementServer.getServer();
+		Registration registration = server.getRegistrationService().getById(deviceService.getDevice(id).getRegId());
+		
+		if(registration == null) {
+			return new ExecuteResponse(ResponseCode.NOT_FOUND, null, "Device is not reachable");
+		}
 
 		try {
-			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
+			res = server.send(registration, req);
 		} catch (InterruptedException e) {
 			res = null;
 			e.printStackTrace();
 		}
 		return res;
-	}
-
-	public Link[] ressourceDiscovery(String path, String id) {
-		DiscoverRequest req = new DiscoverRequest(path);
-		DiscoverResponse res;
-		server = lwM2MManagementServer.getServer();
-
-		try {
-			res = server.send(server.getRegistrationService().getById(deviceService.getDevice(id).getRegId()), req);
-		} catch (InterruptedException e) {
-			res = null;
-			e.printStackTrace();
-		}
-		return res.getObjectLinks();
 	}
 
 	private WriteRequest getWriteRequest(int objectId, int objectInstanceId, int resourceId, String value,

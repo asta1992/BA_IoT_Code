@@ -17,7 +17,7 @@
 
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-3">
-				<input type="text" id="instanceIdField" class="form-control" value="0" disabled="true" onkeyup="updateCompleteObjectId()">
+				<input type="text" id="instanceIdField" class="form-control" value="0" disabled onkeyup="updateCompleteObjectId()">
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-3">
 			<select class="selectpicker" id="resourceDropdown" onchange="updateCompleteObjectId()">

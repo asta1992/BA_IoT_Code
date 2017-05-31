@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.leshan.ResponseCode;
-import org.eclipse.leshan.core.response.WriteResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import ch.hsr.smartmanager.data.ConfigurationItem;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.repository.ConfigurationItemRepository;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
-import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
 
 @Service
 public class ConfigurationService {

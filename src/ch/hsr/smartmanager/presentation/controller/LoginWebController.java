@@ -46,22 +46,15 @@ public class LoginWebController {
 		return "userDeleteFragment";
 	}
 	
-	
-	@RequestMapping("/users/userAddFragment")
+	@RequestMapping(value="/users/userAddFragment")
 	public String userAddFragment(Model model) {
 		return "userAddFragment";
 	}
+	
 	
 	@RequestMapping("/users/userEditFragment")
 	public String userEditFragment(Model model) {
 		return "userEditFragment";
 	}
-	
-	
-	
-	
-	
-	
-
 
 }

@@ -14,7 +14,6 @@ import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.hsr.smartmanager.data.Configuration;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
@@ -78,7 +77,7 @@ public class DeviceService {
 	public void removeDeviceFromGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
 		Device device = deviceRepo.findOne(deviceId);
-		System.out.println(group + ":" + device);
+		if(group == null || device == null) return;
 		group.remove(device);
 		groupRepo.save(group);
 		deviceRepo.save(device);
@@ -87,6 +86,7 @@ public class DeviceService {
 	public void removeGroupFromGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
+		if(grpParent == null || grpChild == null) return;
 		grpParent.remove(grpChild);
 		groupRepo.save(grpParent);
 		groupRepo.save(grpChild);

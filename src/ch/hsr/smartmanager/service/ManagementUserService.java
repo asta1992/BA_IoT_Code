@@ -3,6 +3,8 @@ package ch.hsr.smartmanager.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +27,7 @@ public class ManagementUserService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		ManagementUser user = userRepository.findByUsername(username);
+		ManagementUser user = userRepository.findByUsername(username.toLowerCase());
 		if(user == null){
             throw new UsernameNotFoundException(username);
         }else{
@@ -50,30 +52,56 @@ public class ManagementUserService implements UserDetailsService{
 	
 	public boolean checkOldPassword(String id, String password) {
 		ManagementUser user = userRepository.findOne(id);
-		if(user != null && user.getPassword().equals(password)) {
+		if(user != null && passwordEncoder.matches(password, user.getPassword())) {
 			return true;
 		}
 		else return false;
 	}
 	
-	public boolean updateUser(String id, String firstPassword, String secondPassword) {
-		if(firstPassword.equals(secondPassword)) {
+	public JSONObject updateUser(String id, String oldPassword, String firstPassword, String secondPassword) throws JSONException {
+		JSONObject result = new JSONObject();
+		if(!checkOldPassword(id, oldPassword)) {
+			result.put("oldPasswordError", true);
+		}
+		else if(firstPassword.length() < 8) {
+			result.put("passwordLength", true);
+		}
+		else if(!firstPassword.equals(secondPassword)) {
+			result.put("matchError", true);
+		}
+		else {
 			ManagementUser user = userRepository.findOne(id);
 			user.setPassword(passwordEncoder.encode(firstPassword));
 			userRepository.save(user);
-			return true;
+			result.put("Changed", true);
+			return result;
 		}
-		return false;
+		return result;
 	}
 	
-	public boolean addUser(String username, String firstPassword, String secondPassword) {
+	public JSONObject addUser(String username, String firstPassword, String secondPassword) throws JSONException {
+		JSONObject result = new JSONObject();
 		System.out.println(username + " : " + firstPassword + " : " + secondPassword);
-		if(firstPassword.equals(secondPassword) && !userRepository.existsByUsername(username)) {
+		if(userRepository.existsByUsername(username)) {
+			result.put("existsError", true);
+		}
+		
+		else if(!firstPassword.equals(secondPassword)) {
+			result.put("matchError", true);
+
+		}
+		else if(firstPassword.length() < 8) {
+			result.put("passwordLength", true);
+		}
+		else if(username.length() < 4) {
+			result.put("usernameLength", true);
+		}
+		else {
 			ManagementUser user = new ManagementUser(username, passwordEncoder.encode(firstPassword));
 			userRepository.save(user);
-			return true;
+			result.put("username", username);
 		}
-		return false;
+		return result;
 	}
 
 	public List<ManagementUser> findAll() {
