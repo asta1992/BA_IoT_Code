@@ -1,6 +1,6 @@
 function initMap() {
 	var initLocation = {
-		lat : 46.8151,
+		lat : 46.9151,
 		lng : 8.22876
 	};
 	var map = new google.maps.Map(document.getElementById('map'), {
@@ -14,10 +14,10 @@ function initMap() {
 function getLocations(groupId) {
 	var url = "";
 	if (groupId == null){
-		url = "/smartmanager/device/locations/all";
+		url = "/smartmanager/devices/locations/all";
 	}
 	else {
-		url = "/smartmanager/device/locations/" + groupId;
+		url = "/smartmanager/devices/locations/" + groupId;
 	}
 	$.ajax({
 		type : "GET",

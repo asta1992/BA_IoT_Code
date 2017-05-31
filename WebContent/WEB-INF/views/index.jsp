@@ -37,7 +37,7 @@
 <script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7w-HEi_KCBCkCJNEKJzB2L7NJGl1CF4Y&callback=initMap"></script>
 <style>
-#map {
+.dashboard>.panel-body {
 	height: 350px;
 }
 </style>
@@ -51,7 +51,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-					<div class="panel panel-primary">
+					<div class="panel panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
@@ -72,8 +72,9 @@
 						</a>
 					</div>
 				</div>
+
 				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-					<div class="panel panel-primary">
+					<div class="panel panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
@@ -81,7 +82,7 @@
 								</div>
 								<div class="col-xs-9 text-right">
 									<div class="huge">${discoveredDeviceCounter}</div>
-									<div>Discovered Devices!</div>
+									<div>Discovered Devices</div>
 								</div>
 							</div>
 						</div>
@@ -94,27 +95,102 @@
 						</a>
 					</div>
 				</div>
-			</div>
 
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-eye fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge">${discoveredDeviceCounter}</div>
+									<div>Discovered Devices</div>
+								</div>
+							</div>
+						</div>
+						<a href="#">
+							<div class="panel-footer">
+								<span class="pull-left">View Details</span> <span
+									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-eye fa-5x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge">${discoveredDeviceCounter}</div>
+									<div>Discovered Devices</div>
+								</div>
+							</div>
+						</div>
+						<a href="#">
+							<div class="panel-footer">
+								<span class="pull-left">View Details</span> <span
+									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+
+
+			</div>
 		</div>
+
 		<div class="row">
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<div class="panel panel-default dashboard">
+					<div class="panel-heading">Unreachable Devices</div>
+					<div class="panel-body">
+						<div class="table responsive">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>Device Name</th>
+										<th>Last seen</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="unreachableDevices"
+										items="${unrechableDevices}">
+										<tr>
+											<td>${unreachableDevices.name}</td>
+											<td>${unreachableDevices.lastRegistrationUpdate}</td>
+											<td><span class="pull-right">
+													<button type="button" class="btn btn-danger btn-xs"
+														onclick="deleteDevice('${configurations.id}')">Delete
+													</button>
+											</span></td>
+										</tr>
+									</c:forEach>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-					<div class="panel panel-primary">
-                        <div class="panel-heading">
-                            All Devices
-                        </div>
-                        <div class="panel-body">
-                            <div id="morris-area-chart">
-                            	<div id="map"></div>
-                            </div>
-                        </div>
-                    </div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<div class="panel panel-default dashboard">
+					<div class="panel-heading">All Devices</div>
+					<div id="map" class="panel-body"></div>
 				</div>
+			</div>
 		</div>
 
 	</div>
+
+
+
 </body>
 </html>

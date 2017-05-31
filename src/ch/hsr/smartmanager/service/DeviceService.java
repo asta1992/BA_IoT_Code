@@ -367,7 +367,7 @@ public class DeviceService {
 	public int countDiscoveredDevices() {
 		return getAllDiscoveredDevice().size();
 	}
-	
+
 	public int countAllDevices() {
 		return getAllDevices().size();
 	}
@@ -392,12 +392,20 @@ public class DeviceService {
 	}
 
 	public List<Device> getUnreachableDevices() {
-		long MAX_DURATION = TimeUnit.MILLISECONDS.convert(30, TimeUnit.MINUTES);
+		long MAX_DURATION = TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTES);
 		List<Device> allDevices = deviceRepo.findAll();
 		List<Device> unreachableDevices = new ArrayList<>();
 		for (Device device : allDevices) {
+<<<<<<< HEAD
+			long duration = 0;
+			if(device.getLastRegistrationUpdate() != null){
+				duration = new Date().getTime() - device.getLastRegistrationUpdate().getTime();
+			}
+			if (device.getLastRegistrationUpdate() == null || duration >= MAX_DURATION) {
+=======
 			long duration = new Date().getTime() - device.getLastRegistrationUpdate().getTime();
 			if (duration >= MAX_DURATION) {
+>>>>>>> branch 'master' of https://github.com/asta1992/BA_IoT_Code
 				unreachableDevices.add(device);
 			}
 		}
