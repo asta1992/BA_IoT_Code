@@ -47,7 +47,8 @@ public class DeviceService {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
 
-		if (isAncestors(grpParent.getName(), grpChild.getName()) || isAncestors(grpChild.getName(), grpParent.getName())) {
+		if (isAncestors(grpParent.getName(), grpChild.getName())
+				|| isAncestors(grpChild.getName(), grpParent.getName())) {
 			return;
 		}
 
@@ -55,10 +56,9 @@ public class DeviceService {
 			grpParent.add(grpChild);
 			groupRepo.save(grpParent);
 			groupRepo.save(grpChild);
-		}
-		else {
+		} else {
 			List<DeviceGroup> group = groupRepo.findAllByChildrenId(new ObjectId(grpChild.getId()));
-			for(DeviceGroup grp : group) {
+			for (DeviceGroup grp : group) {
 				grp.remove(grpChild);
 				groupRepo.save(grp);
 			}
@@ -79,7 +79,8 @@ public class DeviceService {
 	public void removeDeviceFromGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
 		Device device = deviceRepo.findOne(deviceId);
-		if(group == null || device == null) return;
+		if (group == null || device == null)
+			return;
 		group.remove(device);
 		groupRepo.save(group);
 		deviceRepo.save(device);
@@ -88,7 +89,8 @@ public class DeviceService {
 	public void removeGroupFromGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
-		if(grpParent == null || grpChild == null) return;
+		if (grpParent == null || grpChild == null)
+			return;
 		grpParent.remove(grpChild);
 		groupRepo.save(grpParent);
 		groupRepo.save(grpChild);
@@ -96,8 +98,8 @@ public class DeviceService {
 
 	public void addToManagement(String id, String groupId, String configId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
-		
-		if(!configId.equals("none")){
+
+		if (!configId.equals("none")) {
 			configurationService.writeConfigurationToDevice(id, configId);
 		}
 
@@ -186,15 +188,15 @@ public class DeviceService {
 		DeviceGroup mainGroup = groupRepo.findOne(id);
 		List<String> childrenGroup = groupRepo.findAllChildren(mainGroup.getName());
 		childrenGroup.add(mainGroup.getName());
-		for(String name : childrenGroup) {
+		for (String name : childrenGroup) {
 			DeviceGroup group = groupRepo.findByName(name);
-			for(DeviceComponent dev : group.getChildren()) {
-				if(dev instanceof Device) allSubDevices.add((Device)dev);
+			for (DeviceComponent dev : group.getChildren()) {
+				if (dev instanceof Device)
+					allSubDevices.add((Device) dev);
 			}
 		}
 		return allSubDevices;
 	}
-	
 
 	public void deleteDeviceByRegistration(Registration registration) {
 		deviceRepo.removeDeviceByName(registration.getEndpoint());
@@ -260,7 +262,7 @@ public class DeviceService {
 		}
 		return map;
 	}
-	
+
 	public Map<Integer, String> allExecutableObjectIDs() {
 		Map<Integer, String> map = new TreeMap<>();
 		List<ObjectModel> models = lwM2MManagementServer.getModels();
@@ -291,7 +293,7 @@ public class DeviceService {
 		}
 		return resources;
 	}
-	
+
 	public List<ResourceModelAdapter> allExecuteableResources(String objectId) {
 		List<ResourceModelAdapter> resources = new ArrayList<>();
 		List<ObjectModel> models = lwM2MManagementServer.getModels();
@@ -311,7 +313,7 @@ public class DeviceService {
 	public int countDiscoveredDevices() {
 		return getAllDiscoveredDevice().size();
 	}
-	
+
 	public int countAllDevices() {
 		return getAllDevices().size();
 	}
@@ -334,14 +336,17 @@ public class DeviceService {
 		}
 		return false;
 	}
-	
+
 	public List<Device> getUnreachableDevices() {
-		long MAX_DURATION = TimeUnit.MILLISECONDS.convert(30, TimeUnit.MINUTES);
+		long MAX_DURATION = TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTES);
 		List<Device> allDevices = deviceRepo.findAll();
 		List<Device> unreachableDevices = new ArrayList<>();
-		for(Device device : allDevices) {
-			long duration = new Date().getTime() - device.getLastRegistrationUpdate().getTime();
-			if (duration >= MAX_DURATION) {
+		for (Device device : allDevices) {
+			long duration = 0;
+			if(device.getLastRegistrationUpdate() != null){
+				duration = new Date().getTime() - device.getLastRegistrationUpdate().getTime();
+			}
+			if (device.getLastRegistrationUpdate() == null || duration >= MAX_DURATION) {
 				unreachableDevices.add(device);
 			}
 		}

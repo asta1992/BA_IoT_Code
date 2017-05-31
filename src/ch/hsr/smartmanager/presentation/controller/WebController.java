@@ -45,6 +45,8 @@ public class WebController {
 		model.addAttribute("username", principal.getName());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		model.addAttribute("deviceCounter", deviceService.countAllDevices());
+		model.addAttribute("unrechableDevices", deviceService.getUnreachableDevices());
+		System.out.println(deviceService.getUnreachableDevices());
 		return "index";
 	}
 
