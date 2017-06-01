@@ -1,5 +1,7 @@
 package ch.hsr.smartmanager.service;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -395,6 +397,11 @@ public class DeviceService {
 			}
 		}
 		return unreachableDevices;
+	}
+	
+	public long getServerUptime() {
+		RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+		return rb.getUptime() / 1000 / 3600;
 	}
 
 }
