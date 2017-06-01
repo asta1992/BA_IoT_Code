@@ -24,9 +24,6 @@ public class Configuration {
 	public void add(ConfigurationItem configurationItem) {
 		configurationItems.add(configurationItem);
 	}
-	public void remove(ConfigurationItem configurationItem) {
-		configurationItems.remove(configurationItem);
-	}
 
 	public String getId() {
 		return id;

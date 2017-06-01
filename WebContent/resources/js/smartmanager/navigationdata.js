@@ -2,7 +2,7 @@ $(document).ready(function() {
 	$('#tree').tree({
 		primaryKey : 'id',
 		uiLibrary : 'bootstrap',
-		dataSource : '/smartmanager/group/getAll'});
+		dataSource : '/smartmanager/groups/getAll'});
 
 	
 	$('#tree').tree().on('select', function (e, node, id) {

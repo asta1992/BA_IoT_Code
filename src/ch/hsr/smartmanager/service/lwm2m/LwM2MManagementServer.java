@@ -41,11 +41,6 @@ public class LwM2MManagementServer {
 
 	}
 
-	public LwM2MManagementServer(String address, int port) {
-		this.address = address;
-		this.port = port;
-	}
-
 	@PostConstruct
 	public void createServer() {
 

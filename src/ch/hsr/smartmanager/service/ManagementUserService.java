@@ -50,7 +50,7 @@ public class ManagementUserService implements UserDetailsService{
 		}
 	}
 	
-	public boolean checkOldPassword(String id, String password) {
+	private boolean checkOldPassword(String id, String password) {
 		ManagementUser user = userRepository.findOne(id);
 		if(user != null && passwordEncoder.matches(password, user.getPassword())) {
 			return true;

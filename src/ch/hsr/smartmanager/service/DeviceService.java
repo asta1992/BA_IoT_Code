@@ -140,10 +140,6 @@ public class DeviceService {
 		return groupRepo.findOne(id);
 	}
 
-	public DeviceComponent getComponent(String id) {
-		return groupRepo.findOne(id);
-	}
-
 	public List<DeviceGroup> getAllGroups() {
 		return groupRepo.findAll();
 	}
@@ -152,28 +148,12 @@ public class DeviceService {
 		return groupRepo.existsByChildrenId(new ObjectId(id));
 	}
 
-	public Device insertDevice(Device device) {
-		if (deviceRepo.existsByName(device.getName())) {
-			return deviceRepo.findByName(device.getName());
-		} else {
-			return deviceRepo.insert(device);
-		}
-	}
-
 	public DeviceGroup insertGroup(DeviceGroup group) {
 		if (groupRepo.existsByName(group.getName())) {
 			return groupRepo.findByName(group.getName());
 		} else {
 			return groupRepo.insert(group);
 		}
-	}
-
-	public void deleteDevice(String id) {
-		Device device = deviceRepo.findOne(id);
-		for (DeviceGroup group : groupRepo.findAllByChildrenId(new ObjectId(id))) {
-			group.getChildren().remove(device);
-		}
-		deviceRepo.delete(id);
 	}
 
 	public boolean deleteGroup(String id) {
@@ -237,11 +217,7 @@ public class DeviceService {
 
 		return allComponents;
 	}
-
-	public List<DeviceGroup> findAllGroupById(List<String> id) {
-		return groupRepo.findAllById(id);
-	}
-
+	
 	public Device updateDevice(Device device) {
 		return deviceRepo.save(device);
 	}
@@ -254,7 +230,7 @@ public class DeviceService {
 		return getLocationMap(findAllChildren(groupId));
 	}
 
-	public List<List<String>> getLocationMap(List<Device> devices) {
+	private List<List<String>> getLocationMap(List<Device> devices) {
 		List<List<String>> list = new ArrayList<>();
 
 		for (Device device : devices) {

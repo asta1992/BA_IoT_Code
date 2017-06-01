@@ -202,27 +202,27 @@ public class RestController {
 		}
 	}
 
-	@RequestMapping(value = "/group/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/groups/list", method = RequestMethod.GET)
 	public List<DeviceGroup> getGroupList(Model model) {
 		return deviceService.getAllGroups();
 	}
 	
-	@RequestMapping(value = "/group/{objectId}/writeToChildren", method = RequestMethod.GET)
+	@RequestMapping(value = "/groups/{objectId}/writeToChildren", method = RequestMethod.GET)
 	public List<ResourceModelAdapter> writeToChildren(Model model, @PathVariable("objectId") String objectId) {
 		return deviceService.allWritableResources(objectId);
 	}
 	
-	@RequestMapping(value = "/group/{objectId}/executeToChildren", method = RequestMethod.GET)
+	@RequestMapping(value = "/groups/{objectId}/executeToChildren", method = RequestMethod.GET)
 	public List<ResourceModelAdapter> executeToChildren(Model model, @PathVariable("objectId") String objectId) {
 		return deviceService.allExecuteableResources(objectId);
 	}
 	
-	@RequestMapping(value = "/group/{objectId}/multiInstance", method = RequestMethod.GET)
+	@RequestMapping(value = "/groups/{objectId}/multiInstance", method = RequestMethod.GET)
 	public Map<String, Boolean> multiInstance(Model model, @PathVariable("objectId") String objectId) {
 		return Collections.singletonMap("value", deviceService.isMultiInstance(objectId));
 	}
 
-	@RequestMapping(value = "/group/getAll", method = RequestMethod.GET)
+	@RequestMapping(value = "/groups/getAll", method = RequestMethod.GET)
 	public String getAllGroups(Model model) throws JSONException {
 		List<JSONObject> allJson = new ArrayList<>();
 

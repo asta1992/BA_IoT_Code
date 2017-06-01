@@ -29,11 +29,20 @@ function addConfigurationItem() {
 	rowNumber++;
 	var objectId = $('#completeObjectId').text();
 	var value = $('#writeValue').val();
-	$('#configurationItems tr:last').after(
-			'<tr id="' + rowNumber + 'Row">' + 
-				'<td class="objectIdField">' + objectId + '</td>' + 
-				'<td class="valueField">' + value + '<span class="pull-right"><button class="btn btn-danger btn-xs" onclick="removeConfigurationItem(' + rowNumber + ')"><span class="glyphicon glyphicon-minus"></span></button></span></td>' + 
-			'</tr>');
+	$('#configurationItems tr:last')
+			.after(
+					'<tr id="'
+							+ rowNumber
+							+ 'Row">'
+							+ '<td class="objectIdField">'
+							+ objectId
+							+ '</td>'
+							+ '<td class="valueField">'
+							+ value
+							+ '<span class="pull-right"><button class="btn btn-danger btn-xs" onclick="removeConfigurationItem('
+							+ rowNumber
+							+ ')"><span class="glyphicon glyphicon-minus"></span></button></span></td>'
+							+ '</tr>');
 	$("#configurationItems").html();
 }
 
@@ -47,14 +56,14 @@ function saveConfiguration() {
 	config.push($('#description').val());
 	var headers = [];
 	$('#configurationItems th').each(function(index, item) {
-	    headers[index] = $(item).text();
+		headers[index] = $(item).text();
 	});
 	$('#configurationItems tr').has('td').each(function() {
-	    var configItem = {};
-	    $('td', $(this)).each(function(index, item) {
-	        configItem[headers[index]] = $(item).text();
-	    });
-	    config.push(configItem);
+		var configItem = {};
+		$('td', $(this)).each(function(index, item) {
+			configItem[headers[index]] = $(item).text();
+		});
+		config.push(configItem);
 	});
 	$.ajax({
 		type : "POST",
@@ -78,20 +87,21 @@ function deleteConfiguration(configurationId) {
 						value : configurationId
 					},
 					url : "/smartmanager/configurations/delete"
-					
+
 				});
 			}
 			parent.location.reload();
 		}
 	});
-	
+
 }
 
 function editConfiguration(configurationId) {
 	$.ajax({
 		type : "GET",
 		dataType : "html",
-		url : "/smartmanager/configurations/" + configurationId + "/editConfigurationFragment",
+		url : "/smartmanager/configurations/" + configurationId
+				+ "/editConfigurationFragment",
 		success : function(createConfigurationFragment) {
 			bootbox.confirm({
 				size : "large",
@@ -114,35 +124,44 @@ function editConfiguration(configurationId) {
 }
 
 function updateCompleteObjectId() {
-	$('#completeObjectId').html(parseInt($('#objectDropdown').find(":selected").text()) + "/" + $('#instanceIdField').val() + "/" + parseInt($('#resourceDropdown').find(":selected").text()));
+	$('#completeObjectId')
+			.html(
+					parseInt($('#objectDropdown').find(":selected").text())
+							+ "/"
+							+ $('#instanceIdField').val()
+							+ "/"
+							+ parseInt($('#resourceDropdown').find(":selected")
+									.text()));
 }
 
-function getWriteableResources(){
+function getWriteableResources() {
 	var objectId = parseInt($('#objectDropdown').find(":selected").text());
 	var instanceIdField = $('#instanceIdField');
 	$.ajax({
-		type: "GET",
-		url: "/smartmanager/group/" + objectId + "/multiInstance",
-		success : function(multiInstance){
-			if(multiInstance.value){
+		type : "GET",
+		url : "/smartmanager/groups/" + objectId + "/multiInstance",
+		success : function(multiInstance) {
+			if (multiInstance.value) {
 				instanceIdField.prop('disabled', false);
-			}
-			else {
+			} else {
 				instanceIdField.val("0");
 				instanceIdField.prop('disabled', true);
 			}
 			updateCompleteObjectId();
 		}
 	})
-	
+
 	var resourceDropdown = $('#resourceDropdown');
 	$.ajax({
-		type: "GET",
-		url : "/smartmanager/group/" + objectId + "/writeToChildren",
+		type : "GET",
+		url : "/smartmanager/groups/" + objectId + "/writeToChildren",
 		success : function(resources) {
 			resourceDropdown.empty();
-			resources.forEach(function(entry){
-				resourceDropdown.append('<option value="' + entry.resourceModel.id + '">' + entry.resourceModel.id + " " + "(" +entry.resourceModel.name + ")" + '</option>');
+			resources.forEach(function(entry) {
+				resourceDropdown.append('<option value="'
+						+ entry.resourceModel.id + '">'
+						+ entry.resourceModel.id + " " + "("
+						+ entry.resourceModel.name + ")" + '</option>');
 			})
 			resourceDropdown.selectpicker('refresh');
 			updateCompleteObjectId();
@@ -150,32 +169,34 @@ function getWriteableResources(){
 	})
 }
 
-function getExecuteableResources(){
+function getExecuteableResources() {
 	var objectId = parseInt($('#objectDropdown').find(":selected").text());
 	var instanceIdField = $('#instanceIdField');
 	$.ajax({
-		type: "GET",
-		url: "/smartmanager/group/" + objectId + "/multiInstance",
-		success : function(multiInstance){
-			if(multiInstance.value){
+		type : "GET",
+		url : "/smartmanager/groups/" + objectId + "/multiInstance",
+		success : function(multiInstance) {
+			if (multiInstance.value) {
 				instanceIdField.prop('disabled', false);
-			}
-			else {
+			} else {
 				instanceIdField.val("0");
 				instanceIdField.prop('disabled', true);
 			}
 			updateCompleteObjectId();
 		}
 	})
-	
+
 	var resourceDropdown = $('#resourceDropdown');
 	$.ajax({
-		type: "GET",
-		url : "/smartmanager/group/" + objectId + "/executeToChildren",
+		type : "GET",
+		url : "/smartmanager/groups/" + objectId + "/executeToChildren",
 		success : function(resources) {
 			resourceDropdown.empty();
-			resources.forEach(function(entry){
-				resourceDropdown.append('<option value="' + entry.resourceModel.id + '">' + entry.resourceModel.id + " " + "(" +entry.resourceModel.name + ")" + '</option>');
+			resources.forEach(function(entry) {
+				resourceDropdown.append('<option value="'
+						+ entry.resourceModel.id + '">'
+						+ entry.resourceModel.id + " " + "("
+						+ entry.resourceModel.name + ")" + '</option>');
 			})
 			resourceDropdown.selectpicker('refresh');
 			updateCompleteObjectId();
