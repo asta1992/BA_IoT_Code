@@ -2,6 +2,8 @@ package ch.hsr.smartmanager.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,59 +19,56 @@ import ch.hsr.smartmanager.data.ManagementUser;
 import ch.hsr.smartmanager.data.repository.ManagementUserRepository;
 
 @Component
-public class ManagementUserService implements UserDetailsService{
+public class ManagementUserService implements UserDetailsService {
 
 	@Autowired
 	private ManagementUserRepository userRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		ManagementUser user = userRepository.findByUsername(username.toLowerCase());
-		if(user == null){
-            throw new UsernameNotFoundException(username);
-        }else{
-            return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
-        }
+		if (user == null) {
+			throw new UsernameNotFoundException(username);
+		} else {
+			return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
+		}
 	}
-	
+
 	public ManagementUser findUserByName(String username) {
 		return userRepository.findByUsername(username);
 	}
-	
+
 	public boolean deleteUser(String username) {
-		if(username.equals("admin")) {
-			System.out.println("Hier");
+		if (username.equals("admin")) {
 			return false;
-		}
-		else {
+		} else {
 			userRepository.removeByUsername(username);
-			return true;			
-		}
-	}
-	
-	private boolean checkOldPassword(String id, String password) {
-		ManagementUser user = userRepository.findOne(id);
-		if(user != null && passwordEncoder.matches(password, user.getPassword())) {
 			return true;
 		}
-		else return false;
 	}
-	
-	public JSONObject updateUser(String id, String oldPassword, String firstPassword, String secondPassword) throws JSONException {
+
+	private boolean checkOldPassword(String id, String password) {
+		ManagementUser user = userRepository.findOne(id);
+		if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+			return true;
+		} else
+			return false;
+	}
+
+	public JSONObject updateUser(String id, String oldPassword, String firstPassword, String secondPassword)
+			throws JSONException {
 		JSONObject result = new JSONObject();
-		if(!checkOldPassword(id, oldPassword)) {
+
+		if (!checkOldPassword(id, oldPassword)) {
 			result.put("oldPasswordError", true);
-		}
-		else if(firstPassword.length() < 8) {
+		} else if (firstPassword.length() < 8) {
 			result.put("passwordLength", true);
-		}
-		else if(!firstPassword.equals(secondPassword)) {
+		} else if (!firstPassword.equals(secondPassword)) {
 			result.put("matchError", true);
-		}
-		else {
+		} else {
 			ManagementUser user = userRepository.findOne(id);
 			user.setPassword(passwordEncoder.encode(firstPassword));
 			userRepository.save(user);
@@ -78,25 +77,33 @@ public class ManagementUserService implements UserDetailsService{
 		}
 		return result;
 	}
-	
+
+	private boolean validateUsername(String username) {
+		final String regex = "(?=^.{4,20}$)[a-zA-Z0-9]*$";
+		final Pattern pattern = Pattern.compile(regex);
+		final Matcher matcher = pattern.matcher(username);
+		while (matcher.find()) {
+			return false;
+		}
+		return true;
+	}
+
 	public JSONObject addUser(String username, String firstPassword, String secondPassword) throws JSONException {
 		JSONObject result = new JSONObject();
-		System.out.println(username + " : " + firstPassword + " : " + secondPassword);
-		if(userRepository.existsByUsername(username)) {
+		if (validateUsername(username)) {
+			result.put("invalidCharError", true);
+		} 
+		else if (userRepository.existsByUsername(username)) {
 			result.put("existsError", true);
-		}
-		
-		else if(!firstPassword.equals(secondPassword)) {
+		} 
+		else if (!firstPassword.equals(secondPassword)) {
 			result.put("matchError", true);
-
-		}
-		else if(firstPassword.length() < 8) {
+		} 
+		else if (firstPassword.length() < 8 || firstPassword.length() > 50) {
 			result.put("passwordLength", true);
-		}
-		else if(username.length() < 4) {
+		} else if (username.length() < 4 || username.length() > 20) {
 			result.put("usernameLength", true);
-		}
-		else {
+		} else {
 			ManagementUser user = new ManagementUser(username, passwordEncoder.encode(firstPassword));
 			userRepository.save(user);
 			result.put("username", username);
@@ -111,8 +118,5 @@ public class ManagementUserService implements UserDetailsService{
 	public boolean checkUser(String username) {
 		return userRepository.existsByUsername(username);
 	}
-	
 
-	
-	
 }

@@ -29,14 +29,6 @@ public class DeviceGroup implements DeviceComponent {
 		this.children.remove(deviceComponent);
 	}
 
-	public void print(String abstand) {
-		System.out.println(abstand + "Gruppe " + getName());
-		for (DeviceComponent dc : children) {
-			dc.print(abstand + "      ");
-		}
-
-	}
-
 	public List<DeviceComponent> getChildren() {
 		return children;
 	}
