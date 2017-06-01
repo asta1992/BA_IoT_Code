@@ -349,6 +349,7 @@ public class DeviceService {
 			DeviceGroup unassigned = new DeviceGroup("_unassigned");
 			groupRepo.save(unassigned);
 		}
+
 		deviceRepo.removeDeviceByAddedIsFalse();
 	}
 

@@ -36,7 +36,7 @@ public class RestController {
 
 	@Autowired
 	DeviceService deviceService;
-	
+
 	@Autowired
 	ConfigurationService configService;
 
@@ -54,9 +54,9 @@ public class RestController {
 	}
 
 	@RequestMapping(value = "/devices/{id}/write/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
-	public Map<String, ResponseCode> write(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
-			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId,
-			@RequestParam("value") String value) {
+	public Map<String, ResponseCode> write(Model model, @PathVariable("id") String id,
+			@PathVariable("objectId") int objectId, @PathVariable("objectInstanceId") int objectInstanceId,
+			@PathVariable("resourceId") int resourceId, @RequestParam("value") String value) {
 
 		return lwM2MHandler.write(id, objectId, objectInstanceId, resourceId, value);
 	}
@@ -67,19 +67,17 @@ public class RestController {
 
 		return lwM2MHandler.execute(id, objectId, objectInstanceId, resourceId);
 	}
-	
+
 	@RequestMapping(value = "/groups/{id}/add")
-	public void addNewChildGroup(Model model,@PathVariable("id") String id,@RequestParam("value") String groupName){
+	public void addNewChildGroup(Model model, @PathVariable("id") String id, @RequestParam("value") String groupName) {
 		DeviceGroup devGroup = new DeviceGroup(Json.parse(groupName).asString());
 		deviceService.insertGroup(devGroup);
 		devGroup = deviceService.findByName(Json.parse(groupName).asString());
 		deviceService.addGroupToGroup(id, devGroup.getId());
 	}
-	
-	
-	
+
 	@RequestMapping(value = "/groups/add", method = RequestMethod.POST)
-	public void addNewRootGroup(Model mode,@RequestParam("value") String groupName){
+	public void addNewRootGroup(Model mode, @RequestParam("value") String groupName) {
 		deviceService.insertGroup(new DeviceGroup(Json.parse(groupName).asString()));
 	}
 
@@ -88,7 +86,6 @@ public class RestController {
 
 		return deviceService.countDiscoveredDevices();
 	}
-	
 
 	@RequestMapping(value = "/devices/{id}/changeMembership", method = RequestMethod.POST)
 	public void addToGroups(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
@@ -124,32 +121,32 @@ public class RestController {
 			deviceService.addDeviceToGroup(devGroup.getId(), id);
 		}
 	}
-	
+
 	@RequestMapping(value = "/groups/{id}/changeMembership", method = RequestMethod.POST)
 	public void addGroupToGroup(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
-		if(value.length() == 1) {
+		if (value.length() == 1) {
 			try {
 				DeviceGroup newParentGroup = deviceService.getGroup(value.getString(0));
 				DeviceGroup group = deviceService.getGroup(id);
 
 				List<DeviceGroup> oldParentGroups = deviceService.listAllGroupsForComponents(id);
-				
-				if(!oldParentGroups.isEmpty()) {
+
+				if (!oldParentGroups.isEmpty()) {
 					deviceService.removeGroupFromGroup(oldParentGroups.get(0).getId(), group.getId());
 				}
 				deviceService.addGroupToGroup(newParentGroup.getId(), group.getId());
-				
+
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
-		if(value.length() == 0) {
+		if (value.length() == 0) {
 			DeviceGroup group = deviceService.getGroup(id);
 			DeviceGroup oldParentGroup = deviceService.listAllGroupsForComponents(id).get(0);
 			deviceService.removeGroupFromGroup(oldParentGroup.getId(), group.getId());
 		}
 	}
-	
+
 	@RequestMapping(value = "/groups/{id}/changeMembers", method = RequestMethod.POST)
 	public void changeMembers(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
 		List<DeviceComponent> postMembers = new ArrayList<>();
@@ -157,7 +154,7 @@ public class RestController {
 			try {
 
 				DeviceComponent item = deviceService.getGroup((value.getString(i)));
-				if(item == null) {
+				if (item == null) {
 					item = deviceService.getDevice((value.getString(i)));
 				}
 				postMembers.add(item);
@@ -165,29 +162,29 @@ public class RestController {
 				e.printStackTrace();
 			}
 		}
-		
+
 		postMembers.removeAll(Collections.singleton(null));
-		
+
 		DeviceGroup group = deviceService.getGroup(id);
 		List<DeviceComponent> preMembers = group.getChildren();
 
 		for (DeviceComponent comp : preMembers) {
 			if (!postMembers.contains(comp)) {
-				if(comp instanceof Device){
+				if (comp instanceof Device) {
 					deviceService.removeDeviceFromGroup(group.getId(), comp.getId());
 				}
-				if(comp instanceof DeviceGroup){
+				if (comp instanceof DeviceGroup) {
 					deviceService.removeGroupFromGroup(group.getId(), comp.getId());
 				}
 			}
 		}
-		
+
 		for (DeviceComponent comp : postMembers) {
 			if (!preMembers.contains(comp)) {
-				if(comp instanceof Device){
+				if (comp instanceof Device) {
 					deviceService.addDeviceToGroup(group.getId(), comp.getId());
 				}
-				if(comp instanceof DeviceGroup){
+				if (comp instanceof DeviceGroup) {
 					deviceService.addGroupToGroup(group.getId(), comp.getId());
 				}
 			}
@@ -206,17 +203,17 @@ public class RestController {
 	public List<DeviceGroup> getGroupList(Model model) {
 		return deviceService.getAllGroups();
 	}
-	
+
 	@RequestMapping(value = "/groups/{objectId}/writeToChildren", method = RequestMethod.GET)
 	public List<ResourceModelAdapter> writeToChildren(Model model, @PathVariable("objectId") String objectId) {
 		return deviceService.allWritableResources(objectId);
 	}
-	
+
 	@RequestMapping(value = "/groups/{objectId}/executeToChildren", method = RequestMethod.GET)
 	public List<ResourceModelAdapter> executeToChildren(Model model, @PathVariable("objectId") String objectId) {
 		return deviceService.allExecuteableResources(objectId);
 	}
-	
+
 	@RequestMapping(value = "/groups/{objectId}/multiInstance", method = RequestMethod.GET)
 	public Map<String, Boolean> multiInstance(Model model, @PathVariable("objectId") String objectId) {
 		return Collections.singletonMap("value", deviceService.isMultiInstance(objectId));
@@ -238,14 +235,20 @@ public class RestController {
 
 		return allJson.toString();
 	}
-	
+
+	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.POST)
+	public void addDevice(Model model, @PathVariable("id") String id, @RequestParam("groupId") String groupId,
+			@RequestParam("configId") String configId) {
+		deviceService.addToManagement(id, groupId, configId);
+
+	}
+
 	@RequestMapping(value = "/groups/{id}/writeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
-	public List<Map<String, ResponseCode>> writeChildDevices(Model model,@PathVariable("id") String id, @PathVariable("objectId") int objectId,
-			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId,
-			@RequestParam("value") String value){
+	public List<Map<String, ResponseCode>> writeChildDevices(Model model, @PathVariable("id") String id,
+			@PathVariable("objectId") int objectId, @PathVariable("objectInstanceId") int objectInstanceId,
+			@PathVariable("resourceId") int resourceId, @RequestParam("value") String value) {
 		return lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, value);
 	}
-	
 
 	private List<JSONObject> allChildren(DeviceComponent deviceComponent) throws JSONException {
 		List<JSONObject> jsonObjects = new ArrayList<>();
@@ -272,34 +275,33 @@ public class RestController {
 		}
 		return jsonObjects;
 	}
-	
-	
-	@RequestMapping(value = "/groups/{id}/executeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method=RequestMethod.POST)
-	public void writeChildDevices(Model model,@PathVariable("id") String id, @PathVariable("objectId") int objectId,
+
+	@RequestMapping(value = "/groups/{id}/executeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
+	public void writeChildDevices(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
 		List<Device> devices = deviceService.findAllChildren(id);
-		for(Device device : devices) {
+		for (Device device : devices) {
 			lwM2MHandler.execute(device.getId(), objectId, objectInstanceId, resourceId);
 		}
 	}
-	
+
 	@RequestMapping(value = "/configurations/add")
-	public void addConfiguration(Model model,@RequestParam("value") JSONArray value){
+	public void addConfiguration(Model model, @RequestParam("value") JSONArray value) {
 		configService.saveConfiguration(value);
 	}
-	
+
 	@RequestMapping(value = "/configurations/delete")
-	public void deleteConfiguration(Model model,@RequestParam("value") String value){
+	public void deleteConfiguration(Model model, @RequestParam("value") String value) {
 		configService.deleteConfiguration(value);
 	}
-	
-	@RequestMapping(value ="/devices/locations/{id}", method=RequestMethod.GET)
-	public List<List<String>> getAllLocation(Model model, @PathVariable("id") String id){
+
+	@RequestMapping(value = "/devices/locations/{id}", method = RequestMethod.GET)
+	public List<List<String>> getAllLocation(Model model, @PathVariable("id") String id) {
 		return deviceService.getAllLocationByGroup(id);
 	}
 
-	@RequestMapping(value ="/devices/locations/all", method=RequestMethod.GET)
-	public List<List<String>> getAllLocation(Model model){
+	@RequestMapping(value = "/devices/locations/all", method = RequestMethod.GET)
+	public List<List<String>> getAllLocation(Model model) {
 		return deviceService.getAllLocation();
 	}
 }

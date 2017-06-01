@@ -4,13 +4,17 @@ function addDevice(deviceId){
 	console.log($('#groupSelector option:selected').text());
 	$.ajax({
 		type : "POST",
-		dataType : "json",
 		data : {
 			groupId : groupId,
 			configId: configId
 		},
-		url : "/smartmanager/devices/" + deviceId + "/add"
+		url : "/smartmanager/devices/" + deviceId + "/add",
+		success : function() {
+			window.location.reload();
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError);
+		}
 	});
-	window.location.href = "/smartmanager/discovery"
 	
 }

@@ -205,13 +205,6 @@ public class WebController {
 		return "groupMembersFragment";
 	}
 
-	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.POST)
-	public String addDevice(Model model, @PathVariable("id") String id, @RequestParam("groupId") String groupId,
-			@RequestParam("configId") String configId) {
-		deviceService.addToManagement(id, groupId, configId);
-
-		return "redirect:/discovery";
-	}
 
 	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.DELETE)
 	public String removeDevice(Model model, @PathVariable("id") String id) {
