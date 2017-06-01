@@ -1,20 +1,22 @@
 function addNewRootGroup() {
 	bootbox.prompt({
 		title : "Please enter a group name",
-		callback : function(message){
-			$.ajax({
-				type: "POST",
-				data : {
-					value : JSON.stringify(message)
-				},
-				url : "/smartmanager/groups/add",
-				success : function(){
-					parent.location.reload();
-				},
-				error: function(xhr, ajaxOptions, thrownError){
-					alert(thrownError);
-				}
-			});
+		callback : function(ok){
+			if(ok){
+				$.ajax({
+					type: "POST",
+					data : {
+						value : JSON.stringify(message)
+					},
+					url : "/smartmanager/groups/add",
+					success : function(){
+						parent.location.reload();
+					},
+					error: function(xhr, ajaxOptions, thrownError){
+						alert(thrownError);
+					}
+				});
+			}
 		}
 	});
 }
@@ -22,8 +24,8 @@ function addNewRootGroup() {
 function addNewChildGroup(parentId) {
 	bootbox.prompt({
 		title : "Please enter a group name",
-		callback : function(message){
-			if(message){
+		callback : function(ok){
+			if(ok){
 				$.ajax({
 					type: "POST",
 					data : {
@@ -49,24 +51,26 @@ function openDeviceMemberships(id) {
 		success : function(deviceMemberships) {
 			bootbox.confirm({
 				message : deviceMemberships,
-				callback : function() {
-					var updatedMemberships = [];
-					$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
-						updatedMemberships.push(this.id);
-					});
-					$.ajax({
-						type : "POST",
-						data : {
-							value : JSON.stringify(updatedMemberships)
-						},
-						url : "/smartmanager/devices/" + id + "/changeMembership",
-						success : function(){
-							parent.location.reload();
-						},
-						error: function(xhr, ajaxOptions, thrownError){
-							alert(thrownError);
-						}
-					});
+				callback : function(ok) {
+					if(ok) {
+						var updatedMemberships = [];
+						$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
+							updatedMemberships.push(this.id);
+						});
+						$.ajax({
+							type : "POST",
+							data : {
+								value : JSON.stringify(updatedMemberships)
+							},
+							url : "/smartmanager/devices/" + id + "/changeMembership",
+							success : function(){
+								parent.location.reload();
+							},
+							error: function(xhr, ajaxOptions, thrownError){
+								alert(thrownError);
+							}
+						});
+					}
 				}
 			});
 		}
@@ -80,26 +84,27 @@ function openGroupMemberships(id) {
 		success : function(groupMemberships) {
 			bootbox.confirm({
 				message : groupMemberships,
-				callback : function() {
-					var updatedMemberships = [];
-					$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
-						updatedMemberships.push(this.id);
-					});
+				callback : function(ok) {
+					if(ok){
+						var updatedMemberships = [];
+						$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
+							updatedMemberships.push(this.id);
+						});
 
-					$.ajax({
-						type : "POST",
-						dataType : "json",
-						data : {
-							value : JSON.stringify(updatedMemberships)
-						},
-						url : "/smartmanager/groups/" + id + "/changeMembership",
-						success : function(){
-							parent.location.reload();
-						},
-						error: function(xhr, ajaxOptions, thrownError){
-							alert(thrownError);
-						}
-					});
+						$.ajax({
+							type : "POST",
+							data : {
+								value : JSON.stringify(updatedMemberships)
+							},
+							url : "/smartmanager/groups/" + id + "/changeMembership",
+							success : function(){
+								parent.location.reload();
+							},
+							error: function(xhr, ajaxOptions, thrownError){
+								alert(thrownError);
+							}
+						});
+					}
 				}
 			});
 		},
@@ -116,26 +121,27 @@ function openGroupMembers(id){
 		success : function(groupMembers) {
 			bootbox.confirm({
 				message: groupMembers,
-				callback: function() {
-					var updatedMemberships = [];
-					$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
-						updatedMemberships.push(this.id);
-					});
+				callback: function(ok) {
+					if(ok) {
+						var updatedMemberships = [];
+						$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
+							updatedMemberships.push(this.id);
+						});
 
-					$.ajax({
-						type : "POST",
-						dataType : "json",
-						data : {
-							value : JSON.stringify(updatedMemberships)
-						},
-						url : "/smartmanager/groups/" + id + "/changeMembers",
-						success : function(){
-							parent.location.reload();
-						},
-						error: function(xhr, ajaxOptions, thrownError){
-							alert(thrownError);
-						}
-					});
+						$.ajax({
+							type : "POST",
+							data : {
+								value : JSON.stringify(updatedMemberships)
+							},
+							url : "/smartmanager/groups/" + id + "/changeMembers",
+							success : function(){
+								parent.location.reload();
+							},
+							error: function(xhr, ajaxOptions, thrownError){
+								alert(thrownError);
+							}
+						});
+					}
 				}
 			})
 			
