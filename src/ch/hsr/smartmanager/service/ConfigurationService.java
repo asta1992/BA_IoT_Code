@@ -63,7 +63,10 @@ public class ConfigurationService {
 	}
 
 	public void deleteConfiguration(String configurationId) {
-		configRepo.delete(configRepo.findOne(configurationId));
+		Configuration config = configRepo.findOne(configurationId);
+		if(config != null) {
+			configRepo.delete(config);
+		}
 	}
 	
 	public Map<String, List<Map<String, ResponseCode>>> writeConfigurationToGroup(String groupId, String configurationId) {
