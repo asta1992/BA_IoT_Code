@@ -50,7 +50,11 @@ body {
  
  .dashboard > .panel-body {
 	height: 450px;
+ }
 
+#deviceLocation > .panel-body {
+	height: 200px;
+}
 
 
 

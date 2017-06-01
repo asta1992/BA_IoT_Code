@@ -13,37 +13,48 @@
 				All Devices</button></span> <span class="pull-right"><button type="button"
 				class="btn btn-warning heading-button"
 				onclick="writeAllChildDevices('${group.id}')">Write Command</button></span>
-				<span class="pull-right"><button type="button"
+		<span class="pull-right"><button type="button"
 				class="btn btn-warning heading-button"
 				onclick="executeAllChildDevices('${group.id}')">Execute</button></span>
 	</h2>
 </div>
 <div class=row>
-	<dl class="dl-horizontal">
-		<dt>Registration Id</dt>
-		<dd>${group.id}</dd>
-		<dt>Group Name</dt>
-		<dd>${group.name}</dd>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<dl class="dl-horizontal">
+			<dt>Registration Id</dt>
+			<dd>${group.id}</dd>
+			<dt>Group Name</dt>
+			<dd>${group.name}</dd>
 
-		<dt>
-			<button type="button" class="btn btn-sm btn-default heading-button"
-				onclick="openGroupMembers('${group.id}')">Group Members</button>
-		</dt>
-		<dd>
-			<button type="button" class="btn btn-sm btn-default heading-button"
-				onclick="openGroupMemberships('${group.id}')">Group
-				Memberships</button>
-		</dd>
-		<dt>
-			<button type="button" class="btn btn-sm btn-default heading-button"
-				onclick="addNewChildGroup('${group.id}')">Add New Child
-				Group</button>
-		</dt>
-		<dd>
-			<button type="button" class="btn btn-sm btn-default heading-button"
-				onclick="writeConfigToChildDevices('${group.id}', '${group.name}')">Write
-				Configuration</button>
-		</dd>
+			<dt>
+				<button type="button" class="btn btn-sm btn-default heading-button"
+					onclick="openGroupMembers('${group.id}')">Group Members</button>
+			</dt>
+			<dd>
+				<button type="button" class="btn btn-sm btn-default heading-button"
+					onclick="openGroupMemberships('${group.id}')">Group
+					Memberships</button>
+			</dd>
+			<dt>
+				<button type="button" class="btn btn-sm btn-default heading-button"
+					onclick="addNewChildGroup('${group.id}')">Add New Child
+					Group</button>
+			</dt>
+			<dd>
+				<button type="button" class="btn btn-sm btn-default heading-button"
+					onclick="writeConfigToChildDevices('${group.id}', '${group.name}')">Write
+					Configuration</button>
+			</dd>
 
-	</dl>
+		</dl>
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<div class="panel panel-default dashboard">
+			<div class="panel-heading">Group Devices</div>
+			<div id="map" class="panel-body"></div>
+		</div>
+	</div>
 </div>
+<script src="../smartmanager/resources/js/smartmanager/dashboard.js"></script>
+<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7w-HEi_KCBCkCJNEKJzB2L7NJGl1CF4Y&callback=initMap"></script>

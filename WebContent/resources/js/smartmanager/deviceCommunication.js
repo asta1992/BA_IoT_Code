@@ -9,7 +9,6 @@ function readData(url, objectLink) {
 				bootbox.alert({
 					title : "Error",
 					message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
-					callback : function() {	}
 				});
 			}
 		}
@@ -57,7 +56,6 @@ function readMultiple(url) {
 				bootbox.alert({
 					title : "Error",
 					message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
-					callback : function() {	}
 				});
 			}
 		}
@@ -130,10 +128,8 @@ function writeData(url, objectLink, type) {
 								bootbox.alert({
 									title : "Error",
 									message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
-									callback : function() {	}
 								});
 							}
-							
 						}
 					});
 				}
@@ -160,8 +156,6 @@ function execute(url, objectLink) {
 					callback : function() {	}
 				});
 			}
-
-			
 		}
 	});
 }

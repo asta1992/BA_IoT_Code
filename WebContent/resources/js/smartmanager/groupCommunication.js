@@ -9,6 +9,7 @@ function updateAllChildDevices(groupId) {
 					url : "/smartmanager/groups/" + groupId
 							+ "/readChildDevices",
 				});
+				parent.location.reload();
 			}
 		}
 	})
@@ -35,8 +36,10 @@ function executeAllChildDevices(groupId) {
 							type : "POST",
 							url : "/smartmanager/groups/" + groupId
 									+ "/executeChildDevices/" + objectId + "/"
-									+ objectInstanceId + "/" + resourceId,
+									+ objectInstanceId + "/" + resourceId
+							
 						})
+						parent.location.reload();
 					}
 				}
 			})
@@ -93,7 +96,6 @@ function writeConfigToChildDevices(groupId, groupName) {
 							bootbox.alert({
 								title : "Your Results",
 								message : data,
-								callback : function() {}
 							});
 						});
 					}

@@ -19,13 +19,8 @@
 	href="../smartmanager/resources/css/lib/bootstrap-theme.min.css"
 	type="text/css">
 <link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/metisMenu.min.css"
-	type="text/css">
-<link rel="stylesheet"
 	href="../smartmanager/resources/css/lib/font-awesome.min.css"
 	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/morris.css" type="text/css">
 <link rel="stylesheet"
 	href="../smartmanager/resources/css/lib/sb-admin-2.min.css"
 	type="text/css">
@@ -163,8 +158,5 @@
 		</div>
 
 	</div>
-
-
-
 </body>
 </html>

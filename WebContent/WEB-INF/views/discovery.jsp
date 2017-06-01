@@ -54,6 +54,7 @@
 							<th>Device ID</th>
 							<th>Group Membership</th>
 							<th>Initial Configuration</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>

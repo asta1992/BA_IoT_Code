@@ -37,8 +37,6 @@ function showForm() {
 																	message : "New User '"
 																			+ data.map.username
 																			+ "' created",
-																	callback : function() {
-																	}
 																})
 													}
 												});
@@ -85,8 +83,6 @@ function editForm(id) {
 																	size : "small",
 																	title : "Success",
 																	message : "Successfully changed password",
-																	callback : function() {
-																	}
 																})
 													}
 												});

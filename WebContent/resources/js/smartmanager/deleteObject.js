@@ -6,10 +6,9 @@ function deleteDevice(id, name) {
 				$.ajax({
 					type: "DELETE",
 					url : "/smartmanager/devices/" + id + "/delete",
-					success : function() {
-						window.location.href = "/smartmanager/devices"
-					}
+					
 				});
+				window.location.href = "/smartmanager/devices"
 			}
 		}
 	})
@@ -22,11 +21,9 @@ function deleteGroup(id, name) {
 			if(ok){
 				$.ajax({
 					type: "DELETE",
-					url : "/smartmanager/groups/" + id + "/delete",
-					success : function() {
-						window.location.href = "/smartmanager/devices"
-					}
+					url : "/smartmanager/groups/" + id + "/delete"
 				});
+				window.location.href = "/smartmanager/devices"
 			}
 		}
 	})

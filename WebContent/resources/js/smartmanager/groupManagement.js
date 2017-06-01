@@ -8,8 +8,9 @@ function addNewRootGroup() {
 				data : {
 					value : JSON.stringify(message)
 				},
-				url : "/smartmanager/groups/add",
+				url : "/smartmanager/groups/add"
 			});
+			parent.location.reload();
 		}
 	});
 }
@@ -25,8 +26,9 @@ function addNewChildGroup(parentId) {
 					data : {
 						value : JSON.stringify(message)
 					},
-					url : "/smartmanager/groups/"+parentId+"/add",
+					url : "/smartmanager/groups/" + parentId + "/add",
 				});
+				parent.location.reload();
 			}
 		}
 	});
@@ -52,6 +54,7 @@ function openDeviceMemberships(id) {
 						},
 						url : "/smartmanager/devices/" + id + "/changeMembership"
 					});
+					parent.location.reload();
 				}
 			});
 		}
@@ -79,6 +82,7 @@ function openGroupMemberships(id) {
 						},
 						url : "/smartmanager/groups/" + id + "/changeMembership"
 					});
+					parent.location.reload();
 				}
 			});
 		}
@@ -106,6 +110,7 @@ function openGroupMembers(id){
 						},
 						url : "/smartmanager/groups/" + id + "/changeMembers"
 					});
+					parent.location.reload();
 				}
 			})
 			

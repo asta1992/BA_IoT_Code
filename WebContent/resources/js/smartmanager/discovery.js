@@ -11,5 +11,6 @@ function addDevice(deviceId){
 		},
 		url : "/smartmanager/devices/" + deviceId + "/add"
 	});
+	window.location.href = "/smartmanager/discovery"
 	
 }
