@@ -36,5 +36,21 @@ body {
     font-weight: bold !important;
 }
 
+.dashboard > .panel-heading {
+	background-image: none !important;
+    background-color: white !important;
+    color: #337ab7 !important;
+    font-weight: bold !important;
+}
+
+.dashboard-counters a {
+  color: inherit;
+  text-decoration: none;
+ }
+ 
+ .dashboard > .panel-body {
+	height: 450px;
+
+
 
 
