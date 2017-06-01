@@ -57,8 +57,6 @@
 				<jsp:include page="../views/menuFragment.jsp" />
 			</div>
 		</div>
-
-		<div class="row">
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 				<h4>
 					Navigation <span class="pull-right">
@@ -72,6 +70,5 @@
 			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="main-content">
 			</div>
 		</div>
-	</div>
 </body>
 </html>

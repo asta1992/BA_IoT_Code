@@ -1,8 +1,8 @@
 function addNewRootGroup() {
 	bootbox.prompt({
 		title : "Please enter a group name",
-		callback : function(ok){
-			if(ok){
+		callback : function(message){
+			if(message){
 				$.ajax({
 					type: "POST",
 					data : {
@@ -24,8 +24,8 @@ function addNewRootGroup() {
 function addNewChildGroup(parentId) {
 	bootbox.prompt({
 		title : "Please enter a group name",
-		callback : function(ok){
-			if(ok){
+		callback : function(message){
+			if(message){
 				$.ajax({
 					type: "POST",
 					data : {
