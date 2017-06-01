@@ -24,7 +24,7 @@ public class Configuration {
 	public void add(ConfigurationItem configurationItem) {
 		configurationItems.add(configurationItem);
 	}
-
+	
 	public String getId() {
 		return id;
 	}

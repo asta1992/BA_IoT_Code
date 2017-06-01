@@ -22,11 +22,13 @@ function showForm() {
 												secondPassword,
 												function(data) {
 													if (data.map.usernameLength) {
-														createUserAlert("The username is too short. The minimum length is 4");
+														createUserAlert("Username Length Error. Min: 4, Max: 20");
+													} else if (data.map.invalidCharError) {
+														createUserAlert("Only a-z, A-Z and 0-9 is allowed");
 													} else if (data.map.existsError) {
 														createUserAlert("User already exists! Please choose another Username.");
 													} else if (data.map.passwordLength) {
-														createUserAlert("The password is too short, The minimum length is 8");
+														createUserAlert("Password Length Error: Min: 8, Max: 50");
 													} else if (data.map.matchError) {
 														createUserAlert("Password doesn't match!")
 													} else {
@@ -62,7 +64,8 @@ function editForm(id) {
 								message : users,
 								callback : function(ok) {
 									if (ok) {
-										var oldPassword = $("#oldPassword").val();
+										var oldPassword = $("#oldPassword")
+												.val();
 										var firstPassword = $("#firstPassword")
 												.val();
 										var secondPassword = $(
@@ -75,11 +78,14 @@ function editForm(id) {
 												secondPassword,
 												function(data) {
 													if (data.map.oldPasswordError) {
-														createEditAlert(id, "Please check the old password");
+														createEditAlert(id,
+																"Please check the old password");
 													} else if (data.map.passwordLength) {
-														createEditAlert(id, "The password is too short, The minimum length is 8");
+														createEditAlert(id,
+																"The password is too short, The minimum length is 8");
 													} else if (data.map.matchError) {
-														createEditAlert(id, "Password doesn't match!")
+														createEditAlert(id,
+																"Password doesn't match!")
 													} else {
 														bootbox
 																.alert({
@@ -146,7 +152,7 @@ function editUser(id, oldPassword, firstPassword, secondPassword, callback) {
 		type : "POST",
 		dataType : "json",
 		data : {
-			oldPassword: oldPassword,
+			oldPassword : oldPassword,
 			firstPassword : firstPassword,
 			secondPassword : secondPassword
 		},

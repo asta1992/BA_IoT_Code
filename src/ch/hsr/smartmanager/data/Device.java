@@ -105,11 +105,6 @@ public class Device implements DeviceComponent {
 	public boolean isNew() {
 		return (this.id == null);
 	}
-
-	@Override
-	public void print(String abstand) {
-		System.out.println(abstand + toString());
-	}
 	
 	@Override
 	public String toString() {
