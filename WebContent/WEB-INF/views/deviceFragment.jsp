@@ -115,7 +115,6 @@
 		</div>
 	</c:forEach>
 </div>
-<script src="../smartmanager/resources/js/smartmanager/dashboard.js"></script>
 <script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7w-HEi_KCBCkCJNEKJzB2L7NJGl1CF4Y&callback=initMap"></script>
-
+<script src="../smartmanager/resources/js/smartmanager/dashboard.js"></script>

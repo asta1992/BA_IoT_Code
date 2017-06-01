@@ -17,7 +17,7 @@ function createConfiguration() {
 					if (save) {
 						saveConfiguration();
 					}
-					parent.location.reload();
+					
 				}
 			})
 		}
@@ -67,11 +67,16 @@ function saveConfiguration() {
 	});
 	$.ajax({
 		type : "POST",
-		dataType : "json",
 		data : {
 			value : JSON.stringify(config)
 		},
-		url : "/smartmanager/configurations/add"
+		url : "/smartmanager/configurations/add",
+		success : function(){
+			parent.location.reload();
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
+		}
 	});
 }
 
@@ -86,11 +91,15 @@ function deleteConfiguration(configurationId) {
 					data : {
 						value : configurationId
 					},
-					url : "/smartmanager/configurations/delete"
-
+					url : "/smartmanager/configurations/delete",
+					success: function(){
+						parent.location.reload();
+					},
+					error: function(xhr, ajaxOptions, thrownError){
+						alert(thrownError);
+					}
 				});
 			}
-			parent.location.reload();
 		}
 	});
 
@@ -116,7 +125,6 @@ function editConfiguration(configurationId) {
 					if (save) {
 						saveConfiguration();
 					}
-					parent.location.reload();
 				}
 			})
 		}
@@ -200,6 +208,9 @@ function getExecuteableResources() {
 			})
 			resourceDropdown.selectpicker('refresh');
 			updateCompleteObjectId();
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	})
 }

@@ -8,8 +8,13 @@ function updateAllChildDevices(groupId) {
 					dataType : "json",
 					url : "/smartmanager/groups/" + groupId
 							+ "/readChildDevices",
+					success : function(){
+						parent.location.reload();
+					},
+					error: function(xhr, ajaxOptions, thrownError){
+						alert(thrownError);
+					}
 				});
-				parent.location.reload();
 			}
 		}
 	})
@@ -36,13 +41,20 @@ function executeAllChildDevices(groupId) {
 							type : "POST",
 							url : "/smartmanager/groups/" + groupId
 									+ "/executeChildDevices/" + objectId + "/"
-									+ objectInstanceId + "/" + resourceId
-							
+									+ objectInstanceId + "/" + resourceId,
+							success : function(){
+								parent.location.reload();
+							},
+							error: function(xhr, ajaxOptions, thrownError){
+								alert(thrownError);
+							}
 						})
-						parent.location.reload();
 					}
 				}
 			})
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	})
 }
@@ -66,17 +78,22 @@ function writeAllChildDevices(groupId) {
 								":selected").text())
 						$.ajax({
 							type : "POST",
-							dataType : "json",
 							data : {
 								"value" : $('#writeValue').val()
 							},
 							url : "/smartmanager/groups/" + groupId
 									+ "/writeChildDevices/" + objectId + "/"
 									+ objectInstanceId + "/" + resourceId,
+							error: function(xhr, ajaxOptions, thrownError){
+								alert(thrownError);
+							}
 						})
 					}
 				}
 			})
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	})
 }
@@ -101,6 +118,9 @@ function writeConfigToChildDevices(groupId, groupName) {
 					}
 				}
 			});
+		},
+		error : function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	});
 }
@@ -113,8 +133,8 @@ function getResult(groupId, callback) {
 			value : $('#configSelector option:selected').val()
 		},
 		url : "/smartmanager/groups/" + groupId + "/writeConfiguration",
-		success : function(res) {
-			callback(res);
+		success : function(response) {
+			callback(response);
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);

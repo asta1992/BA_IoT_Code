@@ -204,18 +204,4 @@ public class WebController {
 
 		return "groupMembersFragment";
 	}
-
-
-	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.DELETE)
-	public String removeDevice(Model model, @PathVariable("id") String id) {
-		deviceService.removeFromManagement(id);
-		return "redirect:/devices";
-	}
-
-	@RequestMapping(value = "/groups/{id}/delete", method = RequestMethod.DELETE)
-	public String removeGroup(Model model, @PathVariable("id") String id) {
-		deviceService.deleteGroup(id);
-		return "forward:/devices";
-
-	}
 }

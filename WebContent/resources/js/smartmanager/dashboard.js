@@ -27,6 +27,9 @@ function getLocations(map, groupId) {
 		url : url,
 		success : function(locations) {
 			insertLocations(map, locations);
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	});
 }

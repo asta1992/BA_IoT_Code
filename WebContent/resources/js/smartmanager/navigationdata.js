@@ -1,8 +1,10 @@
 $(document).ready(function() {
-	$('#tree').tree({
+	$('#tree').tree(
+	{
 		primaryKey : 'id',
 		uiLibrary : 'bootstrap',
-		dataSource : '/smartmanager/groups/getAll'});
+		dataSource : '/smartmanager/groups/getAll'
+	});
 
 	
 	$('#tree').tree().on('select', function (e, node, id) {
@@ -11,6 +13,9 @@ $(document).ready(function() {
 			url : "/smartmanager/" + id,
 			success : function(data) {
 				$('#main-content').html(data);
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+				alert(thrownError);
 			}
 		});
     });

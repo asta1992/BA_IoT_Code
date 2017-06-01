@@ -11,10 +11,12 @@ function readData(url, objectLink) {
 					message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
 				});
 			}
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	});
 }
-
 function readAll() {
 	$('button[id^="btn-read-multiple"]').click();
 }
@@ -33,7 +35,6 @@ function cutInstanceId(url) {
 	    	newUrl = match;
 	    });
 	}
-	
 	return newUrl;
 }
 
@@ -58,6 +59,9 @@ function readMultiple(url) {
 					message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
 				});
 			}
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	});
 }
@@ -130,10 +134,16 @@ function writeData(url, objectLink, type) {
 									message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
 								});
 							}
+						},
+						error: function(xhr, ajaxOptions, thrownError){
+							alert(thrownError);
 						}
 					});
 				}
 			});
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	});
 
@@ -156,6 +166,9 @@ function execute(url, objectLink) {
 					callback : function() {	}
 				});
 			}
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	});
 }

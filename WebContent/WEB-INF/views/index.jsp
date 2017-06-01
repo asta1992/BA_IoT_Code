@@ -26,9 +26,11 @@
 	type="text/css">
 <script src="../smartmanager/resources/js/lib/jquery-2.1.4.min.js"></script>
 <script src="../smartmanager/resources/js/lib/bootstrap.min.js"></script>
+<script src="../smartmanager/resources/js/lib/bootbox.min.js"></script>
 <script src="../smartmanager/resources/js/lib/metisMenu.js"></script>
 <script src="../smartmanager/resources/js/lib/sb-admin-2.js"></script>
 <script src="../smartmanager/resources/js/smartmanager/dashboard.js"></script>
+<script src="../smartmanager/resources/js/smartmanager/deleteObject.js"></script>
 <script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7w-HEi_KCBCkCJNEKJzB2L7NJGl1CF4Y&callback=initMap"></script>
 </head>

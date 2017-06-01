@@ -304,4 +304,14 @@ public class RestController {
 	public List<List<String>> getAllLocation(Model model) {
 		return deviceService.getAllLocation();
 	}
+	
+	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.DELETE)
+	public void removeDevice(Model model, @PathVariable("id") String id) {
+		deviceService.removeFromManagement(id);
+	}
+
+	@RequestMapping(value = "/groups/{id}/delete", method = RequestMethod.DELETE)
+	public void removeGroup(Model model, @PathVariable("id") String id) {
+		deviceService.deleteGroup(id);
+	}
 }

@@ -44,6 +44,9 @@ function showForm() {
 								}
 
 							});
+				},
+				error: function(xhr, ajaxOptions, thrownError){
+					alert(thrownError);
 				}
 			});
 }
@@ -90,6 +93,9 @@ function editForm(id) {
 								}
 
 							});
+				},
+				error: function(xhr, ajaxOptions, thrownError){
+					alert(thrownError);
 				}
 			});
 }

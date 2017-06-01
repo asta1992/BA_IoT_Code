@@ -4,13 +4,17 @@ function addNewRootGroup() {
 		callback : function(message){
 			$.ajax({
 				type: "POST",
-				dataType : "json",
 				data : {
 					value : JSON.stringify(message)
 				},
-				url : "/smartmanager/groups/add"
+				url : "/smartmanager/groups/add",
+				success : function(){
+					parent.location.reload();
+				},
+				error: function(xhr, ajaxOptions, thrownError){
+					alert(thrownError);
+				}
 			});
-			parent.location.reload();
 		}
 	});
 }
@@ -22,13 +26,17 @@ function addNewChildGroup(parentId) {
 			if(message){
 				$.ajax({
 					type: "POST",
-					dataType : "json",
 					data : {
 						value : JSON.stringify(message)
 					},
 					url : "/smartmanager/groups/" + parentId + "/add",
+					success : function(){
+						parent.location.reload();
+					},
+					error: function(xhr, ajaxOptions, thrownError){
+						alert(thrownError);
+					}
 				});
-				parent.location.reload();
 			}
 		}
 	});
@@ -48,13 +56,17 @@ function openDeviceMemberships(id) {
 					});
 					$.ajax({
 						type : "POST",
-						dataType : "json",
 						data : {
 							value : JSON.stringify(updatedMemberships)
 						},
-						url : "/smartmanager/devices/" + id + "/changeMembership"
+						url : "/smartmanager/devices/" + id + "/changeMembership",
+						success : function(){
+							parent.location.reload();
+						},
+						error: function(xhr, ajaxOptions, thrownError){
+							alert(thrownError);
+						}
 					});
-					parent.location.reload();
 				}
 			});
 		}
@@ -80,11 +92,19 @@ function openGroupMemberships(id) {
 						data : {
 							value : JSON.stringify(updatedMemberships)
 						},
-						url : "/smartmanager/groups/" + id + "/changeMembership"
+						url : "/smartmanager/groups/" + id + "/changeMembership",
+						success : function(){
+							parent.location.reload();
+						},
+						error: function(xhr, ajaxOptions, thrownError){
+							alert(thrownError);
+						}
 					});
-					parent.location.reload();
 				}
 			});
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	});
 }
@@ -108,12 +128,20 @@ function openGroupMembers(id){
 						data : {
 							value : JSON.stringify(updatedMemberships)
 						},
-						url : "/smartmanager/groups/" + id + "/changeMembers"
+						url : "/smartmanager/groups/" + id + "/changeMembers",
+						success : function(){
+							parent.location.reload();
+						},
+						error: function(xhr, ajaxOptions, thrownError){
+							alert(thrownError);
+						}
 					});
-					parent.location.reload();
 				}
 			})
 			
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			alert(thrownError);
 		}
 	})
 }
