@@ -230,8 +230,7 @@ public class LwM2MHandler {
 			try {
 				date = formatter.parse(value);
 			} catch (ParseException e) {
-				date = null;
-				e.printStackTrace();
+				date = new Date();
 			}
 			return new WriteRequest(objectId, objectInstanceId, resourceId, date);
 		}
