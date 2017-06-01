@@ -7,7 +7,6 @@ public class ConfigurationItem {
 	
 	private String path;
 	private String value;
-	String regex = "([0-9]*)\\/([0-9]*)\\/([0-9]*)";
 
 	
 	public ConfigurationItem(String path, String value) {

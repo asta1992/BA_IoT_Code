@@ -23,8 +23,6 @@
 	</bean>
 
 	<sec:http use-expressions="true">
-		<sec:intercept-url pattern="/users" access="permitAll" />
-		<sec:intercept-url pattern="/users/**" access="permitAll" />
 		<sec:intercept-url pattern="/resources/**" access="permitAll" />
 		<sec:intercept-url pattern="/login" access="permitAll" />
 		<sec:intercept-url pattern="/logout" access="permitAll" />
@@ -33,14 +31,10 @@
 		<sec:intercept-url pattern="/devices/**" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/groups" access="permitAll" />
 		<sec:intercept-url pattern="/groups/**" access="permitAll" />
-		<sec:intercept-url pattern="/group" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/group/**" access="isAuthenticated()" />
-
-		<sec:intercept-url pattern="/group/*" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/users" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/users/**" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/configurations" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/configurations/**"
-			access="isAuthenticated()" />
-
+		<sec:intercept-url pattern="/configurations/**"	access="isAuthenticated()" />
 		<sec:intercept-url pattern="/discovery" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/**" access="denyAll" />
 		<sec:form-login login-page="/login"
