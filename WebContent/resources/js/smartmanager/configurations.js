@@ -87,7 +87,7 @@ function deleteConfiguration(configurationId) {
 			if (ok) {
 				$.ajax({
 					type : "POST",
-					dataType : "json",
+					dataType: "json",
 					data : {
 						value : configurationId
 					},
@@ -96,6 +96,7 @@ function deleteConfiguration(configurationId) {
 						parent.location.reload();
 					},
 					error: function(xhr, ajaxOptions, thrownError){
+						parent.location.reload();
 						alert(thrownError);
 					}
 				});
