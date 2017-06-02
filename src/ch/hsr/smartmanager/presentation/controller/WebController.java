@@ -65,10 +65,10 @@ public class WebController {
 	}
 	
 	@RequestMapping(value = "/discovery/clean")
-	public String cleanDiscovery(Model model, Principal principal) {
+	public String cleanDiscovery(Model model) {
 		deviceService.removeDiscoveredDevices();
-		System.out.println("Hier");
 		return "redirect:/discovery";
+
 	}
 
 	@RequestMapping(value = "/configurations")
