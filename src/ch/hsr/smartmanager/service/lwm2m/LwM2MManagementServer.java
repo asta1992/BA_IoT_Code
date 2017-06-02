@@ -32,13 +32,12 @@ public class LwM2MManagementServer {
 	private int port;
 	private List<ObjectModel> models = ObjectLoader.loadDefault();
 
-
 	private Resource resource = new ClassPathResource("ch/hsr/smartmanager/resources/models/");
 
 	public LwM2MManagementServer() {
-		this.address = "localhost";
-		this.port = 5683;
 
+		this.address = "127.0.0.1";
+		this.port = 5683;
 	}
 
 	@PostConstruct
@@ -61,7 +60,7 @@ public class LwM2MManagementServer {
 		models.addAll(ObjectLoader.load(file));
 		LwM2mModelProvider modelProvider = new StaticModelProvider(models);
 		builder.setObjectModelProvider(modelProvider);
-		
+
 		this.server = builder.build();
 		server.getRegistrationService().addListener(registrationListenerImpl.getRegistrationListener());
 		serverTaskExecutor.doIt(this.server);

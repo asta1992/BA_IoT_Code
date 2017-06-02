@@ -8,11 +8,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="../smartmanager/resources/css/smartmanager/style.css" type="text/css">
-<link rel="stylesheet" href="../smartmanager/resources/css/lib/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="../smartmanager/resources/css/lib/bootstrap-theme.min.css" type="text/css">
-<script src="../smartmanager/resources/js/lib/jquery-2.1.4.min.js"></script>
-<script src="../smartmanager/resources/js/lib/bootstrap.min.js"></script>
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/smartmanager/style.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap-theme.min.css" type="text/css">
+<script src="..${pageContext.request.contextPath}/resources/js/lib/jquery-2.1.4.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap.min.js"></script>
 <title>Login</title>
 </head>
 <body onload='document.f.j_username.focus();'>
@@ -32,7 +32,7 @@
 			</div>
 		</c:if>
 
-		<form class="form-signin" name='f' action='smartmanager/j_spring_security_check' method='POST'>
+		<form class="form-signin" name='f' action='${pageContext.request.contextPath}/j_spring_security_check' method='POST'>
 			<h2 class="form-signin-heading">Please log in</h2>
 			<label for="username" class="sr-only">Username</label> <input type="text" id="username" name="j_username" value='' class="form-control" placeholder="Username" required autofocus> <label for="password" class="sr-only">Password</label> <input
 				type="password" name="j_password" id="password" class="form-control" placeholder="Password" required>

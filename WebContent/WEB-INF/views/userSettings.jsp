@@ -8,17 +8,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smartmanager</title>
-<link rel="stylesheet" href="../smartmanager/resources/css/smartmanager/style.css" type="text/css">
-<link rel="stylesheet" href="../smartmanager/resources/css/lib/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="../smartmanager/resources/css/lib/bootstrap-theme.min.css" type="text/css">
-<link rel="stylesheet" href="../smartmanager/resources/css/lib/bootstrap-select.min.css" type="text/css">
-<link rel="stylesheet" type="text/css" href="../smartmanager/resources/css/lib/prettify.min.css">
-<script src="../smartmanager/resources/js/lib/jquery-2.1.4.min.js"></script>
-<script src="../smartmanager/resources/js/lib/bootstrap.min.js"></script>
-<script src="../smartmanager/resources/js/lib/bootbox.min.js"></script>
-<script src="../smartmanager/resources/js/lib/run_prettify.min.js" type="text/javascript"></script>
-<script src="../smartmanager/resources/js/lib/bootstrap-select.min.js" type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/userManagement.js" type="text/javascript"></script>
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/smartmanager/style.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap-theme.min.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap-select.min.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="..${pageContext.request.contextPath}/resources/css/lib/prettify.min.css">
+<script src="..${pageContext.request.contextPath}/resources/js/lib/jquery-2.1.4.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootbox.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/run_prettify.min.js" type="text/javascript"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap-select.min.js" type="text/javascript"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/userManagement.js" type="text/javascript"></script>
 
 </head>
 <body>

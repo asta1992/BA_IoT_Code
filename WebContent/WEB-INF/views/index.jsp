@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -9,40 +8,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smartmanager</title>
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/smartmanager/style.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/bootstrap.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/bootstrap-theme.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/font-awesome.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/sb-admin-2.min.css"
-	type="text/css">
-<script src="../smartmanager/resources/js/lib/jquery-2.1.4.min.js"></script>
-<script src="../smartmanager/resources/js/lib/bootstrap.min.js"></script>
-<script src="../smartmanager/resources/js/lib/bootbox.min.js"></script>
-<script src="../smartmanager/resources/js/lib/metisMenu.js"></script>
-<script src="../smartmanager/resources/js/lib/sb-admin-2.js"></script>
-<script src="../smartmanager/resources/js/smartmanager/dashboard.js"></script>
-<script async defer
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7w-HEi_KCBCkCJNEKJzB2L7NJGl1CF4Y&callback=initMap"></script>
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/smartmanager/style.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap-theme.min.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/sb-admin-2.min.css" type="text/css">
+<script src="..${pageContext.request.contextPath}/resources/js/lib/jquery-2.1.4.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootbox.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/metisMenu.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/sb-admin-2.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/dashboard.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7w-HEi_KCBCkCJNEKJzB2L7NJGl1CF4Y&callback=initMap"></script>
 </head>
 <body>
+
+
+
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
-				style="padding: 0 0 0 0;">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0 0 0 0;">
 				<jsp:include page="../views/menuFragment.jsp" />
 			</div>
 			<div class="row dashboard-counters">
 				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-					<a href="/smartmanager/devices">
+					<a href="${pageContext.request.contextPath}/devices">
 						<div class="panel panel-default">
 							<div class="panel-body">
 								<div class="row">
@@ -60,7 +50,7 @@
 				</div>
 
 				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-					<a href="/smartmanager/discovery">
+					<a href="${pageContext.request.contextPath}/discovery">
 						<div class="panel panel-default">
 							<div class="panel-body">
 								<div class="row">
@@ -78,7 +68,7 @@
 				</div>
 
 				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-					<a href="/smartmanager/users">
+					<a href="${pageContext.request.contextPath}/users">
 						<div class="panel panel-default">
 							<div class="panel-body">
 								<div class="row">
@@ -132,14 +122,12 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="unreachableDevices"
-										items="${unreachableDevices}">
+									<c:forEach var="unreachableDevices" items="${unreachableDevices}">
 										<tr>
 											<td>${unreachableDevices.name}</td>
 											<td>${unreachableDevices.lastRegistrationUpdate}</td>
 											<td><span class="pull-right">
-													<button type="button" class="btn btn-danger btn-xs"
-														onclick="deleteDevice('${unreachableDevices.id}', '${unreachableDevices.name}')">Delete</button>
+													<button type="button" class="btn btn-danger btn-xs" onclick="deleteDevice('${unreachableDevices.id}', '${unreachableDevices.name}')">Delete</button>
 											</span></td>
 										</tr>
 									</c:forEach>

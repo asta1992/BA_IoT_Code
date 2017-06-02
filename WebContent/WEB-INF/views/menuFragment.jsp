@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<nav class="navbar navbar-default navbar-fixed-top">
+</html><nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
@@ -10,19 +9,19 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/smartmanager">SmartManager</a>
+			<a class="navbar-brand" href="${pageContext.request.contextPath}">SmartManager</a>
 		</div>
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a href="/smartmanager/">Home</a></li>
-				<li><a href="/smartmanager/devices">Devices</a></li>
+				<li><a href="${pageContext.request.contextPath}/">Home</a></li>
+				<li><a href="${pageContext.request.contextPath}/devices">Devices</a></li>
 				<li>
-					<a href="/smartmanager/discovery">
+					<a href="${pageContext.request.contextPath}/discovery">
 						Discovery <span class="badge badge-info">${discoveredDeviceCounter}</span>
 					</a>
 				</li>
-				<li><a href="/smartmanager/configurations">Configurations</a></li>
+				<li><a href="${pageContext.request.contextPath}/configurations">Configurations</a></li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
@@ -31,7 +30,7 @@
 					aria-expanded="false">${username}<span
 						class="glyphicon glyphicon-user"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="/smartmanager/users">Settings</a></li>
+						<li><a href="${pageContext.request.contextPath}/users">Settings</a></li>
 						<li role="separator" class="divider"></li>
 						<li><a href="<c:url value='j_spring_security_logout'/>">Logout</a></li>
 					</ul></li>

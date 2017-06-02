@@ -9,45 +9,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smartmanager</title>
-<link rel="stylesheet" href="../smartmanager/resources/css/smartmanager/style.css"
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/smartmanager/style.css"
 	type="text/css">
-<link href="../smartmanager/resources/css/lib/gijgo.css" rel="stylesheet"
-	type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/bootstrap.min.css" type="text/css">
-<link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/bootstrap-theme.min.css"
+<link href="..${pageContext.request.contextPath}/resources/css/lib/gijgo.css" rel="stylesheet"
 	type="text/css">
 <link rel="stylesheet"
-	href="../smartmanager/resources/css/lib/bootstrap-select.min.css"
+	href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap.min.css" type="text/css">
+<link rel="stylesheet"
+	href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap-theme.min.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap-select.min.css"
 	type="text/css">
 <link rel="stylesheet" type="text/css"
-	href="../smartmanager/resources/css/lib/prettify.min.css">
+	href="..${pageContext.request.contextPath}/resources/css/lib/prettify.min.css">
 <link rel="stylesheet" type="text/css"
-	href="../smartmanager/resources/css/lib/bootstrap-duallistbox.css">
-<script src="../smartmanager/resources/js/lib/jquery-2.1.4.min.js"></script>
-<script src="../smartmanager/resources/js/lib/bootstrap.min.js"></script>
-<script src="../smartmanager/resources/js/lib/gijgo.js"
+	href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap-duallistbox.css">
+<script src="..${pageContext.request.contextPath}/resources/js/lib/jquery-2.1.4.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/gijgo.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/lib/bootbox.min.js"></script>
-<script src="../smartmanager/resources/js/lib/run_prettify.min.js"
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootbox.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/run_prettify.min.js"
 	type="text/javascript"></script>
 <script
-	src="../smartmanager/resources/js/lib/jquery.bootstrap-duallistbox.js"
+	src="..${pageContext.request.contextPath}/resources/js/lib/jquery.bootstrap-duallistbox.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/lib/bootstrap-select.min.js"
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap-select.min.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/navigationdata.js"
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/navigationdata.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/deviceCommunication.js"
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/deviceCommunication.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/configurations.js"
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/configurations.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/groupCommunication.js"
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/groupCommunication.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/groupManagement.js"
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/groupManagement.js"
 	type="text/javascript"></script>
-<script src="../smartmanager/resources/js/smartmanager/deleteObject.js"
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/deleteObject.js"
 	type="text/javascript"></script>
 </head>
 <body>
