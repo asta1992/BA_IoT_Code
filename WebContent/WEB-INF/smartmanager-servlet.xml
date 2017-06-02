@@ -8,45 +8,31 @@
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.10.xsd
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
-
 	<import resource="security-config.xml" />
 
 	<mvc:annotation-driven></mvc:annotation-driven>
+
 	<bean id="jspViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 
+	<mvc:resources mapping="/resources/**" location="/resources/" cache-period="31556926" />
 
-
-	<mvc:resources mapping="/resources/**" location="/resources/"
-		cache-period="31556926" />
-
-
-
-
-
-	<mongo:db-factory id="mongoDbFactory"
-		client-uri="mongodb://localhost/test" />
+	<mongo:db-factory id="mongoDbFactory" client-uri="mongodb://localhost/test" />
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
 	</bean>
 
-
 	<mongo:repositories base-package="ch.hsr.smartmanager.data.repository" />
 
 	<context:component-scan base-package="ch.hsr.smartmanager.data"></context:component-scan>
-	<context:component-scan base-package="ch.hsr.smartmanager.data.converter"></context:component-scan>
+	<context:component-scan base-package="ch.hsr.smartmanager.data.repository"></context:component-scan>
 
-	<context:component-scan base-package="ch.hsr.smartmanager.service">
-	</context:component-scan>
+	<context:component-scan base-package="ch.hsr.smartmanager.service"></context:component-scan>
 
-	<context:component-scan base-package="ch.hsr.smartmanager.data.repository">
-	</context:component-scan>
-
-	<context:component-scan base-package="ch.hsr.smartmanager.presentation.controller">
-	</context:component-scan>
+	<context:component-scan base-package="ch.hsr.smartmanager.presentation.controller"></context:component-scan>
 
 </beans>

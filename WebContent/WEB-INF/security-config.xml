@@ -16,35 +16,38 @@
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 
-
-	<bean id="passwordEncoder"
-		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-	</bean>
-
 	<sec:http use-expressions="true">
 		<sec:intercept-url pattern="/resources/**" access="permitAll" />
+
 		<sec:intercept-url pattern="/login" access="permitAll" />
 		<sec:intercept-url pattern="/logout" access="permitAll" />
+
 		<sec:intercept-url pattern="/" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/*" access="isAuthenticated()" />
+
 		<sec:intercept-url pattern="/devices" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/devices/**" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/groups" access="permitAll" />
-		<sec:intercept-url pattern="/groups/**" access="permitAll" />
+
+		<sec:intercept-url pattern="/groups" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/groups/**" access="isAuthenticated()" />
+
 		<sec:intercept-url pattern="/users" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/users/**" access="isAuthenticated()" />
+
 		<sec:intercept-url pattern="/configurations" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/configurations/**"
-			access="isAuthenticated()" />
+		<sec:intercept-url pattern="/configurations/**" access="isAuthenticated()" />
+
 		<sec:intercept-url pattern="/discovery" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/discovery/*" access="isAuthenticated()" />
 
 		<sec:intercept-url pattern="/**" access="denyAll" />
-		<sec:form-login login-page="/login"
-			authentication-failure-url="/login?error=true" />
+		
+		<sec:form-login login-page="/login" authentication-failure-url="/login?error=true" />
 		<sec:logout logout-success-url="/logout" />
 	</sec:http>
 
-
-	<bean id="managementUserService" class="ch.hsr.smartmanager.service.ManagementUserService">
-	</bean>
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+	
+	<bean id="managementUserService" class="ch.hsr.smartmanager.service.ManagementUserService"></bean>
+	
 </beans>
