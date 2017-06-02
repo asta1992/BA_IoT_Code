@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.HtmlUtils;
 
 import ch.hsr.smartmanager.service.ManagementUserService;
 
@@ -44,7 +45,7 @@ public class LoginRestController {
 			@RequestParam("secondPassword") String secondPassword) {
 		JSONObject result = new JSONObject();
 		try {
-			result = managementUserService.addUser(username.toLowerCase(), firstPassword, secondPassword);
+			result = managementUserService.addUser(HtmlUtils.htmlEscape(username.toLowerCase()), firstPassword, secondPassword);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

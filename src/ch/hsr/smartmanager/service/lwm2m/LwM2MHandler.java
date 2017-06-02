@@ -26,6 +26,7 @@ import org.eclipse.leshan.server.californium.impl.LeshanServer;
 import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.service.DeviceService;
@@ -163,7 +164,7 @@ public class LwM2MHandler {
 		ResourceModel.Type type = server.getModelProvider().getObjectModel(registration).getResourceModel(objectId,
 				resourceId).type;
 
-		WriteRequest req = getWriteRequest(objectId, objectInstanceId, resourceId, value, type);
+		WriteRequest req = getWriteRequest(objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value), type);
 		WriteResponse res;
 
 		try {
