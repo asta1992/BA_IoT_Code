@@ -1,25 +1,3 @@
-function updateAllChildDevices(groupId) {
-	bootbox.confirm({
-		title : "This action can cause high amount of traffic, are you sure?",
-		callback : function(ok) {
-			if (ok) {
-				$.ajax({
-					type : "GET",
-					dataType : "json",
-					url : "/smartmanager/groups/" + groupId
-							+ "/readChildDevices",
-					success : function(){
-						parent.location.reload();
-					},
-					error: function(xhr, ajaxOptions, thrownError){
-						alert(thrownError);
-					}
-				});
-			}
-		}
-	})
-}
-
 function executeAllChildDevices(groupId) {
 	$.ajax({
 		type : "GET",

@@ -9,8 +9,6 @@
 				class="btn btn-danger heading-button"
 				onclick="deleteGroup('${group.id}', '${group.name}')">Delete
 				Group</button></span> <span class="pull-right"><button type="button"
-				class="btn btn-primary heading-button" onclick="readAll()">Update
-				All Devices</button></span> <span class="pull-right"><button type="button"
 				class="btn btn-warning heading-button"
 				onclick="writeAllChildDevices('${group.id}')">Write Command</button></span>
 		<span class="pull-right"><button type="button"

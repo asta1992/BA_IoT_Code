@@ -8,7 +8,8 @@
 		<label for="value" class="control-label">Name</label>
 	</div>
 	<div class="col-lg-9 col-md-9">
-		<input type="text" class="form-control" id="configName" value="${configuration.name}">
+		<input type="text" class="form-control" id="configName"
+			value="${configuration.name}">
 	</div>
 </div>
 <div class="row form-group">
@@ -16,7 +17,8 @@
 		<label for="value" class="control-label">Description</label>
 	</div>
 	<div class="col-lg-9 col-md-9">
-		<input type="text" class="form-control" id="description" value="${configuration.description}">
+		<input type="text" class="form-control" id="description"
+			value="${configuration.description}">
 	</div>
 </div>
 <div class="row form-group">
@@ -26,6 +28,7 @@
 	<div class="col-lg-3 col-md-3 col-sm-3">
 		<select class="selectpicker" id="objectDropdown"
 			onchange="getWriteableResources()">
+			<option value="" disabled selected>Select your option</option>
 			<c:forEach var="objectMap" items="${objectMap}">
 				<option value="'${objectMap.key}'">${objectMap.key}
 					(${objectMap.value})</option>
@@ -70,11 +73,12 @@
 	id="configurationItemsDiv">
 	<h4>Configuration Items</h4>
 	<table class="table table-hover" id="configurationItems">
-		<tr id="0Row">
+		<tr>
 			<th width="25%">Object Link</th>
 			<th width="75%">Value</th>
 		</tr>
-		<c:forEach var="configurationItem" items="${configuration.configurationItems}" varStatus="loop">
+		<c:forEach var="configurationItem"
+			items="${configuration.configurationItems}" varStatus="loop">
 			<tr id="${loop.index}Row">
 				<td class="objectIdField">${configurationItem.path}</td>
 				<td class="valueField">

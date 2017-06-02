@@ -13,6 +13,7 @@ function addDevice(deviceId){
 			window.location.reload();
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
+			window.location.reload();
 			alert(thrownError);
 		}
 	});

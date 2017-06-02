@@ -17,7 +17,6 @@ function createConfiguration() {
 					if (save) {
 						saveConfiguration();
 					}
-					
 				}
 			})
 		}
@@ -43,10 +42,12 @@ function addConfigurationItem() {
 							+ rowNumber
 							+ ')"><span class="glyphicon glyphicon-minus"></span></button></span></td>'
 							+ '</tr>');
+	$('#writeValue').val('');
 	$("#configurationItems").html();
 }
 
 function removeConfigurationItem(rowNumber) {
+	console.log(rowNumber)
 	$('#' + rowNumber + 'Row').remove();
 }
 
@@ -75,6 +76,7 @@ function saveConfiguration() {
 			parent.location.reload();
 		},
 		error: function(xhr, ajaxOptions, thrownError){
+			parent.location.reload();
 			alert(thrownError);
 		}
 	});
@@ -87,7 +89,6 @@ function deleteConfiguration(configurationId) {
 			if (ok) {
 				$.ajax({
 					type : "POST",
-					dataType: "json",
 					data : {
 						value : configurationId
 					},
@@ -133,14 +134,14 @@ function editConfiguration(configurationId) {
 }
 
 function updateCompleteObjectId() {
-	$('#completeObjectId')
-			.html(
-					parseInt($('#objectDropdown').find(":selected").text())
-							+ "/"
-							+ $('#instanceIdField').val()
-							+ "/"
-							+ parseInt($('#resourceDropdown').find(":selected")
-									.text()));
+	var objectId = parseInt($('#objectDropdown').find(":selected").text());
+	var instanceId = $('#instanceIdField').val();
+	if(instanceId == ''){
+		var instanceId = 0;
+	}
+	resourceId = parseInt($('#resourceDropdown').find(":selected").text());
+	
+	$('#completeObjectId').html(objectId + "/" + instanceId + "/" + resourceId);
 }
 
 function getWriteableResources() {

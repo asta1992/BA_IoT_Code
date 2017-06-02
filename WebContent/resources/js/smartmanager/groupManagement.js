@@ -13,6 +13,7 @@ function addNewRootGroup() {
 						parent.location.reload();
 					},
 					error: function(xhr, ajaxOptions, thrownError){
+						parent.location.reload();
 						alert(thrownError);
 					}
 				});
@@ -36,6 +37,7 @@ function addNewChildGroup(parentId) {
 						parent.location.reload();
 					},
 					error: function(xhr, ajaxOptions, thrownError){
+						parent.location.reload();
 						alert(thrownError);
 					}
 				});
@@ -67,6 +69,7 @@ function openDeviceMemberships(id) {
 								parent.location.reload();
 							},
 							error: function(xhr, ajaxOptions, thrownError){
+								parent.location.reload();
 								alert(thrownError);
 							}
 						});
@@ -101,6 +104,7 @@ function openGroupMemberships(id) {
 								parent.location.reload();
 							},
 							error: function(xhr, ajaxOptions, thrownError){
+								parent.location.reload();
 								alert(thrownError);
 							}
 						});
@@ -138,6 +142,7 @@ function openGroupMembers(id){
 								parent.location.reload();
 							},
 							error: function(xhr, ajaxOptions, thrownError){
+								parent.location.reload();
 								alert(thrownError);
 							}
 						});

@@ -30,7 +30,6 @@
 <script src="../smartmanager/resources/js/lib/metisMenu.js"></script>
 <script src="../smartmanager/resources/js/lib/sb-admin-2.js"></script>
 <script src="../smartmanager/resources/js/smartmanager/dashboard.js"></script>
-<script src="../smartmanager/resources/js/smartmanager/deleteObject.js"></script>
 <script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7w-HEi_KCBCkCJNEKJzB2L7NJGl1CF4Y&callback=initMap"></script>
 </head>
@@ -134,13 +133,13 @@
 								</thead>
 								<tbody>
 									<c:forEach var="unreachableDevices"
-										items="${unrechableDevices}">
+										items="${unreachableDevices}">
 										<tr>
 											<td>${unreachableDevices.name}</td>
 											<td>${unreachableDevices.lastRegistrationUpdate}</td>
 											<td><span class="pull-right">
 													<button type="button" class="btn btn-danger btn-xs"
-														onclick="deleteDevice('${configurations.id}')">Delete</button>
+														onclick="deleteDevice('${unreachableDevices.id}', '${unreachableDevices.name}')">Delete</button>
 											</span></td>
 										</tr>
 									</c:forEach>

@@ -26,6 +26,7 @@
 	<div class="col-lg-3 col-md-3 col-sm-3">
 		<select class="selectpicker" id="objectDropdown"
 			onchange="getWriteableResources()">
+			<option value="" disabled selected>Select your option</option>
 			<c:forEach var="objectMap" items="${objectMap}">
 				<option value="'${objectMap.key}'">${objectMap.key}
 					(${objectMap.value})</option>

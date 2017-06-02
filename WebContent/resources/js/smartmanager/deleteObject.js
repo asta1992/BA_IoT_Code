@@ -10,6 +10,7 @@ function deleteDevice(id, name) {
 						window.location.href = "/smartmanager/devices";
 					},
 					error: function(xhr, ajaxOptions, thrownError){
+						window.location.href = "/smartmanager/devices";
 						alert(thrownError);
 					}
 				});
@@ -30,6 +31,7 @@ function deleteGroup(id, name) {
 						window.location.href = "/smartmanager/devices";
 					},
 					error: function(xhr, ajaxOptions, thrownError){
+						window.location.href = "/smartmanager/devices";
 						alert(thrownError);
 					}
 				});
