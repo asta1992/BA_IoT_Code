@@ -229,6 +229,12 @@ public class DeviceService {
 	public List<List<String>> getAllLocationByGroup(String groupId) {
 		return getLocationMap(findAllChildren(groupId));
 	}
+	
+	public List<List<String>> getDeviceLocationById(String deviceId) {
+		List<Device> device = new ArrayList<Device>();
+		device.add(deviceRepo.findOne(deviceId));
+		return getLocationMap(device);
+	}
 
 	private List<List<String>> getLocationMap(List<Device> devices) {
 		List<List<String>> list = new ArrayList<>();

@@ -298,12 +298,18 @@ public class RestController {
 		configService.deleteConfiguration(value);
 	}
 
-	@RequestMapping(value = "/devices/locations/{id}", method = RequestMethod.GET)
-	public List<List<String>> getAllLocation(Model model, @PathVariable("id") String id) {
-		return deviceService.getAllLocationByGroup(id);
+	@RequestMapping(value = "/devices/locations/{mapType}/{id}", method = RequestMethod.GET)
+	public List<List<String>> getAllLocation(Model model, @PathVariable("id") String id, @PathVariable("mapType") String mapType) {
+		if(mapType.equals("group")){
+			return deviceService.getAllLocationByGroup(id);
+		}
+		else {
+			return deviceService.getDeviceLocationById(id);
+		}
+		
 	}
 
-	@RequestMapping(value = "/devices/locations/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/devices/locations/dashboard", method = RequestMethod.GET)
 	public List<List<String>> getAllLocation(Model model) {
 		return deviceService.getAllLocation();
 	}

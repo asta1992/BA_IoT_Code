@@ -19,8 +19,8 @@
 <div class=row>
 	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 		<dl class="dl-horizontal">
-			<dt>Registration Id</dt>
-			<dd>${group.id}</dd>
+			<dt>Group ID</dt>
+			<dd id="componentId">${group.id}</dd>
 			<dt>Group Name</dt>
 			<dd>${group.name}</dd>
 
@@ -49,7 +49,7 @@
 	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 		<div class="panel panel-default dashboard">
 			<div class="panel-heading">Group Devices</div>
-			<div id="map" class="panel-body"></div>
+			<div id="map" class="panel-body map-group"></div>
 		</div>
 	</div>
 </div>
