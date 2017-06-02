@@ -29,23 +29,46 @@
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class=row>
-					<h2>${user.username}</h2>
-
-					<c:if test="${user.username eq 'admin'}">
+					<h2>${user.username}
+						<c:if test="${user.username eq 'admin'}">
+							<span class="pull-right">
+								<button type="button" class="btn btn-warning heading-button" onclick="showForm()">Create new User</button>
+							</span>
+							<span class="pull-right">
+								<button type="button" class="btn btn-danger heading-button" onclick="deleteUser()">Delete User</button>
+							</span>
+						</c:if>
 						<span class="pull-right">
-							<button type="button" class="btn btn-warning heading-button" onclick="showForm()">Create new User</button>
+							<button type="button" class="btn btn-primary heading-button" onclick="editForm('${user.id}')">Change Password</button>
 						</span>
-						<span class="pull-right">
-							<button type="button" class="btn btn-danger heading-button" onclick="deleteUser()">Delete User</button>
-						</span>
-					</c:if>
-					<span class="pull-right">
-						<button type="button" class="btn btn-primary heading-button" onclick="editForm('${user.id}')">Change Password</button>
-					</span>
+					</h2>
 				</div>
 			</div>
-
 		</div>
+
+		<c:if test="${user.username eq 'admin'}">
+			<div class="row-fluid">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="table responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>Username</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="managementUsers" items="${managementUsers}">
+									<tr>
+										<td>${managementUsers.username}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</c:if>
 	</div>
+
 </body>
 </html>

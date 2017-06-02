@@ -39,6 +39,9 @@ function showForm() {
 																	message : "New User '"
 																			+ data.map.username
 																			+ "' created",
+																	callback : function() {
+																		parent.location.reload();
+																	}
 																})
 													}
 												});
@@ -91,7 +94,7 @@ function editForm(id) {
 																.alert({
 																	size : "small",
 																	title : "Success",
-																	message : "Successfully changed password",
+																	message : "Successfully changed password"
 																})
 													}
 												});
@@ -184,7 +187,13 @@ function deleteUser() {
 							data : {
 								username : selectedUser
 							},
-							url : "/smartmanager/users/delete"
+							url : "/smartmanager/users/delete",
+							success : function() {
+								parent.location.reload();
+							},
+							error: function(xhr, ajaxOptions, thrownError){
+								alert(thrownError);
+							}
 						});
 					}
 
