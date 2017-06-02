@@ -4,7 +4,7 @@ body {
 
 .heading-button {
 	width: 150px !important;
-	margin: 10px !important;
+	margin: 3px !important;
 }
 
 .panel-heading .btn {
@@ -12,6 +12,10 @@ body {
 }
 .panel-body .btn {
 	width: 80px !important;
+	margin: 3px !important;
+}
+
+.configurations-table .btn {
 	margin: 3px !important;
 }
 

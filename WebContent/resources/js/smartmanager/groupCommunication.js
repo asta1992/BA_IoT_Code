@@ -42,9 +42,6 @@ function executeAllChildDevices(groupId) {
 							url : "/smartmanager/groups/" + groupId
 									+ "/executeChildDevices/" + objectId + "/"
 									+ objectInstanceId + "/" + resourceId,
-							success : function(){
-								parent.location.reload();
-							},
 							error: function(xhr, ajaxOptions, thrownError){
 								alert(thrownError);
 							}

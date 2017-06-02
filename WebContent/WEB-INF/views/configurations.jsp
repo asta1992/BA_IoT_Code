@@ -58,7 +58,7 @@
 							onclick="createConfiguration()">create new configuration</button>
 					</span>
 				</h3>
-				<table class="table table-hover">
+				<table class="table table-hover configurations-table">
 					<thead>
 						<tr>
 							<th>Config</th>
