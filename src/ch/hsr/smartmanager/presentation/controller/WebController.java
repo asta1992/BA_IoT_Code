@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
+import org.eclipse.leshan.server.model.StandardModelProvider;
+import org.eclipse.leshan.server.model.StaticModelProvider;
 import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -100,25 +102,28 @@ public class WebController {
 		Device dev = deviceService.getDevice(id);
 		Registration registration = lwM2MManagementServer.getServer().getRegistrationService().getById(dev.getRegId());
 
-		if (registration != null) {
-			
-			LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(registration);
+		LwM2mModel regModel;
 
-			for (String objId : dev.getObjectLinks()) {
-				matcher = pattern.matcher(objId);
-				String parseId = "1";
-				if (matcher.find()) {
-					parseId = matcher.group(1);
-				}
+		if (registration == null) {
+			regModel = new StandardModelProvider().getObjectModel(registration);
+		} else {
+			regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(registration);
+		}
 
-				ObjectModel objectModel = regModel.getObjectModel(Integer.parseInt(parseId));
-				resourceModelList = new ArrayList<ResourceModelAdapter>();
-
-				for (ResourceModel entry : objectModel.resources.values()) {
-					resourceModelList.add(new ResourceModelAdapter(entry));
-				}
-				objectModelList.put(objectModel.name, resourceModelList);
+		for (String objId : dev.getObjectLinks()) {
+			matcher = pattern.matcher(objId);
+			String parseId = "1";
+			if (matcher.find()) {
+				parseId = matcher.group(1);
 			}
+
+			ObjectModel objectModel = regModel.getObjectModel(Integer.parseInt(parseId));
+			resourceModelList = new ArrayList<ResourceModelAdapter>();
+
+			for (ResourceModel entry : objectModel.resources.values()) {
+				resourceModelList.add(new ResourceModelAdapter(entry));
+			}
+			objectModelList.put(objectModel.name, resourceModelList);
 		}
 
 		model.addAttribute("modelDescription", objectModelList);
@@ -128,6 +133,7 @@ public class WebController {
 		model.addAttribute("device", dev);
 
 		return "deviceFragment";
+
 	}
 
 	@RequestMapping(value = "/groups/{id}", method = RequestMethod.GET)
