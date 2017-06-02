@@ -189,6 +189,8 @@ public class RestController {
 				}
 			}
 		}
+		
+		
 	}
 
 	@RequestMapping(value = "/devices/{id}/removeFromGroups", method = RequestMethod.POST)
