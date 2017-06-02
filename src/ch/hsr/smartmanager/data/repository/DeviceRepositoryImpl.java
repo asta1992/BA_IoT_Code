@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.query.Query;
 
 
 import ch.hsr.smartmanager.data.Device;
-import ch.hsr.smartmanager.data.DeviceGroup;
 
 public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
 
@@ -18,14 +17,14 @@ public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
 	public void removeDeviceByAddedIsFalse() {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("added").is(false));
-		mongoTemplate.remove(query, DeviceGroup.class);
+		mongoTemplate.remove(query, Device.class);
 	}
 
 	@Override
 	public void removeDeviceByName(String name) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("name").is(name));
-		mongoTemplate.remove(query, DeviceGroup.class);
+		mongoTemplate.remove(query, Device.class);
 	}
 	
 	@Override

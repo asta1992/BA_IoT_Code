@@ -344,12 +344,16 @@ public class DeviceService {
 	}
 
 	@PostConstruct
-	public void removeOldDiscoveries() {
+	public void startUpClean() {
 		if (!groupRepo.existsByName("_unassigned")) {
 			DeviceGroup unassigned = new DeviceGroup("_unassigned");
 			groupRepo.save(unassigned);
 		}
 
+		deviceRepo.removeDeviceByAddedIsFalse();
+	}
+	
+	public void removeDiscoveredDevices() {
 		deviceRepo.removeDeviceByAddedIsFalse();
 	}
 

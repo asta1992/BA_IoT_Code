@@ -63,6 +63,13 @@ public class WebController {
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		return "discovery";
 	}
+	
+	@RequestMapping(value = "/discovery/clean")
+	public String cleanDiscovery(Model model, Principal principal) {
+		deviceService.removeDiscoveredDevices();
+		System.out.println("Hier");
+		return "redirect:/discovery";
+	}
 
 	@RequestMapping(value = "/configurations")
 	public String showConfigurations(Model model, Principal principal) {

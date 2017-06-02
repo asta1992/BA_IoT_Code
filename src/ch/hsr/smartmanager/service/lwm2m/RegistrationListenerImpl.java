@@ -34,7 +34,10 @@ public class RegistrationListenerImpl {
 
 			@Override
 			public void unregistered(Registration registration, Collection<Observation> observerColl) {
-				deviceService.deleteDeviceByRegistration(registration);
+				
+				//TODO Sollte das so sein?
+				// Device wird komplett entfernt mit gesamter history
+				//deviceService.deleteDeviceByRegistration(registration);
 
 			}
 

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
-	xmlns:sec="http://www.springframework.org/schema/security"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2-2.0.xsd
@@ -17,9 +15,10 @@
 			<sec:password-encoder ref="passwordEncoder"></sec:password-encoder>
 		</sec:authentication-provider>
 	</sec:authentication-manager>
-	
-	
-	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+
+
+	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 	</bean>
 
 	<sec:http use-expressions="true">
@@ -34,8 +33,11 @@
 		<sec:intercept-url pattern="/users" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/users/**" access="isAuthenticated()" />
 		<sec:intercept-url pattern="/configurations" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/configurations/**"	access="isAuthenticated()" />
+		<sec:intercept-url pattern="/configurations/**"
+			access="isAuthenticated()" />
 		<sec:intercept-url pattern="/discovery" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/discovery/*" access="isAuthenticated()" />
+
 		<sec:intercept-url pattern="/**" access="denyAll" />
 		<sec:form-login login-page="/login"
 			authentication-failure-url="/login?error=true" />
@@ -43,7 +45,6 @@
 	</sec:http>
 
 
-	<bean id="managementUserService"
-		class="ch.hsr.smartmanager.service.ManagementUserService">
+	<bean id="managementUserService" class="ch.hsr.smartmanager.service.ManagementUserService">
 	</bean>
 </beans>
