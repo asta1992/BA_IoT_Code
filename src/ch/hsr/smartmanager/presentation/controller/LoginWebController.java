@@ -27,6 +27,7 @@ public class LoginWebController {
 		model.addAttribute("username", user.getUsername());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		model.addAttribute("user", user);
+		model.addAttribute("managementUsers", managementUserService.findAll());
 		return "userSettings";
 	}
 	

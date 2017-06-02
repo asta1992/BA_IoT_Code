@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.HtmlUtils;
 
 import com.eclipsesource.json.Json;
 
@@ -70,15 +71,15 @@ public class RestController {
 
 	@RequestMapping(value = "/groups/{id}/add")
 	public void addNewChildGroup(Model model, @PathVariable("id") String id, @RequestParam("value") String groupName) {
-		DeviceGroup devGroup = new DeviceGroup(Json.parse(groupName).asString());
+		DeviceGroup devGroup = new DeviceGroup(HtmlUtils.htmlEscape(Json.parse(groupName).asString()));
 		deviceService.insertGroup(devGroup);
-		devGroup = deviceService.findByName(Json.parse(groupName).asString());
+		devGroup = deviceService.findByName(HtmlUtils.htmlEscape(Json.parse(groupName).asString()));
 		deviceService.addGroupToGroup(id, devGroup.getId());
 	}
 
 	@RequestMapping(value = "/groups/add", method = RequestMethod.POST)
 	public void addNewRootGroup(Model mode, @RequestParam("value") String groupName) {
-		deviceService.insertGroup(new DeviceGroup(Json.parse(groupName).asString()));
+		deviceService.insertGroup(new DeviceGroup(HtmlUtils.htmlEscape(Json.parse(groupName).asString())));
 	}
 
 	@RequestMapping(value = "/countDiscoveredDevices", method = RequestMethod.GET)
@@ -249,7 +250,7 @@ public class RestController {
 	public List<Map<String, ResponseCode>> writeChildDevices(Model model, @PathVariable("id") String id,
 			@PathVariable("objectId") int objectId, @PathVariable("objectInstanceId") int objectInstanceId,
 			@PathVariable("resourceId") int resourceId, @RequestParam("value") String value) {
-		return lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, value);
+		return lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value));
 	}
 
 	private List<JSONObject> allChildren(DeviceComponent deviceComponent) throws JSONException {

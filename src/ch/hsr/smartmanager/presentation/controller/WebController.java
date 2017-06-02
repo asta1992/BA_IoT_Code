@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
+import org.eclipse.leshan.server.model.StandardModelProvider;
 import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,12 +64,12 @@ public class WebController {
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		return "discovery";
 	}
-	
+
 	@RequestMapping(value = "/discovery/clean")
-	public String cleanDiscovery(Model model, Principal principal) {
+	public String cleanDiscovery(Model model) {
 		deviceService.removeDiscoveredDevices();
-		System.out.println("Hier");
 		return "redirect:/discovery";
+
 	}
 
 	@RequestMapping(value = "/configurations")
@@ -89,17 +90,23 @@ public class WebController {
 	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
 	public String showDeviceDetails(Model model, @PathVariable("id") String id) {
 
-		Device dev = deviceService.getDevice(id);
-		Registration reg = lwM2MManagementServer.getServer().getRegistrationService().getById(dev.getRegId());
-
-		LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(reg);
-
 		LinkedHashMap<String, ArrayList<ResourceModelAdapter>> objectModelList = new LinkedHashMap<String, ArrayList<ResourceModelAdapter>>();
 		ArrayList<ResourceModelAdapter> resourceModelList = new ArrayList<ResourceModelAdapter>();
 
 		final String regex = "\\/([0-9]*)\\/";
 		final Pattern pattern = Pattern.compile(regex);
 		Matcher matcher;
+
+		Device dev = deviceService.getDevice(id);
+		Registration registration = lwM2MManagementServer.getServer().getRegistrationService().getById(dev.getRegId());
+
+		LwM2mModel regModel;
+
+		if (registration == null) {
+			regModel = new StandardModelProvider().getObjectModel(registration);
+		} else {
+			regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(registration);
+		}
 
 		for (String objId : dev.getObjectLinks()) {
 			matcher = pattern.matcher(objId);
@@ -120,10 +127,11 @@ public class WebController {
 		model.addAttribute("modelDescription", objectModelList);
 		model.addAttribute("objectLinksDiv", dev.getObjectLinksDiv().toArray());
 		model.addAttribute("objectLinks", dev.getObjectLinks().toArray());
-		model.addAttribute("registration", reg);
+		model.addAttribute("registration", registration);
 		model.addAttribute("device", dev);
 
 		return "deviceFragment";
+
 	}
 
 	@RequestMapping(value = "/groups/{id}", method = RequestMethod.GET)
@@ -138,13 +146,14 @@ public class WebController {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
 		return "writeCommandToChildsFragment";
 	}
-	
+
 	@RequestMapping(value = "/groups/{id}/writeConfiguration", method = RequestMethod.GET)
-	public String writeConfiguration(Model model, @PathVariable("id") String id, @RequestParam("value") String configurationId){
+	public String writeConfiguration(Model model, @PathVariable("id") String id,
+			@RequestParam("value") String configurationId) {
 		model.addAttribute("result", configService.writeConfigurationToGroup(id, configurationId));
 		return "writeConfigResultFragment";
 	}
-	
+
 	@RequestMapping(value = "/groups/executeCommandToChildsFragment", method = RequestMethod.GET)
 	public String executeCommandToChildsFragment(Model model) {
 		model.addAttribute("objectMap", deviceService.allExecutableObjectIDs());
@@ -162,7 +171,7 @@ public class WebController {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
 		return "createConfigurationFragment";
 	}
-	
+
 	@RequestMapping(value = "/configurations/{id}/editConfigurationFragment", method = RequestMethod.GET)
 	public String editConfigurationFragment(Model model, @PathVariable("id") String id) {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());

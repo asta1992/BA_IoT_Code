@@ -25,31 +25,28 @@ public class RegistrationListenerImpl {
 		return new RegistrationListener() {
 
 			public void registered(Registration registration) {
-				Device device = new Device(registration.getEndpoint(), registration.getId(),
-						"coap:/" + registration.getAddress() + ":" + registration.getPort(),
-						getObjectLinks(registration.getObjectLinks()), registration.getLastUpdate(), false);
-
-				deviceService.createOrUpdateDevice(device, registration);
+				addDevice(registration);
 			}
 
 			@Override
 			public void unregistered(Registration registration, Collection<Observation> observerColl) {
-				
-				//TODO Sollte das so sein?
-				// Device wird komplett entfernt mit gesamter history
-				//deviceService.deleteDeviceByRegistration(registration);
-
+				addDevice(registration);
 			}
 
 			@Override
 			public void updated(RegistrationUpdate registrationUpdate, Registration registration) {
-				Device device = new Device(registration.getEndpoint(), registration.getId(),
-						"coap:/" + registration.getAddress() + ";" + registration.getPort(),
-						getObjectLinks(registration.getObjectLinks()), registration.getLastUpdate(), false);
-				deviceService.createOrUpdateDevice(device, registration);
+				addDevice(registration);
 			}
 
 		};
+	}
+
+	private void addDevice(Registration registration) {
+		Device device = new Device(registration.getEndpoint(), registration.getId(),
+				"coap:/" + registration.getAddress() + ";" + registration.getPort(),
+				getObjectLinks(registration.getObjectLinks()), registration.getLastUpdate(), false);
+		deviceService.createOrUpdateDevice(device, registration);
+
 	}
 
 	private TreeSet<String> getObjectLinks(Link[] links) {
