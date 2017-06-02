@@ -2,7 +2,7 @@ function executeAllChildDevices(groupId) {
 	$.ajax({
 		type : "GET",
 		dataType : "html",
-		url : "/smartmanager/groups/executeCommandToChildsFragment",
+		url : ctx + "/groups/executeCommandToChildsFragment",
 		success : function(executeToChildsForm) {
 			bootbox.confirm({
 				size : "large",
@@ -17,7 +17,7 @@ function executeAllChildDevices(groupId) {
 								":selected").text())
 						$.ajax({
 							type : "POST",
-							url : "/smartmanager/groups/" + groupId
+							url : ctx + "/groups/" + groupId
 									+ "/executeChildDevices/" + objectId + "/"
 									+ objectInstanceId + "/" + resourceId,
 							error: function(xhr, ajaxOptions, thrownError){
@@ -38,7 +38,7 @@ function writeAllChildDevices(groupId) {
 	$.ajax({
 		type : "GET",
 		dataType : "html",
-		url : "/smartmanager/groups/writeCommandToChildsFragment",
+		url : ctx + "/groups/writeCommandToChildsFragment",
 		success : function(writeToChildsForm) {
 			bootbox.confirm({
 				size : "large",
@@ -56,7 +56,7 @@ function writeAllChildDevices(groupId) {
 							data : {
 								"value" : $('#writeValue').val()
 							},
-							url : "/smartmanager/groups/" + groupId
+							url : ctx + "/groups/" + groupId
 									+ "/writeChildDevices/" + objectId + "/"
 									+ objectInstanceId + "/" + resourceId,
 							error: function(xhr, ajaxOptions, thrownError){
@@ -77,7 +77,7 @@ function writeConfigToChildDevices(groupId, groupName) {
 	$.ajax({
 		type : "GET",
 		dataType : "html",
-		url : "/smartmanager/groups/writeConfigToChildsFragment",
+		url : ctx + "/groups/writeConfigToChildsFragment",
 		success : function(writeConfigToChildsFragment) {
 			bootbox.confirm({
 				title : "Write Configuration to Group " + groupName,
@@ -107,7 +107,7 @@ function getResult(groupId, callback) {
 		data : {
 			value : $('#configSelector option:selected').val()
 		},
-		url : "/smartmanager/groups/" + groupId + "/writeConfiguration",
+		url : ctx + "/groups/" + groupId + "/writeConfiguration",
 		success : function(response) {
 			callback(response);
 		},

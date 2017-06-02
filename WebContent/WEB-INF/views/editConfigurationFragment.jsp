@@ -111,3 +111,4 @@
 		size : 10
 	});
 </script>
+<script>var ctx = "${pageContext.request.contextPath}"</script>

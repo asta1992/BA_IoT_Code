@@ -46,3 +46,4 @@
 		moveOnSelect : false,
 	});
 </script>
+<script>var ctx = "${pageContext.request.contextPath}"</script>

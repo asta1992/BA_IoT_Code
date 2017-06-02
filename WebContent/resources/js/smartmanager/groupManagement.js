@@ -8,7 +8,7 @@ function addNewRootGroup() {
 					data : {
 						value : JSON.stringify(message)
 					},
-					url : "/smartmanager/groups/add",
+					url : ctx + "/groups/add",
 					success : function(){
 						parent.location.reload();
 					},
@@ -32,7 +32,7 @@ function addNewChildGroup(parentId) {
 					data : {
 						value : JSON.stringify(message)
 					},
-					url : "/smartmanager/groups/" + parentId + "/add",
+					url : ctx + "/groups/" + parentId + "/add",
 					success : function(){
 						parent.location.reload();
 					},
@@ -49,7 +49,7 @@ function addNewChildGroup(parentId) {
 function openDeviceMemberships(id) {
 	$.ajax({
 		dataType : "html",
-		url : "/smartmanager/devices/" + id + "/memberships",
+		url : ctx + "/devices/" + id + "/memberships",
 		success : function(deviceMemberships) {
 			bootbox.confirm({
 				message : deviceMemberships,
@@ -64,7 +64,7 @@ function openDeviceMemberships(id) {
 							data : {
 								value : JSON.stringify(updatedMemberships)
 							},
-							url : "/smartmanager/devices/" + id + "/changeMembership",
+							url : ctx + "/devices/" + id + "/changeMembership",
 							success : function(){
 								parent.location.reload();
 							},
@@ -83,7 +83,7 @@ function openDeviceMemberships(id) {
 function openGroupMemberships(id) {
 	$.ajax({
 		dataType : "html",
-		url : "/smartmanager/groups/" + id + "/memberships",
+		url : ctx + "/groups/" + id + "/memberships",
 		success : function(groupMemberships) {
 			bootbox.confirm({
 				message : groupMemberships,
@@ -99,7 +99,7 @@ function openGroupMemberships(id) {
 							data : {
 								value : JSON.stringify(updatedMemberships)
 							},
-							url : "/smartmanager/groups/" + id + "/changeMembership",
+							url : ctx + "/groups/" + id + "/changeMembership",
 							success : function(){
 								parent.location.reload();
 							},
@@ -121,7 +121,7 @@ function openGroupMemberships(id) {
 function openGroupMembers(id){
 	$.ajax({
 		dataType: "html",
-		url : "/smartmanager/groups/" + id + "/members",
+		url : ctx + "/groups/" + id + "/members",
 		success : function(groupMembers) {
 			bootbox.confirm({
 				message: groupMembers,
@@ -137,7 +137,7 @@ function openGroupMembers(id){
 							data : {
 								value : JSON.stringify(updatedMemberships)
 							},
-							url : "/smartmanager/groups/" + id + "/changeMembers",
+							url : ctx + "/groups/" + id + "/changeMembers",
 							success : function(){
 								parent.location.reload();
 							},

@@ -2,7 +2,7 @@ function createConfiguration() {
 	$.ajax({
 		type : "GET",
 		dataType : "html",
-		url : "/smartmanager/configurations/createConfigurationFragment",
+		url : ctx + "/configurations/createConfigurationFragment",
 		success : function(createConfigurationFragment) {
 			bootbox.confirm({
 				size : "large",
@@ -71,7 +71,7 @@ function saveConfiguration() {
 		data : {
 			value : JSON.stringify(config)
 		},
-		url : "/smartmanager/configurations/add",
+		url : ctx + "/configurations/add",
 		success : function(){
 			parent.location.reload();
 		},
@@ -92,7 +92,7 @@ function deleteConfiguration(configurationId) {
 					data : {
 						value : configurationId
 					},
-					url : "/smartmanager/configurations/delete",
+					url : ctx + "/configurations/delete",
 					success: function(){
 						parent.location.reload();
 					},
@@ -111,7 +111,7 @@ function editConfiguration(configurationId) {
 	$.ajax({
 		type : "GET",
 		dataType : "html",
-		url : "/smartmanager/configurations/" + configurationId
+		url : ctx + "/configurations/" + configurationId
 				+ "/editConfigurationFragment",
 		success : function(createConfigurationFragment) {
 			bootbox.confirm({
@@ -149,7 +149,7 @@ function getWriteableResources() {
 	var instanceIdField = $('#instanceIdField');
 	$.ajax({
 		type : "GET",
-		url : "/smartmanager/groups/" + objectId + "/multiInstance",
+		url : ctx + "/groups/" + objectId + "/multiInstance",
 		success : function(multiInstance) {
 			if (multiInstance.value) {
 				instanceIdField.prop('disabled', false);
@@ -164,7 +164,7 @@ function getWriteableResources() {
 	var resourceDropdown = $('#resourceDropdown');
 	$.ajax({
 		type : "GET",
-		url : "/smartmanager/groups/" + objectId + "/writeToChildren",
+		url : ctx + "/groups/" + objectId + "/writeToChildren",
 		success : function(resources) {
 			resourceDropdown.empty();
 			resources.forEach(function(entry) {
@@ -184,7 +184,7 @@ function getExecuteableResources() {
 	var instanceIdField = $('#instanceIdField');
 	$.ajax({
 		type : "GET",
-		url : "/smartmanager/groups/" + objectId + "/multiInstance",
+		url : ctx + "/groups/" + objectId + "/multiInstance",
 		success : function(multiInstance) {
 			if (multiInstance.value) {
 				instanceIdField.prop('disabled', false);
@@ -199,7 +199,7 @@ function getExecuteableResources() {
 	var resourceDropdown = $('#resourceDropdown');
 	$.ajax({
 		type : "GET",
-		url : "/smartmanager/groups/" + objectId + "/executeToChildren",
+		url : ctx + "/groups/" + objectId + "/executeToChildren",
 		success : function(resources) {
 			resourceDropdown.empty();
 			resources.forEach(function(entry) {

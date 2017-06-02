@@ -5,12 +5,12 @@ function deleteDevice(id, name) {
 			if(ok){
 				$.ajax({
 					type: "DELETE",
-					url : "/smartmanager/devices/" + id + "/delete",
+					url : ctx + "/devices/" + id + "/delete",
 					success: function() {
-						window.location.href = "/smartmanager/devices";
+						window.location.href = ctx + "/devices";
 					},
 					error: function(xhr, ajaxOptions, thrownError){
-						window.location.href = "/smartmanager/devices";
+						window.location.href = ctx + "/devices";
 						alert(thrownError);
 					}
 				});
@@ -26,12 +26,12 @@ function deleteGroup(id, name) {
 			if(ok){
 				$.ajax({
 					type: "DELETE",
-					url : "/smartmanager/groups/" + id + "/delete",
+					url : ctx + "/groups/" + id + "/delete",
 					success : function(){
-						window.location.href = "/smartmanager/devices";
+						window.location.href = ctx + "/devices";
 					},
 					error: function(xhr, ajaxOptions, thrownError){
-						window.location.href = "/smartmanager/devices";
+						window.location.href = ctx + "/devices";
 						alert(thrownError);
 					}
 				});

@@ -25,3 +25,5 @@
 	</tbody>
 	</table>
 </c:forEach>
+<script>var ctx = "${pageContext.request.contextPath}"</script>
+

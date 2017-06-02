@@ -2,7 +2,7 @@ function showForm() {
 	$
 			.ajax({
 				dataType : "html",
-				url : "/smartmanager/users/userAddFragment",
+				url : ctx + "/users/userAddFragment",
 				success : function(users) {
 					bootbox
 							.confirm({
@@ -59,7 +59,7 @@ function editForm(id) {
 	$
 			.ajax({
 				dataType : "html",
-				url : "/smartmanager/users/userEditFragment",
+				url : ctx + "/users/userEditFragment",
 				success : function(users) {
 					bootbox
 							.confirm({
@@ -140,7 +140,7 @@ function createUser(username, firstPassword, secondPassword, callback) {
 			firstPassword : firstPassword,
 			secondPassword : secondPassword
 		},
-		url : "/smartmanager/users/add",
+		url : ctx + "/users/add",
 		success : function(res) {
 			callback(res);
 		},
@@ -172,7 +172,7 @@ function editUser(id, oldPassword, firstPassword, secondPassword, callback) {
 function deleteUser() {
 	$.ajax({
 		dataType : "html",
-		url : "/smartmanager/users/userDeleteFragment",
+		url : ctx + "/users/userDeleteFragment",
 		success : function(users) {
 			bootbox.confirm({
 				title : "Delete a User",
@@ -187,7 +187,7 @@ function deleteUser() {
 							data : {
 								username : selectedUser
 							},
-							url : "/smartmanager/users/delete",
+							url : ctx + "/users/delete",
 							success : function() {
 								parent.location.reload();
 							},

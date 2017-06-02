@@ -3,14 +3,14 @@ $(document).ready(function() {
 	{
 		primaryKey : 'id',
 		uiLibrary : 'bootstrap',
-		dataSource : '/smartmanager/groups/getAll'
+		dataSource : ctx + '/groups/getAll'
 	});
 
 	
 	$('#tree').tree().on('select', function (e, node, id) {
 		$.ajax({
 			dataType : "html",
-			url : "/smartmanager/" + id,
+			url : ctx + "/" + id,
 			success : function(data) {
 				$('#main-content').html(data);
 			},

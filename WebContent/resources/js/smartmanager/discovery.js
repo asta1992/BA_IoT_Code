@@ -8,7 +8,7 @@ function addDevice(deviceId){
 			groupId : groupId,
 			configId: configId
 		},
-		url : "/smartmanager/devices/" + deviceId + "/add",
+		url : ctx + "/devices/" + deviceId + "/add",
 		success : function() {
 			window.location.reload();
 		},

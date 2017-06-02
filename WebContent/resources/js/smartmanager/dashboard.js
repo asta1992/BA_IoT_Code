@@ -24,13 +24,13 @@ function getLocations(map) {
 	    }
 	    mapType = m[1];
 	}
-
+smartmanager
 	var url = "";
 	if (componentId == null){
-		url = "/smartmanager/devices/locations/" + mapType;
+		url = ctx + "/devices/locations/" + mapType;
 	}
 	else {
-		url = "/smartmanager/devices/locations/" + mapType + "/" + componentId;
+		url = ctx + "/devices/locations/" + mapType + "/" + componentId;
 	}
 	$.ajax({
 		type : "GET",
@@ -77,12 +77,12 @@ function deleteUnreachableDevice(id, name) {
 			if(ok){
 				$.ajax({
 					type: "DELETE",
-					url : "/smartmanager/devices/" + id + "/delete",
+					url : ctx + "/devices/" + id + "/delete",
 					success: function(){
-						window.location.href = "/smartmanager/";
+						window.location.href = ctx + "/";
 					},
 					error: function(xhr, ajaxOptions, thrownError){
-						window.location.href = "/smartmanager/";
+						window.location.href = ctx + "/";
 						alert(thrownError);
 					}
 				});
