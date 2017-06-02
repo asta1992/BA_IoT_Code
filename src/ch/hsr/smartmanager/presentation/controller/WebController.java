@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.HtmlUtils;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
@@ -63,7 +64,7 @@ public class WebController {
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		return "discovery";
 	}
-	
+
 	@RequestMapping(value = "/discovery/clean")
 	public String cleanDiscovery(Model model) {
 		deviceService.removeDiscoveredDevices();
@@ -89,11 +90,6 @@ public class WebController {
 	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
 	public String showDeviceDetails(Model model, @PathVariable("id") String id) {
 
-		Device dev = deviceService.getDevice(id);
-		Registration reg = lwM2MManagementServer.getServer().getRegistrationService().getById(dev.getRegId());
-
-		LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(reg);
-
 		LinkedHashMap<String, ArrayList<ResourceModelAdapter>> objectModelList = new LinkedHashMap<String, ArrayList<ResourceModelAdapter>>();
 		ArrayList<ResourceModelAdapter> resourceModelList = new ArrayList<ResourceModelAdapter>();
 
@@ -101,26 +97,34 @@ public class WebController {
 		final Pattern pattern = Pattern.compile(regex);
 		Matcher matcher;
 
-		for (String objId : dev.getObjectLinks()) {
-			matcher = pattern.matcher(objId);
-			String parseId = "1";
-			if (matcher.find()) {
-				parseId = matcher.group(1);
-			}
+		Device dev = deviceService.getDevice(id);
+		Registration registration = lwM2MManagementServer.getServer().getRegistrationService().getById(dev.getRegId());
 
-			ObjectModel objectModel = regModel.getObjectModel(Integer.parseInt(parseId));
-			resourceModelList = new ArrayList<ResourceModelAdapter>();
+		if (registration != null) {
+			
+			LwM2mModel regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(registration);
 
-			for (ResourceModel entry : objectModel.resources.values()) {
-				resourceModelList.add(new ResourceModelAdapter(entry));
+			for (String objId : dev.getObjectLinks()) {
+				matcher = pattern.matcher(objId);
+				String parseId = "1";
+				if (matcher.find()) {
+					parseId = matcher.group(1);
+				}
+
+				ObjectModel objectModel = regModel.getObjectModel(Integer.parseInt(parseId));
+				resourceModelList = new ArrayList<ResourceModelAdapter>();
+
+				for (ResourceModel entry : objectModel.resources.values()) {
+					resourceModelList.add(new ResourceModelAdapter(entry));
+				}
+				objectModelList.put(objectModel.name, resourceModelList);
 			}
-			objectModelList.put(objectModel.name, resourceModelList);
 		}
 
 		model.addAttribute("modelDescription", objectModelList);
 		model.addAttribute("objectLinksDiv", dev.getObjectLinksDiv().toArray());
 		model.addAttribute("objectLinks", dev.getObjectLinks().toArray());
-		model.addAttribute("registration", reg);
+		model.addAttribute("registration", registration);
 		model.addAttribute("device", dev);
 
 		return "deviceFragment";
@@ -138,13 +142,14 @@ public class WebController {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
 		return "writeCommandToChildsFragment";
 	}
-	
+
 	@RequestMapping(value = "/groups/{id}/writeConfiguration", method = RequestMethod.GET)
-	public String writeConfiguration(Model model, @PathVariable("id") String id, @RequestParam("value") String configurationId){
+	public String writeConfiguration(Model model, @PathVariable("id") String id,
+			@RequestParam("value") String configurationId) {
 		model.addAttribute("result", configService.writeConfigurationToGroup(id, configurationId));
 		return "writeConfigResultFragment";
 	}
-	
+
 	@RequestMapping(value = "/groups/executeCommandToChildsFragment", method = RequestMethod.GET)
 	public String executeCommandToChildsFragment(Model model) {
 		model.addAttribute("objectMap", deviceService.allExecutableObjectIDs());
@@ -162,7 +167,7 @@ public class WebController {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
 		return "createConfigurationFragment";
 	}
-	
+
 	@RequestMapping(value = "/configurations/{id}/editConfigurationFragment", method = RequestMethod.GET)
 	public String editConfigurationFragment(Model model, @PathVariable("id") String id) {
 		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
