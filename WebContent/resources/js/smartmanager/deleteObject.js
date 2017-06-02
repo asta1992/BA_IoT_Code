@@ -6,7 +6,7 @@ function deleteDevice(id, name) {
 				$.ajax({
 					type: "DELETE",
 					url : "/smartmanager/devices/" + id + "/delete",
-					success: function(){
+					success: function() {
 						window.location.href = "/smartmanager/devices";
 					},
 					error: function(xhr, ajaxOptions, thrownError){

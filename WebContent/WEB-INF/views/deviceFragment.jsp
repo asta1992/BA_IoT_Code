@@ -16,6 +16,8 @@
 <div class=row>
 	<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
 		<dl class="dl-horizontal">
+			<dt>Device ID</dt>
+			<dd id="componentId">${device.id}</dd>
 			<dt>Registration Id</dt>
 			<dd>${device.regId}</dd>
 			<dt>Endpoint</dt>
@@ -35,7 +37,7 @@
 	<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
 			<div id="deviceLocation" class="panel panel-default dashboard">
 				<div class="panel-heading">Device Location</div>
-				<div id="map" class="panel-body"></div>
+				<div id="map" class="panel-body map-device"></div>
 			</div>
 	</div>
 </div>

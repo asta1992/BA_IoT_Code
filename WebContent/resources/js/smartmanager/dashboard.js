@@ -7,19 +7,30 @@ function initMap() {
 		zoom : 4,
 		center : initLocation
 	});
-	getLocations(map);
 	
-
+	getLocations(map);
 }
 
-function getLocations(map, groupId) {
-	
+function getLocations(map) {
+	var componentId = $('#componentId').text();
+	var mapType = "";
+	const regex = /map-([a-z]*)/g;
+	const str = document.getElementById('map').className;
+	let m;
+
+	while ((m = regex.exec(str)) !== null) {
+	    if (m.index === regex.lastIndex) {
+	        regex.lastIndex++;
+	    }
+	    mapType = m[1];
+	}
+
 	var url = "";
-	if (groupId == null){
-		url = "/smartmanager/devices/locations/all";
+	if (componentId == null){
+		url = "/smartmanager/devices/locations/" + mapType;
 	}
 	else {
-		url = "/smartmanager/devices/locations/" + groupId;
+		url = "/smartmanager/devices/locations/" + mapType + "/" + componentId;
 	}
 	$.ajax({
 		type : "GET",
@@ -38,23 +49,28 @@ function insertLocations(map, locations) {
 	var infowindow = new google.maps.InfoWindow();
 
 	var marker, i;
+	
+	if(locations.length != 0){
+		var newCenter = new google.maps.LatLng(locations[0][1], locations[0][2]);
+		map.setCenter(newCenter);
+		
+		for (i = 0; i < locations.length; i++) {
+			marker = new google.maps.Marker({
+				position : new google.maps.LatLng(locations[i][1], locations[i][2]),
+				map : map
+			});
 
-	for (i = 0; i < locations.length; i++) {
-		marker = new google.maps.Marker({
-			position : new google.maps.LatLng(locations[i][1], locations[i][2]),
-			map : map
-		});
-
-		google.maps.event.addListener(marker, 'click', (function(marker, i) {
-			return function() {
-				infowindow.setContent(locations[i][0]);
-				infowindow.open(map, marker);
-			}
-		})(marker, i));
+			google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				return function() {
+					infowindow.setContent(locations[i][0]);
+					infowindow.open(map, marker);
+				}
+			})(marker, i));
+		}
 	}
 }
 
-function deleteDevice(id, name) {
+function deleteUnreachableDevice(id, name) {
 	bootbox.confirm({
 		message : "Do you really want to delete device " + name + "?",
 		callback : function(ok){

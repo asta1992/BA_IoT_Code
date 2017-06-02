@@ -127,7 +127,8 @@
 											<td>${unreachableDevices.name}</td>
 											<td>${unreachableDevices.lastRegistrationUpdate}</td>
 											<td><span class="pull-right">
-													<button type="button" class="btn btn-danger btn-xs" onclick="deleteDevice('${unreachableDevices.id}', '${unreachableDevices.name}')">Delete</button>
+													<button type="button" class="btn btn-danger btn-xs"
+														onclick="deleteUnreachableDevice('${unreachableDevices.id}', '${unreachableDevices.name}')">Delete</button>
 											</span></td>
 										</tr>
 									</c:forEach>
@@ -141,7 +142,7 @@
 			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 				<div class="panel panel-default dashboard">
 					<div class="panel-heading">All Devices</div>
-					<div id="map" class="panel-body"></div>
+					<div id="map" class="panel-body map-dashboard"></div>
 				</div>
 			</div>
 		</div>
