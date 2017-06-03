@@ -15,6 +15,7 @@ body {
 	margin: 3px !important;
 }
 
+
 .configurations-table .btn {
 	margin: 3px !important;
 }
@@ -66,9 +67,4 @@ body {
 	 font-size: 180%;
 	 font-weight: bold;
 }
-
-#loginButton {
-	width: 100% important!;
-}
-
 
