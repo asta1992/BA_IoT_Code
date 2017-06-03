@@ -2,11 +2,14 @@ package ch.hsr.smartmanager.presentation.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.model.LwM2mModel;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.HtmlUtils;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
@@ -151,6 +155,23 @@ public class WebController {
 	public String writeConfiguration(Model model, @PathVariable("id") String id,
 			@RequestParam("value") String configurationId) {
 		model.addAttribute("result", configService.writeConfigurationToGroup(id, configurationId));
+		return "writeConfigResultFragment";
+	}
+	
+	@RequestMapping(value = "/groups/{id}/writeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
+	public String writeChildDevices(Model model, @PathVariable("id") String id,
+			@PathVariable("objectId") int objectId, @PathVariable("objectInstanceId") int objectInstanceId,
+			@PathVariable("resourceId") int resourceId, @RequestParam("value") String value) {
+
+		model.addAttribute("result", lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value)));
+		return "writeConfigResultFragment";
+	}
+	
+	@RequestMapping(value = "/groups/{id}/executeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
+	public String executeChildDevices(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
+			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
+		
+		model.addAttribute("result", lwM2MHandler.executeToAllChildren(id, objectId, objectInstanceId, resourceId));
 		return "writeConfigResultFragment";
 	}
 

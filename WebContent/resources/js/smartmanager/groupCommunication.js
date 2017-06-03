@@ -10,20 +10,16 @@ function executeAllChildDevices(groupId) {
 				message : executeToChildsForm,
 				callback : function(ok) {
 					if (ok) {
-						var objectId = parseInt($('#objectDropdown').find(
-								":selected").text());
+						var objectId = parseInt($('#objectDropdown').find(":selected").text());
 						var objectInstanceId = $('#instanceIdField').val();
-						var resourceId = parseInt($('#resourceDropdown').find(
-								":selected").text())
-						$.ajax({
-							type : "POST",
-							url : ctx + "/groups/" + groupId
-									+ "/executeChildDevices/" + objectId + "/"
-									+ objectInstanceId + "/" + resourceId,
-							error: function(xhr, ajaxOptions, thrownError){
-								alert(thrownError);
-							}
-						})
+						var resourceId = parseInt($('#resourceDropdown').find(":selected").text())
+						
+						getExecuteResult(groupId, objectId, objectInstanceId, resourceId, function(data) {
+							bootbox.alert({
+								title : "Your Results",
+								message : data,
+							});
+						});
 					}
 				}
 			})
@@ -46,23 +42,17 @@ function writeAllChildDevices(groupId) {
 				message : writeToChildsForm,
 				callback : function(ok) {
 					if (ok) {
-						var objectId = parseInt($('#objectDropdown').find(
-								":selected").text());
+						var objectId = parseInt($('#objectDropdown').find(":selected").text());
 						var objectInstanceId = $('#instanceIdField').val();
-						var resourceId = parseInt($('#resourceDropdown').find(
-								":selected").text())
-						$.ajax({
-							type : "POST",
-							data : {
-								"value" : $('#writeValue').val()
-							},
-							url : ctx + "/groups/" + groupId
-									+ "/writeChildDevices/" + objectId + "/"
-									+ objectInstanceId + "/" + resourceId,
-							error: function(xhr, ajaxOptions, thrownError){
-								alert(thrownError);
-							}
-						})
+						var resourceId = parseInt($('#resourceDropdown').find(":selected").text());
+						var value = $('#writeValue').val();
+						
+						getWriteResult(groupId, objectId, objectInstanceId, resourceId, value, function(data) {
+							bootbox.alert({
+								title : "Your Results",
+								message : data,
+							});
+						});
 					}
 				}
 			})
@@ -84,7 +74,7 @@ function writeConfigToChildDevices(groupId, groupName) {
 				message : writeConfigToChildsFragment,
 				callback : function(ok) {
 					if (ok) {
-						getResult(groupId, function(data) {
+						getConfigResult(groupId, function(data) {
 							bootbox.alert({
 								title : "Your Results",
 								message : data,
@@ -100,7 +90,38 @@ function writeConfigToChildDevices(groupId, groupName) {
 	});
 }
 
-function getResult(groupId, callback) {
+function getExecuteResult(groupId, objectId, instanceId, resourceId, callback) {
+	$.ajax({
+		type : "GET",
+		dataType : "html",
+		url : ctx + "/groups/" + groupId + "/executeChildDevices/" + objectId + "/" + instanceId + "/" + resourceId,
+		success : function(response) {
+			callback(response);
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError);
+		}
+	})
+}
+
+function getWriteResult(groupId, objectId, instanceId, resourceId, value, callback) {
+	$.ajax({
+		type : "GET",
+		dataType : "html",
+		data : {
+			value : value
+		},
+		url : ctx + "/groups/" + groupId + "/writeChildDevices/" + objectId + "/" + instanceId + "/" + resourceId,
+		success : function(response) {
+			callback(response);
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError);
+		}
+	})
+}
+
+function getConfigResult(groupId, callback) {
 	$.ajax({
 		type : "GET",
 		dataType : "html",

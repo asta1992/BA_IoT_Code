@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.util.HtmlUtils;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
@@ -63,7 +62,7 @@ public class RestController {
 	}
 
 	@RequestMapping(value = "/devices/{id}/execute/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
-	public ExecuteResponse execute(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
+	public Map<String, ResponseCode> execute(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
 
 		return lwM2MHandler.execute(id, objectId, objectInstanceId, resourceId);
@@ -270,18 +269,10 @@ public class RestController {
 		return allJson.toString();
 	}
 
-	@RequestMapping(value = "/devices/{id}/add", method = RequestMethod.POST)
-	public void addDevice(Model model, @PathVariable("id") String id, @RequestParam("groupId") String groupId,
-			@RequestParam("configId") String configId) {
-		deviceService.addToManagement(id, groupId, configId);
+	@RequestMapping(value = "/devices/add", method = RequestMethod.POST)
+	public void addDevice(Model model, @RequestParam("groupId") String groupId, @RequestParam("configId") String configId, @RequestParam("deviceIds") List<String> deviceIds) {
+		deviceService.addToManagement(deviceIds, groupId, configId);
 
-	}
-
-	@RequestMapping(value = "/groups/{id}/writeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
-	public List<Map<String, ResponseCode>> writeChildDevices(Model model, @PathVariable("id") String id,
-			@PathVariable("objectId") int objectId, @PathVariable("objectInstanceId") int objectInstanceId,
-			@PathVariable("resourceId") int resourceId, @RequestParam("value") String value) {
-		return lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value));
 	}
 
 	private List<JSONObject> allChildren(DeviceComponent deviceComponent) throws JSONException {
@@ -308,15 +299,6 @@ public class RestController {
 			}
 		}
 		return jsonObjects;
-	}
-
-	@RequestMapping(value = "/groups/{id}/executeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
-	public void writeChildDevices(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
-			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
-		List<Device> devices = deviceService.findAllChildren(id);
-		for (Device device : devices) {
-			lwM2MHandler.execute(device.getId(), objectId, objectInstanceId, resourceId);
-		}
 	}
 
 	@RequestMapping(value = "/configurations/add")

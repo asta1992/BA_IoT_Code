@@ -181,26 +181,57 @@ public class LwM2MHandler {
 		response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
 		return response;
 	}
-
-	public List<Map<String, ResponseCode>> writeToAllChildren(String id, int objectId, int objectInstanceId,
-			int resourceId, String value) {
-		List<Map<String, ResponseCode>> responses = new ArrayList<>();
+	
+	public Map<String, List<Map<String, ResponseCode>>> executeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId) {
+		Map<String, List<Map<String, ResponseCode>>> responseMap = new HashMap<>();
 		List<Device> devices = deviceService.findAllChildren(id);
+		
 		for (Device dev : devices) {
-			responses.add(write(dev.getId(), objectId, objectInstanceId, resourceId, value));
+			responseMap.put(dev.getName(), executeToDevice(dev.getId(), objectId, objectInstanceId, resourceId));
 		}
-		return responses;
+		return responseMap;
+
+	}
+	
+	
+	
+	
+	public Map<String, List<Map<String, ResponseCode>>> writeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+		Map<String, List<Map<String, ResponseCode>>> responseMap = new HashMap<>();
+		List<Device> devices = deviceService.findAllChildren(id);
+		
+		for (Device dev : devices) {
+			responseMap.put(dev.getName(), writeConfigurationToDevice(dev.getId(), objectId, objectInstanceId, resourceId, value));
+		}
+		return responseMap;
 
 	}
 
-	public ExecuteResponse execute(String id, int objectId, int objectInstanceId, int resourceId) {
+	
+	public List<Map<String, ResponseCode>> executeToDevice(String deviceId, int objectId, int objectInstanceId, int resourceId) {
+		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
+			responseList.add(execute(deviceId, objectId, objectInstanceId, resourceId));
+		return responseList;
+	}
+	
+	
+	public List<Map<String, ResponseCode>> writeConfigurationToDevice(String deviceId, int objectId, int objectInstanceId, int resourceId, String value) {
+		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
+			responseList.add(write(deviceId, objectId, objectInstanceId, resourceId, value));
+		return responseList;
+	}
+
+	public Map<String, ResponseCode> execute(String id, int objectId, int objectInstanceId, int resourceId) {
 		ExecuteRequest req = new ExecuteRequest(objectId, objectInstanceId, resourceId);
 		ExecuteResponse res;
 		server = lwM2MManagementServer.getServer();
 		Registration registration = server.getRegistrationService().getById(deviceService.getDevice(id).getRegId());
+
+		Map<String, ResponseCode> response = new HashMap<>();
 		
-		if(registration == null) {
-			return new ExecuteResponse(ResponseCode.NOT_FOUND, null, "Device is not reachable");
+		if (registration == null) {
+			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, ResponseCode.NOT_FOUND);
+			return response;
 		}
 
 		try {
@@ -209,7 +240,8 @@ public class LwM2MHandler {
 			res = null;
 			e.printStackTrace();
 		}
-		return res;
+		response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
+		return response;
 	}
 
 	private WriteRequest getWriteRequest(int objectId, int objectInstanceId, int resourceId, String value,

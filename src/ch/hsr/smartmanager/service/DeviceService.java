@@ -111,18 +111,20 @@ public class DeviceService {
 		groupRepo.save(grpChild);
 	}
 
-	public void addToManagement(String id, String groupId, String configId) {
+	public void addToManagement(List<String> deviceIds, String groupId, String configId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
 
-		if (!configId.equals("none")) {
-			configurationService.writeConfigurationToDevice(id, configId);
+		for(String id : deviceIds) {
+			Device device = deviceRepo.findOne(id);
+			
+			if (!configId.equals("none")) {
+				configurationService.writeConfigurationToDevice(id, configId);
+			}
+			
+			device.setAdded(true);
+			deviceRepo.save(device);
+			addDeviceToGroup(group.getId(), id);
 		}
-
-		Device device = deviceRepo.findOne(id);
-
-		device.setAdded(true);
-		deviceRepo.save(device);
-		addDeviceToGroup(group.getId(), id);
 	}
 
 	public void removeFromManagement(String id) {
