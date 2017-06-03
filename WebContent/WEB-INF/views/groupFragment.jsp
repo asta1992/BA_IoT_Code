@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<div class="row component-heading">
+<div class="row page-heading">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div style="display: none;" id="componentId">${group.id}</div>
 		
