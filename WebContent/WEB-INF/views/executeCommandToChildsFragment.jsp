@@ -11,6 +11,7 @@
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-3">
 			<select class="selectpicker" id="objectDropdown" onchange="getExecuteableResources()">
+            	<option value="" disabled selected>Select your option</option>
             	<c:forEach var="objectMap" items="${objectMap}">
             		<option value="'${objectMap.key}'">${objectMap.key} (${objectMap.value})</option>
             	</c:forEach>
@@ -18,7 +19,7 @@
 
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-3">
-				<input type="text" id="instanceIdField" class="form-control" value="0" disabled onkeyup="updateCompleteObjectId()">
+				<input type="number" id="instanceIdField" class="form-control" value="0" disabled onkeyup="updateCompleteObjectId()">
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-3">
 			<select class="selectpicker" id="resourceDropdown" onchange="updateCompleteObjectId()">
