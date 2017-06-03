@@ -34,7 +34,7 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<h3>
 					Configurations <span class="pull-right">
-						<button type="button" class="btn btn-default " onclick="createConfiguration()">create new configuration</button>
+						<button type="button" class="btn btn-primary " onclick="createConfiguration()">create new configuration</button>
 					</span>
 				</h3>
 				<table class="table table-hover configurations-table">

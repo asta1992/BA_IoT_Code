@@ -24,7 +24,6 @@ function getLocations(map) {
 	    }
 	    mapType = m[1];
 	}
-smartmanager
 	var url = "";
 	if (componentId == null){
 		url = ctx + "/devices/locations/" + mapType;

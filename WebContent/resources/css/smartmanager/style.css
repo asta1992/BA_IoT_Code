@@ -38,6 +38,7 @@ body {
     background-color: white !important;
     color: #337ab7 !important;
     font-weight: bold !important;
+    width: 150px;
 }
 
 .dashboard > .panel-heading {
@@ -60,5 +61,8 @@ body {
 	height: 200px;
 }
 
+.component-heading {
+	margin-bottom: 20px;
+}
 
 
