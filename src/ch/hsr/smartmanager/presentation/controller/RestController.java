@@ -270,7 +270,7 @@ public class RestController {
 	}
 
 	@RequestMapping(value = "/devices/add", method = RequestMethod.POST)
-	public void addDevice(Model model, @RequestParam("groupId") String groupId, @RequestParam("configId") String configId, @RequestParam("deviceIds") List<String> deviceIds) {
+	public void addDevice(Model model, @RequestParam("groupId") String groupId, @RequestParam("configId") String configId, @RequestParam(value = "deviceIds[]") String[] deviceIds) {
 		deviceService.addToManagement(deviceIds, groupId, configId);
 
 	}

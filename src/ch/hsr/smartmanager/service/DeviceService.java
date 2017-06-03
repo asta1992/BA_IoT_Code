@@ -111,12 +111,19 @@ public class DeviceService {
 		groupRepo.save(grpChild);
 	}
 
-	public void addToManagement(List<String> deviceIds, String groupId, String configId) {
-		DeviceGroup group = groupRepo.findOne(groupId);
+	public void addToManagement(String[]  deviceIds, String groupId, String configId) {
+		DeviceGroup group;
+		if (groupId.equals("_unassigned")) {
+			group = groupRepo.findByName("_unassigned");
+		}
+		else {
+			group = groupRepo.findOne(groupId);
+		}
+		
 
 		for(String id : deviceIds) {
 			Device device = deviceRepo.findOne(id);
-			
+		
 			if (!configId.equals("none")) {
 				configurationService.writeConfigurationToDevice(id, configId);
 			}

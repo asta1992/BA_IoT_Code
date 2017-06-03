@@ -64,7 +64,7 @@
 		<div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<span class="pull-right"><select class="selectpicker"
 				id="groupSelector">
-					<option value="unassigned" id="unassigned">select a group</option>
+					<option value="_unassigned" id="_unassigned">select a group</option>
 					<c:forEach var="groups" items="${groups}">
 						<option value="'${groups.name}'" id="${groups.id}">${groups.name}</option>
 					</c:forEach>

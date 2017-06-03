@@ -9,6 +9,11 @@ function addDevice(){
 		}
 	})
 	
+	console.log(groupId);
+	console.log(configId);
+	console.log(deviceIds);
+
+
 	$.ajax({
 		type : "POST",
 		data : {
