@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smartmanager</title>
+<<<<<<< HEAD
 <link rel="stylesheet"
 	href="..${pageContext.request.contextPath}/resources/css/smartmanager/style.css"
 	type="text/css">
@@ -40,6 +41,19 @@
 <script
 	src="..${pageContext.request.contextPath}/resources/js/smartmanager/groupManagement.js"
 	type="text/javascript"></script>
+=======
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/smartmanager/style.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap-theme.min.css" type="text/css">
+<link rel="stylesheet" href="..${pageContext.request.contextPath}/resources/css/lib/bootstrap-select.min.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="..${pageContext.request.contextPath}/resources/css/lib/prettify.min.css">
+<script src="..${pageContext.request.contextPath}/resources/js/lib/jquery-2.1.4.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootbox.min.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/run_prettify.min.js" type="text/javascript"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap-select.min.js" type="text/javascript"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/discovery.js" type="text/javascript"></script>
+>>>>>>> branch 'master' of https://github.com/asta1992/BA_IoT_Code
 </head>
 <body>
 	<div class="container-fluid">
@@ -95,7 +109,6 @@
 									<td>${row.name}</td>
 									<td>${row.id}</td>
 									<td><span class="pull-right"><input type="checkbox" class="discoveryCheckbox" value="${row.id}"></span></td>
-
 								</tr>
 							</c:forEach>
 						</c:if>
