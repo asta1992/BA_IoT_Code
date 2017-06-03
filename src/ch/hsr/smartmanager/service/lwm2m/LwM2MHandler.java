@@ -59,11 +59,13 @@ public class LwM2MHandler {
 		try {
 			res = server.send(registration, req);
 		} catch (InterruptedException e) {
-			res = null;
+			res = new ReadResponse(ResponseCode.NOT_FOUND, null, "Device is not reachable");
 			e.printStackTrace();
 		}
 
-		saveMultipleValueToDevice(res, dev, objectId);
+		if(res != null) {
+			saveMultipleValueToDevice(res, dev, objectId);			
+		}
 
 		return res;
 	}
@@ -81,12 +83,14 @@ public class LwM2MHandler {
 		try {
 			res = server.send(registration, req);
 		} catch (InterruptedException e) {
-			res = null;
+			res = new ReadResponse(ResponseCode.NOT_FOUND, null, "Device is not reachable");
 			e.printStackTrace();
 		}
 
-		saveValueToDevice(res, dev,
-				Integer.toString(objectId) + Integer.toString(objectInstanceId) + Integer.toString(resourceId));
+		if(res != null && res.getCode() != ResponseCode.NOT_FOUND){
+			saveValueToDevice(res, dev,
+					Integer.toString(objectId) + Integer.toString(objectInstanceId) + Integer.toString(resourceId));
+		}
 
 		return res;
 
@@ -170,15 +174,15 @@ public class LwM2MHandler {
 		try {
 			res = server.send(registration, req);
 		} catch (InterruptedException e) {
-			res = null;
+			res = new WriteResponse(ResponseCode.NOT_FOUND, "Device is not reachable");
 			e.printStackTrace();
 		}
 
-		if (res.getCode() == ResponseCode.CHANGED) {
+		if (res != null && res.getCode() == ResponseCode.CHANGED) {
 			read(id, objectId, objectInstanceId, resourceId);
+			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
 		}
 
-		response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
 		return response;
 	}
 	
@@ -237,10 +241,13 @@ public class LwM2MHandler {
 		try {
 			res = server.send(registration, req);
 		} catch (InterruptedException e) {
-			res = null;
+			res = new ExecuteResponse(ResponseCode.NOT_FOUND, "Device is not reachable");
 			e.printStackTrace();
 		}
-		response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
+		if (res != null) {
+			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
+			
+		}
 		return response;
 	}
 
