@@ -287,12 +287,12 @@ public class DeviceService {
 		if (dev.getObjectLinks().contains("/6/0")) {
 			ReadResponse latitude = lwM2MHandler.read(dev.getId(), 6, 0, 0);
 			ReadResponse longitude = lwM2MHandler.read(dev.getId(), 6, 0, 1);
-			if (latitude.getCode() == ResponseCode.CONTENT) {
+			if (latitude != null && latitude.getCode() == ResponseCode.CONTENT) {
 				LwM2mSingleResource resource = (LwM2mSingleResource) latitude.getContent();
 
 				dev.setLatitude(resource.getValue().toString());
 			}
-			if (longitude.getCode() == ResponseCode.CONTENT) {
+			if (longitude != null && longitude.getCode() == ResponseCode.CONTENT) {
 				LwM2mSingleResource resource = (LwM2mSingleResource) longitude.getContent();
 				dev.setLongitude(resource.getValue().toString());
 			}

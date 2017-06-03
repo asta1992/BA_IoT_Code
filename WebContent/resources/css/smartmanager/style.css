@@ -67,4 +67,8 @@ body {
 	 font-weight: bold;
 }
 
+#loginButton {
+	width: 100% important!;
+}
+
 
