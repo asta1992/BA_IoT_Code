@@ -85,7 +85,7 @@
 						<tr>
 							<th>Devicename</th>
 							<th>Device ID</th>
-							<th></th>
+							<th><span class="pull-right"><input type="checkbox" id="checkAll" onclick="checkAll()" class=""></span></th>
 						</tr>
 					</thead>
 					<tbody>

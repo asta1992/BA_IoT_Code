@@ -422,4 +422,13 @@ public class DeviceService {
 		return true;
 	}
 
+	public void deleteUnreachableDevices() {
+		List<Device> unreachableDevices = getUnreachableDevices();
+		
+		for(Device device : unreachableDevices) {
+			removeFromManagement(device.getId());
+		}
+		
+	}
+
 }

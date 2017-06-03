@@ -7,28 +7,36 @@ function addDevice(){
 		if($(this).is(':checked')){
 			deviceIds.push($(this).val());
 		}
-	})
-	
-	console.log(groupId);
-	console.log(configId);
-	console.log(deviceIds);
-
-
-	$.ajax({
-		type : "POST",
-		data : {
-			groupId : groupId,
-			configId: configId,
-			deviceIds: deviceIds
-		},
-		url : ctx + "/devices/add",
-		success : function() {
-			window.location.reload();
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			window.location.reload();
-			alert(thrownError);
-		}
 	});
+	
+	if(deviceIds.length === 0) {
+		bootbox.alert({
+			size : "small",
+			title : "No Device selected",
+			message : "Please select a device",
+			callback : function() {}
+		});
+	}
+	else {
+		$.ajax({
+			type : "POST",
+			data : {
+				groupId : groupId,
+				configId: configId,
+				deviceIds: deviceIds
+			},
+			url : ctx + "/devices/add",
+			success : function() {
+				window.location.reload();
+			},
+			error : function(xhr, ajaxOptions, thrownError) {
+				window.location.reload();
+				alert(thrownError);
+			}
+		});
+	}
 }
 
+function checkAll() {
+	$('input:checkbox').not($("#checkAll")).prop('checked', $("#checkAll").prop('checked'));
+}

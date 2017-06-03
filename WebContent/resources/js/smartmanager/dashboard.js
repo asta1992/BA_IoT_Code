@@ -7,7 +7,7 @@ function initMap() {
 		zoom : 4,
 		center : initLocation
 	});
-	
+
 	getLocations(map);
 }
 
@@ -19,16 +19,15 @@ function getLocations(map) {
 	let m;
 
 	while ((m = regex.exec(str)) !== null) {
-	    if (m.index === regex.lastIndex) {
-	        regex.lastIndex++;
-	    }
-	    mapType = m[1];
+		if (m.index === regex.lastIndex) {
+			regex.lastIndex++;
+		}
+		mapType = m[1];
 	}
 	var url = "";
-	if (componentId == null){
+	if (componentId == null) {
 		url = ctx + "/devices/locations/" + mapType;
-	}
-	else {
+	} else {
 		url = ctx + "/devices/locations/" + mapType + "/" + componentId;
 	}
 	$.ajax({
@@ -38,7 +37,7 @@ function getLocations(map) {
 		success : function(locations) {
 			insertLocations(map, locations);
 		},
-		error: function(xhr, ajaxOptions, thrownError){
+		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);
 		}
 	});
@@ -48,39 +47,62 @@ function insertLocations(map, locations) {
 	var infowindow = new google.maps.InfoWindow();
 
 	var marker, i;
-	
-	if(locations.length != 0){
+
+	if (locations.length != 0) {
 		var newCenter = new google.maps.LatLng(locations[0][1], locations[0][2]);
 		map.setCenter(newCenter);
-		
+
 		for (i = 0; i < locations.length; i++) {
 			marker = new google.maps.Marker({
-				position : new google.maps.LatLng(locations[i][1], locations[i][2]),
+				position : new google.maps.LatLng(locations[i][1],
+						locations[i][2]),
 				map : map
 			});
 
-			google.maps.event.addListener(marker, 'click', (function(marker, i) {
-				return function() {
-					infowindow.setContent(locations[i][0]);
-					infowindow.open(map, marker);
-				}
-			})(marker, i));
+			google.maps.event.addListener(marker, 'click',
+					(function(marker, i) {
+						return function() {
+							infowindow.setContent(locations[i][0]);
+							infowindow.open(map, marker);
+						}
+					})(marker, i));
 		}
 	}
+}
+
+function deleteAllUnreachableDevice() {
+	bootbox.confirm({
+		message : "Do you really want to delete all unreachable devices?",
+		callback : function(ok) {
+			if (ok) {
+				$.ajax({
+					type : "DELETE",
+					url : ctx + "/devices/deleteAll",
+					success : function() {
+						window.location.href = ctx + "/";
+					},
+					error : function(xhr, ajaxOptions, thrownError) {
+						window.location.href = ctx + "/";
+						alert(thrownError);
+					}
+				});
+			}
+		}
+	})
 }
 
 function deleteUnreachableDevice(id, name) {
 	bootbox.confirm({
 		message : "Do you really want to delete device " + name + "?",
-		callback : function(ok){
-			if(ok){
+		callback : function(ok) {
+			if (ok) {
 				$.ajax({
-					type: "DELETE",
+					type : "DELETE",
 					url : ctx + "/devices/" + id + "/delete",
-					success: function(){
+					success : function() {
 						window.location.href = ctx + "/";
 					},
-					error: function(xhr, ajaxOptions, thrownError){
+					error : function(xhr, ajaxOptions, thrownError) {
 						window.location.href = ctx + "/";
 						alert(thrownError);
 					}

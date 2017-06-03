@@ -115,7 +115,9 @@
 									<tr>
 										<th>Device Name</th>
 										<th>Last seen</th>
-										<th></th>
+										<th><span class="pull-right"><button type="button" class="btn btn-danger btn-xs"
+														onclick="deleteAllUnreachableDevice()">Delete All</button>
+											</span></th>
 									</tr>
 								</thead>
 								<tbody>

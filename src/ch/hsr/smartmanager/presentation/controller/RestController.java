@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.leshan.ResponseCode;
-import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -272,7 +271,6 @@ public class RestController {
 	@RequestMapping(value = "/devices/add", method = RequestMethod.POST)
 	public void addDevice(Model model, @RequestParam("groupId") String groupId, @RequestParam("configId") String configId, @RequestParam(value = "deviceIds[]") String[] deviceIds) {
 		deviceService.addToManagement(deviceIds, groupId, configId);
-
 	}
 
 	private List<JSONObject> allChildren(DeviceComponent deviceComponent) throws JSONException {
@@ -330,6 +328,11 @@ public class RestController {
 	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.DELETE)
 	public void removeDevice(Model model, @PathVariable("id") String id) {
 		deviceService.removeFromManagement(id);
+	}
+	
+	@RequestMapping(value = "/devices/deleteAll", method = RequestMethod.DELETE)
+	public void removeDevice(Model model) {
+		deviceService.deleteUnreachableDevices();
 	}
 
 	@RequestMapping(value = "/groups/{id}/delete", method = RequestMethod.DELETE)
