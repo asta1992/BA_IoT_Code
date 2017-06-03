@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
@@ -20,6 +22,7 @@ import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
@@ -54,6 +57,10 @@ public class DeviceService {
 	public void addGroupToGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
+
+		if (grpChild.getName().equals("_unassigned") || grpParent.getName().equals("_unassigned")) {
+			return;
+		}
 
 		if (isAncestors(grpParent.getName(), grpChild.getName())
 				|| isAncestors(grpChild.getName(), grpParent.getName())) {
@@ -148,7 +155,12 @@ public class DeviceService {
 		return groupRepo.existsByChildrenId(new ObjectId(id));
 	}
 
-	public DeviceGroup insertGroup(DeviceGroup group) {
+	public DeviceGroup insertGroup(String groupName) {
+		if(validateGroupname(groupName)) {
+			System.out.println("Hier");
+			return null;
+		}
+		DeviceGroup group = new DeviceGroup(HtmlUtils.htmlEscape(groupName));
 		if (groupRepo.existsByName(group.getName())) {
 			return groupRepo.findByName(group.getName());
 		} else {
@@ -158,7 +170,7 @@ public class DeviceService {
 
 	public boolean deleteGroup(String id) {
 		DeviceGroup group = groupRepo.findOne(id);
-		if (!group.getChildren().isEmpty()) {
+		if (!group.getChildren().isEmpty() || group.getName().equals("_unassigned")) {
 			return false;
 		}
 
@@ -217,7 +229,7 @@ public class DeviceService {
 
 		return allComponents;
 	}
-	
+
 	public Device updateDevice(Device device) {
 		return deviceRepo.save(device);
 	}
@@ -229,7 +241,7 @@ public class DeviceService {
 	public List<List<String>> getAllLocationByGroup(String groupId) {
 		return getLocationMap(findAllChildren(groupId));
 	}
-	
+
 	public List<List<String>> getDeviceLocationById(String deviceId) {
 		List<Device> device = new ArrayList<Device>();
 		device.add(deviceRepo.findOne(deviceId));
@@ -358,7 +370,7 @@ public class DeviceService {
 
 		deviceRepo.removeDeviceByAddedIsFalse();
 	}
-	
+
 	public void removeDiscoveredDevices() {
 		deviceRepo.removeDeviceByAddedIsFalse();
 	}
@@ -385,10 +397,20 @@ public class DeviceService {
 		}
 		return unreachableDevices;
 	}
-	
+
 	public long getServerUptime() {
 		RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		return rb.getUptime() / 1000 / 3600;
+	}
+
+	private boolean validateGroupname(String groupname) {
+		final String regex = "(?=^.{1,30}$)[a-zA-Z0-9_.-]*$";
+		final Pattern pattern = Pattern.compile(regex);
+		final Matcher matcher = pattern.matcher(groupname);
+		while (matcher.find()) {
+			return false;
+		}
+		return true;
 	}
 
 }

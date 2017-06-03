@@ -18,7 +18,6 @@
 <script src="..${pageContext.request.contextPath}/resources/js/lib/run_prettify.min.js" type="text/javascript"></script>
 <script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap-select.min.js" type="text/javascript"></script>
 <script src="..${pageContext.request.contextPath}/resources/js/smartmanager/discovery.js" type="text/javascript"></script>
-<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/groupManagement.js" type="text/javascript"></script>
 </head>
 <body>
 	<div class="container-fluid">
@@ -55,7 +54,7 @@
 								<tr>
 									<td>${row.name}</td>
 									<td>${row.id}</td>
-									<td><select class="selectpicker" id="groupSelector">
+									<td><select class="" id="groupSelector">
 											<c:forEach var="groups" items="${groups}">
 												<option value="'${groups.name}'" id="${groups.id}">${groups.name}</option>
 											</c:forEach>

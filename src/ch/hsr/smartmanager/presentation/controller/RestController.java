@@ -2,8 +2,10 @@ package ch.hsr.smartmanager.presentation.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.response.ExecuteResponse;
@@ -18,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.HtmlUtils;
-
-import com.eclipsesource.json.Json;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
@@ -70,16 +70,27 @@ public class RestController {
 	}
 
 	@RequestMapping(value = "/groups/{id}/add")
-	public void addNewChildGroup(Model model, @PathVariable("id") String id, @RequestParam("value") String groupName) {
-		DeviceGroup devGroup = new DeviceGroup(HtmlUtils.htmlEscape(Json.parse(groupName).asString()));
-		deviceService.insertGroup(devGroup);
-		devGroup = deviceService.findByName(HtmlUtils.htmlEscape(Json.parse(groupName).asString()));
-		deviceService.addGroupToGroup(id, devGroup.getId());
+	public String addNewChildGroup(Model model, @PathVariable("id") String id, @RequestParam("value") String groupName) {
+		DeviceGroup devGroup = deviceService.insertGroup(groupName);
+		if(devGroup != null) {
+			deviceService.addGroupToGroup(id, devGroup.getId());
+			return Boolean.toString(true);
+		}
+		else {
+			return Boolean.toString(false);
+
+		}
+		
 	}
 
 	@RequestMapping(value = "/groups/add", method = RequestMethod.POST)
-	public void addNewRootGroup(Model mode, @RequestParam("value") String groupName) {
-		deviceService.insertGroup(new DeviceGroup(HtmlUtils.htmlEscape(Json.parse(groupName).asString())));
+	public String addNewRootGroup(Model mode, @RequestParam("value") String groupName) {
+		if(deviceService.insertGroup(groupName) != null) {
+			return Boolean.toString(true);
+		}
+		else {
+			return Boolean.toString(false);
+		}
 	}
 
 	@RequestMapping(value = "/countDiscoveredDevices", method = RequestMethod.GET)
@@ -143,13 +154,20 @@ public class RestController {
 		}
 		if (value.length() == 0) {
 			DeviceGroup group = deviceService.getGroup(id);
-			DeviceGroup oldParentGroup = deviceService.listAllGroupsForComponents(id).get(0);
+			List<DeviceGroup> subGroups = deviceService.listAllGroupsForComponents(id);
+			if (subGroups.isEmpty()) {
+				return;
+			}
+			DeviceGroup oldParentGroup = subGroups.get(0);
 			deviceService.removeGroupFromGroup(oldParentGroup.getId(), group.getId());
 		}
 	}
 
 	@RequestMapping(value = "/groups/{id}/changeMembers", method = RequestMethod.POST)
 	public void changeMembers(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
+		Set<Device> editedDevices = new HashSet<>();
+
+		
 		List<DeviceComponent> postMembers = new ArrayList<>();
 		for (int i = 0; i < value.length(); i++) {
 			try {
@@ -172,6 +190,7 @@ public class RestController {
 		for (DeviceComponent comp : preMembers) {
 			if (!postMembers.contains(comp)) {
 				if (comp instanceof Device) {
+					editedDevices.add((Device)comp);
 					deviceService.removeDeviceFromGroup(group.getId(), comp.getId());
 				}
 				if (comp instanceof DeviceGroup) {
@@ -183,6 +202,7 @@ public class RestController {
 		for (DeviceComponent comp : postMembers) {
 			if (!preMembers.contains(comp)) {
 				if (comp instanceof Device) {
+					editedDevices.add((Device)comp);
 					deviceService.addDeviceToGroup(group.getId(), comp.getId());
 				}
 				if (comp instanceof DeviceGroup) {
@@ -191,7 +211,18 @@ public class RestController {
 			}
 		}
 		
-		
+		DeviceGroup devGroup = deviceService.findByName("_unassigned");
+
+		for(Device device : editedDevices) {
+			List<DeviceGroup> deviceGroups = deviceService.listAllGroupsForComponents(device.getId());
+			if(deviceGroups.isEmpty()) {
+				deviceService.addDeviceToGroup(devGroup.getId(), device.getId());
+			}
+			else {
+				deviceService.removeDeviceFromGroup(devGroup.getId(), device.getId());
+			}
+		}
+
 	}
 
 	@RequestMapping(value = "/devices/{id}/removeFromGroups", method = RequestMethod.POST)
@@ -299,21 +330,21 @@ public class RestController {
 	}
 
 	@RequestMapping(value = "/devices/locations/{mapType}/{id}", method = RequestMethod.GET)
-	public List<List<String>> getAllLocation(Model model, @PathVariable("id") String id, @PathVariable("mapType") String mapType) {
-		if(mapType.equals("group")){
+	public List<List<String>> getAllLocation(Model model, @PathVariable("id") String id,
+			@PathVariable("mapType") String mapType) {
+		if (mapType.equals("group")) {
 			return deviceService.getAllLocationByGroup(id);
-		}
-		else {
+		} else {
 			return deviceService.getDeviceLocationById(id);
 		}
-		
+
 	}
 
 	@RequestMapping(value = "/devices/locations/dashboard", method = RequestMethod.GET)
 	public List<List<String>> getAllLocation(Model model) {
 		return deviceService.getAllLocation();
 	}
-	
+
 	@RequestMapping(value = "/devices/{id}/delete", method = RequestMethod.DELETE)
 	public void removeDevice(Model model, @PathVariable("id") String id) {
 		deviceService.removeFromManagement(id);
