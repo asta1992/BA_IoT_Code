@@ -30,13 +30,15 @@
 				<jsp:include page="../views/menuFragment.jsp" />
 			</div>
 		</div>
-		<div class="row">
+		<div class="row page-heading">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<h3>
+				
 					Configurations <span class="pull-right">
 						<button type="button" class="btn btn-primary " onclick="createConfiguration()">create new configuration</button>
 					</span>
-				</h3>
+				</div></div>
+				<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<table class="table table-hover configurations-table">
 					<thead>
 						<tr>

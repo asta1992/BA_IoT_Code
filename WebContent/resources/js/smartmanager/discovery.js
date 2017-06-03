@@ -1,14 +1,22 @@
-function addDevice(deviceId){
+function addDevice(){
 	var groupId = $('#groupSelector option:selected').attr('id');
 	var configId = $('#configSelector option:selected').attr('id');
-	console.log($('#groupSelector option:selected').text());
+	var deviceIds = new Array();
+	
+	$('.discoveryCheckbox').each(function(){
+		if($(this).is(':checked')){
+			deviceIds.push($(this).val());
+		}
+	})
+	
 	$.ajax({
 		type : "POST",
 		data : {
 			groupId : groupId,
-			configId: configId
+			configId: configId,
+			deviceIds: deviceIds
 		},
-		url : ctx + "/devices/" + deviceId + "/add",
+		url : ctx + "/devices/add",
 		success : function() {
 			window.location.reload();
 		},
@@ -17,6 +25,5 @@ function addDevice(deviceId){
 			alert(thrownError);
 		}
 	});
-	
 }
 

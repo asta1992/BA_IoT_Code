@@ -61,8 +61,10 @@ body {
 	height: 200px;
 }
 
-.component-heading {
+.page-heading {
 	margin-bottom: 20px;
+	 font-size: 180%;
+	 font-weight: bold;
 }
 
 
