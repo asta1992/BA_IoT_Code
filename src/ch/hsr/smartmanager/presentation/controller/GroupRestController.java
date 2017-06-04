@@ -23,6 +23,8 @@ import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.service.DeviceService;
+import ch.hsr.smartmanager.service.GroupService;
+import ch.hsr.smartmanager.service.LwMwMService;
 
 @RestController
 @RequestMapping("/groups")
@@ -30,13 +32,19 @@ public class GroupRestController {
 
 	@Autowired
 	DeviceService deviceService;
+	@Autowired
+	GroupService groupService;
+	@Autowired
+	private LwMwMService lwMwMService;
+	
+
 
 	@RequestMapping(value = "/{id}/add")
 	public String addNewChildGroup(Model model, @PathVariable("id") String id,
 			@RequestParam("value") String groupName) {
-		DeviceGroup devGroup = deviceService.insertGroup(groupName);
+		DeviceGroup devGroup = groupService.insertGroup(groupName);
 		if (devGroup != null) {
-			deviceService.addGroupToGroup(id, devGroup.getId());
+			groupService.addGroupToGroup(id, devGroup.getId());
 			return Boolean.toString(true);
 		} else {
 			return Boolean.toString(false);
@@ -46,7 +54,7 @@ public class GroupRestController {
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addNewRootGroup(Model mode, @RequestParam("value") String groupName) {
-		if (deviceService.insertGroup(groupName) != null) {
+		if (groupService.insertGroup(groupName) != null) {
 			return Boolean.toString(true);
 		} else {
 			return Boolean.toString(false);
@@ -57,28 +65,28 @@ public class GroupRestController {
 	public void addGroupToGroup(Model model, @PathVariable("id") String id, @RequestParam("value") JSONArray value) {
 		if (value.length() == 1) {
 			try {
-				DeviceGroup newParentGroup = deviceService.getGroup(value.getString(0));
-				DeviceGroup group = deviceService.getGroup(id);
+				DeviceGroup newParentGroup = groupService.getGroup(value.getString(0));
+				DeviceGroup group = groupService.getGroup(id);
 
-				List<DeviceGroup> oldParentGroups = deviceService.listAllGroupsForComponents(id);
+				List<DeviceGroup> oldParentGroups = groupService.listAllGroupsForGroup(id);
 
 				if (!oldParentGroups.isEmpty()) {
-					deviceService.removeGroupFromGroup(oldParentGroups.get(0).getId(), group.getId());
+					groupService.removeGroupFromGroup(oldParentGroups.get(0).getId(), group.getId());
 				}
-				deviceService.addGroupToGroup(newParentGroup.getId(), group.getId());
+				groupService.addGroupToGroup(newParentGroup.getId(), group.getId());
 
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
 		if (value.length() == 0) {
-			DeviceGroup group = deviceService.getGroup(id);
-			List<DeviceGroup> subGroups = deviceService.listAllGroupsForComponents(id);
+			DeviceGroup group = groupService.getGroup(id);
+			List<DeviceGroup> subGroups = groupService.listAllGroupsForGroup(id);
 			if (subGroups.isEmpty()) {
 				return;
 			}
 			DeviceGroup oldParentGroup = subGroups.get(0);
-			deviceService.removeGroupFromGroup(oldParentGroup.getId(), group.getId());
+			groupService.removeGroupFromGroup(oldParentGroup.getId(), group.getId());
 		}
 	}
 
@@ -90,7 +98,7 @@ public class GroupRestController {
 		for (int i = 0; i < value.length(); i++) {
 			try {
 
-				DeviceComponent item = deviceService.getGroup((value.getString(i)));
+				DeviceComponent item = groupService.getGroup((value.getString(i)));
 				if (item == null) {
 					item = deviceService.getDevice((value.getString(i)));
 				}
@@ -102,17 +110,17 @@ public class GroupRestController {
 
 		postMembers.removeAll(Collections.singleton(null));
 
-		DeviceGroup group = deviceService.getGroup(id);
+		DeviceGroup group = groupService.getGroup(id);
 		List<DeviceComponent> preMembers = group.getChildren();
 
 		for (DeviceComponent comp : preMembers) {
 			if (!postMembers.contains(comp)) {
 				if (comp instanceof Device) {
 					editedDevices.add((Device) comp);
-					deviceService.removeDeviceFromGroup(group.getId(), comp.getId());
+					groupService.removeDeviceFromGroup(group.getId(), comp.getId());
 				}
 				if (comp instanceof DeviceGroup) {
-					deviceService.removeGroupFromGroup(group.getId(), comp.getId());
+					groupService.removeGroupFromGroup(group.getId(), comp.getId());
 				}
 			}
 		}
@@ -121,22 +129,22 @@ public class GroupRestController {
 			if (!preMembers.contains(comp)) {
 				if (comp instanceof Device) {
 					editedDevices.add((Device) comp);
-					deviceService.addDeviceToGroup(group.getId(), comp.getId());
+					groupService.addDeviceToGroup(group.getId(), comp.getId());
 				}
 				if (comp instanceof DeviceGroup) {
-					deviceService.addGroupToGroup(group.getId(), comp.getId());
+					groupService.addGroupToGroup(group.getId(), comp.getId());
 				}
 			}
 		}
 
-		DeviceGroup devGroup = deviceService.findByName("_unassigned");
+		DeviceGroup devGroup = groupService.findByName("_unassigned");
 
 		for (Device device : editedDevices) {
-			List<DeviceGroup> deviceGroups = deviceService.listAllGroupsForComponents(device.getId());
+			List<DeviceGroup> deviceGroups = groupService.listAllGroupsForGroup(device.getId());
 			if (deviceGroups.isEmpty()) {
-				deviceService.addDeviceToGroup(devGroup.getId(), device.getId());
+				groupService.addDeviceToGroup(devGroup.getId(), device.getId());
 			} else {
-				deviceService.removeDeviceFromGroup(devGroup.getId(), device.getId());
+				groupService.removeDeviceFromGroup(devGroup.getId(), device.getId());
 			}
 		}
 
@@ -144,30 +152,30 @@ public class GroupRestController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public List<DeviceGroup> getGroupList(Model model) {
-		return deviceService.getAllGroups();
+		return groupService.getAllGroups();
 	}
 
 	@RequestMapping(value = "/{objectId}/writeToChildren", method = RequestMethod.GET)
 	public List<ResourceModelAdapter> writeToChildren(Model model, @PathVariable("objectId") String objectId) {
-		return deviceService.allWritableResources(objectId);
+		return lwMwMService.allWritableResources(objectId);
 	}
 
 	@RequestMapping(value = "/{objectId}/executeToChildren", method = RequestMethod.GET)
 	public List<ResourceModelAdapter> executeToChildren(Model model, @PathVariable("objectId") String objectId) {
-		return deviceService.allExecuteableResources(objectId);
+		return lwMwMService.allExecuteableResources(objectId);
 	}
 
 	@RequestMapping(value = "/{objectId}/multiInstance", method = RequestMethod.GET)
 	public Map<String, Boolean> multiInstance(Model model, @PathVariable("objectId") String objectId) {
-		return Collections.singletonMap("value", deviceService.isMultiInstance(objectId));
+		return Collections.singletonMap("value", lwMwMService.isMultiInstance(objectId));
 	}
 
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
 	public String getAllGroups(Model model) throws JSONException {
 		List<JSONObject> allJson = new ArrayList<>();
 
-		for (DeviceComponent item : deviceService.getAllGroups()) {
-			if (!deviceService.isRoot(item.getId())) {
+		for (DeviceComponent item : groupService.getAllGroups()) {
+			if (!groupService.isRoot(item.getId())) {
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("id", "groups/" + item.getId());
 				jsonObj.put("text", item.getName());
@@ -180,6 +188,6 @@ public class GroupRestController {
 	}
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
 	public void removeGroup(Model model, @PathVariable("id") String id) {
-		deviceService.deleteGroup(id);
+		groupService.deleteGroup(id);
 	}
 }

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.service.DeviceService;
+import ch.hsr.smartmanager.service.GroupService;
+import ch.hsr.smartmanager.service.LocationService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 
 @RestController
@@ -31,6 +33,12 @@ public class DeviceRestController {
 	
 	@Autowired
 	DeviceService deviceService;
+	
+	@Autowired
+	GroupService groupService;
+	
+	@Autowired
+	LocationService locationService;
 
 
 	@RequestMapping(value = "/{id}/read/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
@@ -66,39 +74,39 @@ public class DeviceRestController {
 		List<DeviceGroup> postGroups = new ArrayList<>();
 		for (int i = 0; i < value.length(); i++) {
 			try {
-				postGroups.add(deviceService.getGroup(value.getString(i)));
+				postGroups.add(groupService.getGroup(value.getString(i)));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
 
 		Device device = deviceService.getDevice(id);
-		List<DeviceGroup> preGroups = deviceService.listAllGroupsForComponents(id);
+		List<DeviceGroup> preGroups = groupService.listAllGroupsForGroup(id);
 
 		for (DeviceGroup devGroups : preGroups) {
 			if (!postGroups.contains(devGroups)) {
-				deviceService.removeDeviceFromGroup(devGroups.getId(), device.getId());
+				groupService.removeDeviceFromGroup(devGroups.getId(), device.getId());
 			}
 		}
 		for (DeviceGroup devGroups : postGroups) {
 			if (!preGroups.contains(devGroups)) {
-				deviceService.addDeviceToGroup(devGroups.getId(), device.getId());
+				groupService.addDeviceToGroup(devGroups.getId(), device.getId());
 			}
 		}
 
-		DeviceGroup devGroup = deviceService.findByName("_unassigned");
+		DeviceGroup devGroup = groupService.findByName("_unassigned");
 
 		if (postGroups.size() > 1 && postGroups.contains(devGroup)) {
-			deviceService.removeDeviceFromGroup(devGroup.getId(), id);
+			groupService.removeDeviceFromGroup(devGroup.getId(), id);
 		}
 		if (postGroups.isEmpty()) {
-			deviceService.addDeviceToGroup(devGroup.getId(), id);
+			groupService.addDeviceToGroup(devGroup.getId(), id);
 		}
 	}
 	
 	@RequestMapping(value = "/locations/dashboard", method = RequestMethod.GET)
 	public List<List<String>> getAllLocation(Model model) {
-		return deviceService.getAllLocation();
+		return locationService.getAllLocation();
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
@@ -116,7 +124,7 @@ public class DeviceRestController {
 	public void removeFromGroups(Model model, @PathVariable("id") String id,
 			@RequestParam("value") List<String> value) {
 		for (String groupId : value) {
-			deviceService.removeDeviceFromGroup(groupId, id);
+			groupService.removeDeviceFromGroup(groupId, id);
 		}
 	}
 
@@ -129,10 +137,9 @@ public class DeviceRestController {
 	public List<List<String>> getAllLocation(Model model, @PathVariable("id") String id,
 			@PathVariable("mapType") String mapType) {
 		if (mapType.equals("group")) {
-			return deviceService.getAllLocationByGroup(id);
+			return locationService.getAllLocationByGroup(groupService.getGroup(id));
 		} else {
-			return deviceService.getDeviceLocationById(id);
+			return locationService.getDeviceLocationById(deviceService.getDevice(id));
 		}
-
 	}
 }

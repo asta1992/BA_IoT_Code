@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.leshan.ResponseCode;
 import org.json.JSONArray;
@@ -25,7 +27,7 @@ public class ConfigurationService {
 	private ConfigurationItemRepository configRepo;
 	
 	@Autowired
-	private DeviceService deviceService;
+	private GroupService groupService;
 
 	@Autowired
 	private LwM2MHandler lwM2MHandler;
@@ -72,7 +74,7 @@ public class ConfigurationService {
 	
 	public Map<String, List<Map<String, ResponseCode>>> writeConfigurationToGroup(String groupId, String configurationId) {
 		Map<String, List<Map<String, ResponseCode>>> responseMap = new HashMap<>();
-		List<Device> devices = deviceService.findAllChildren(groupId);
+		List<Device> devices = groupService.findAllChildren(groupId);
 		for(Device device : devices) {
 			responseMap.put(device.getName(), writeConfigurationToDevice(device.getId(), configurationId));
 		}
@@ -83,8 +85,19 @@ public class ConfigurationService {
 		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
 		Configuration configuration = configRepo.findOne(configurationId);
 		for(ConfigurationItem item : configuration.getConfigurationItems()) {
-			responseList.add(lwM2MHandler.write(deviceId, item.getPathPart(1), item.getPathPart(2), item.getPathPart(3), item.getValue()));
+			responseList.add(lwM2MHandler.write(deviceId, getPathPart(item, 1), getPathPart(item, 2), getPathPart(item, 3), item.getValue()));
 		}
 		return responseList;
+	}
+	
+	private int getPathPart(ConfigurationItem item, int groupNumber) {
+		String regex = "([0-9]*)\\/([0-9]*)\\/([0-9]*)";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(item.getPath());
+		int objectId = 0;
+		while (matcher.find()) {
+			objectId =  Integer.parseInt(matcher.group(groupNumber));
+		}
+		return objectId;
 	}
 }

@@ -30,16 +30,20 @@ import org.springframework.web.util.HtmlUtils;
 
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.service.DeviceService;
+import ch.hsr.smartmanager.service.GroupService;
 
 @Service
 public class LwM2MHandler {
 
 	@Autowired
 	private LwM2MManagementServer lwM2MManagementServer;
-
 	@Autowired
 	private DeviceService deviceService;
+	@Autowired
+	private GroupService groupService;
 
+	
+	
 	private LeshanServer server;
 
 	public LwM2MHandler() {
@@ -188,7 +192,7 @@ public class LwM2MHandler {
 	
 	public Map<String, List<Map<String, ResponseCode>>> executeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId) {
 		Map<String, List<Map<String, ResponseCode>>> responseMap = new HashMap<>();
-		List<Device> devices = deviceService.findAllChildren(id);
+		List<Device> devices = groupService.findAllChildren(id);
 		
 		for (Device dev : devices) {
 			responseMap.put(dev.getName(), executeToDevice(dev.getId(), objectId, objectInstanceId, resourceId));
@@ -202,7 +206,7 @@ public class LwM2MHandler {
 	
 	public Map<String, List<Map<String, ResponseCode>>> writeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId, String value) {
 		Map<String, List<Map<String, ResponseCode>>> responseMap = new HashMap<>();
-		List<Device> devices = deviceService.findAllChildren(id);
+		List<Device> devices = groupService.findAllChildren(id);
 		
 		for (Device dev : devices) {
 			responseMap.put(dev.getName(), writeConfigurationToDevice(dev.getId(), objectId, objectInstanceId, resourceId, value));

@@ -14,7 +14,8 @@ import org.springframework.web.util.HtmlUtils;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.service.ConfigurationService;
-import ch.hsr.smartmanager.service.DeviceService;
+import ch.hsr.smartmanager.service.GroupService;
+import ch.hsr.smartmanager.service.LwMwMService;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 
 @Controller
@@ -22,9 +23,11 @@ import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 public class GroupWebController {
 	
 	@Autowired
-	private DeviceService deviceService;
+	private GroupService groupService;
 	@Autowired
 	private LwM2MHandler lwM2MHandler;
+	@Autowired
+	private LwMwMService lwMwMService;
 	@Autowired
 	private ConfigurationService configurationService;
 	
@@ -38,7 +41,7 @@ public class GroupWebController {
 
 	@RequestMapping(value = "/executeCommandToChildsFragment", method = RequestMethod.GET)
 	public String executeCommandToChildsFragment(Model model) {
-		model.addAttribute("objectMap", deviceService.allExecutableObjectIDs());
+		model.addAttribute("objectMap", lwMwMService.allExecutableObjectIDs());
 		return "executeCommandToChildsFragment";
 	}
 
@@ -52,13 +55,13 @@ public class GroupWebController {
 
 	@RequestMapping(value = "/{id}/memberships", method = RequestMethod.GET)
 	public String getGroupMembership(Model model, @PathVariable("id") String id) {
-		List<DeviceGroup> allGroups = deviceService.getAllGroups();
-		List<DeviceGroup> groupMembership = deviceService.listAllGroupsForComponents(id);
+		List<DeviceGroup> allGroups = groupService.getAllGroups();
+		List<DeviceGroup> groupMembership = groupService.listAllGroupsForGroup(id);
 		if (groupMembership.size() != 0) {
 			allGroups.remove(groupMembership);
 		}
 
-		model.addAttribute("componentName", deviceService.getGroup(id).getName());
+		model.addAttribute("componentName", groupService.getGroup(id).getName());
 		model.addAttribute("allGroups", allGroups);
 		model.addAttribute("deviceGroups", groupMembership);
 
@@ -67,11 +70,11 @@ public class GroupWebController {
 
 	@RequestMapping(value = "/{id}/members", method = RequestMethod.GET)
 	public String getGroupMembers(Model model, @PathVariable("id") String id) {
-		List<DeviceComponent> allComponents = deviceService.getAllComponents();
-		List<DeviceComponent> groupMembers = deviceService.getGroup(id).getChildren();
+		List<DeviceComponent> allComponents = groupService.getAllComponents();
+		List<DeviceComponent> groupMembers = groupService.getGroup(id).getChildren();
 		allComponents.removeAll(groupMembers);
 
-		model.addAttribute("groupName", deviceService.getGroup(id).getName());
+		model.addAttribute("groupName", groupService.getGroup(id).getName());
 		model.addAttribute("allComponents", allComponents);
 		model.addAttribute("groupMembers", groupMembers);
 
@@ -80,14 +83,14 @@ public class GroupWebController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String showGroupDetails(Model model, @PathVariable("id") String id) {
-		DeviceGroup group = deviceService.getGroup(id);
+		DeviceGroup group = groupService.getGroup(id);
 		model.addAttribute("group", group);
 		return "groupFragment";
 	}
 
 	@RequestMapping(value = "/writeCommandToChildsFragment", method = RequestMethod.GET)
 	public String writeCommandToChildsFragment(Model model) {
-		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
+		model.addAttribute("objectMap", lwMwMService.allWritableObjectIDs());
 		return "writeCommandToChildsFragment";
 	}
 

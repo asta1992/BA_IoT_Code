@@ -13,13 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import ch.hsr.smartmanager.data.ManagementUser;
 import ch.hsr.smartmanager.data.repository.ManagementUserRepository;
 
-@Component
-public class ManagementUserService implements UserDetailsService {
+@Service
+public class UserService implements UserDetailsService {
 
 	@Autowired
 	private ManagementUserRepository userRepository;

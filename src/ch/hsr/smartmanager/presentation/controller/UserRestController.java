@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
 
-import ch.hsr.smartmanager.service.ManagementUserService;
+import ch.hsr.smartmanager.service.UserService;
 
 @RestController
 @RequestMapping("/users")
 public class UserRestController {
 
 	@Autowired
-	private ManagementUserService managementUserService;
+	private UserService userService;
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String deleteUser(Model model, @RequestParam("username") String username) {
-		boolean result = managementUserService.deleteUser(username);
+		boolean result = userService.deleteUser(username);
 		return Boolean.toString(result);
 	}
 
@@ -33,7 +33,7 @@ public class UserRestController {
 
 			JSONObject result = new JSONObject();
 			try {
-				result = managementUserService.updateUser(id, oldPassword, firstPassword, secondPassword);
+				result = userService.updateUser(id, oldPassword, firstPassword, secondPassword);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -46,7 +46,7 @@ public class UserRestController {
 			@RequestParam("secondPassword") String secondPassword) {
 		JSONObject result = new JSONObject();
 		try {
-			result = managementUserService.addUser(HtmlUtils.htmlEscape(username.toLowerCase()), firstPassword, secondPassword);
+			result = userService.addUser(HtmlUtils.htmlEscape(username.toLowerCase()), firstPassword, secondPassword);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -55,7 +55,7 @@ public class UserRestController {
 	
 	@RequestMapping(value = "/checkUser", method = RequestMethod.POST)
 	public String checkUser(Model model, @RequestParam("username") String username) {
-		boolean result = managementUserService.checkUser(username);
+		boolean result = userService.checkUser(username);
 		return Boolean.toString(result);
 	}
 	

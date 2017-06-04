@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.hsr.smartmanager.service.ConfigurationService;
 import ch.hsr.smartmanager.service.DeviceService;
+import ch.hsr.smartmanager.service.LwMwMService;
 
 @Controller
 @RequestMapping("/configurations")
@@ -20,6 +21,8 @@ public class ConfigurationWebController {
 	private DeviceService deviceService;
 	@Autowired
 	private ConfigurationService configurationService;
+	@Autowired
+	private LwMwMService lwMwMService;
 	
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -32,13 +35,13 @@ public class ConfigurationWebController {
 	
 	@RequestMapping(value = "/createConfigurationFragment", method = RequestMethod.GET)
 	public String showConfigurationFragment(Model model) {
-		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
+		model.addAttribute("objectMap", lwMwMService.allWritableObjectIDs());
 		return "createConfigurationFragment";
 	}
 
 	@RequestMapping(value = "/{id}/editConfigurationFragment", method = RequestMethod.GET)
 	public String editConfigurationFragment(Model model, @PathVariable("id") String id) {
-		model.addAttribute("objectMap", deviceService.allWritableObjectIDs());
+		model.addAttribute("objectMap", lwMwMService.allWritableObjectIDs());
 		model.addAttribute("configuration", configurationService.findOne(id));
 		return "editConfigurationFragment";
 	}

@@ -7,7 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ch.hsr.smartmanager.service.DeviceService;
-import ch.hsr.smartmanager.service.ManagementUserService;
+import ch.hsr.smartmanager.service.InfrastructureService;
+import ch.hsr.smartmanager.service.UserService;
 
 @Controller
 @RequestMapping("/")
@@ -16,7 +17,9 @@ public class FrontWebController {
 	@Autowired
 	private DeviceService deviceService;
 	@Autowired
-	private ManagementUserService mangementUserService;
+	private UserService userService;
+	@Autowired
+	private InfrastructureService infrastructureService;
 
     @RequestMapping(method = RequestMethod.GET)
 	public String showIndex(Model model, Principal principal) {
@@ -24,8 +27,8 @@ public class FrontWebController {
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		model.addAttribute("deviceCounter", deviceService.countAllDevices());
 		model.addAttribute("unreachableDevices", deviceService.getUnreachableDevices());
-		model.addAttribute("registeredUsers", mangementUserService.findAll().size());
-		model.addAttribute("uptime", deviceService.getServerUptime());
+		model.addAttribute("registeredUsers", userService.findAll().size());
+		model.addAttribute("uptime", infrastructureService.getServerUptime());
 		return "index";
 	}
     

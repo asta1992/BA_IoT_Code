@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.hsr.smartmanager.data.ManagementUser;
 import ch.hsr.smartmanager.service.DeviceService;
-import ch.hsr.smartmanager.service.ManagementUserService;
+import ch.hsr.smartmanager.service.UserService;
 
 @Controller
 @RequestMapping("/users")
@@ -20,22 +20,22 @@ public class UserWebController {
 	DeviceService deviceService;
 	
 	@Autowired
-	ManagementUserService managementUserService;
+	UserService userService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String showUsers(Model model, Principal principal) {
 		if(principal == null) return "redirect:/logout";
-		ManagementUser user = managementUserService.findUserByName(principal.getName());
+		ManagementUser user = userService.findUserByName(principal.getName());
 		model.addAttribute("username", user.getUsername());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		model.addAttribute("user", user);
-		model.addAttribute("managementUsers", managementUserService.findAll());
+		model.addAttribute("managementUsers", userService.findAll());
 		return "userSettings";
 	}
 	
 	@RequestMapping("/userDeleteFragment")
 	public String userDeleteFragment(Model model) {
-		model.addAttribute("userList", managementUserService.findAll());
+		model.addAttribute("userList", userService.findAll());
 		return "userDeleteFragment";
 	}
 	
