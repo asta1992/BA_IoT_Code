@@ -18,14 +18,15 @@
 <script src="..${pageContext.request.contextPath}/resources/js/lib/bootbox.min.js"></script>
 <script src="..${pageContext.request.contextPath}/resources/js/lib/metisMenu.js"></script>
 <script src="..${pageContext.request.contextPath}/resources/js/lib/sb-admin-2.js"></script>
-<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/dashboard.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/home.js"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/map.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7w-HEi_KCBCkCJNEKJzB2L7NJGl1CF4Y&callback=initMap"></script>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0 0 0 0;">
-				<jsp:include page="../views/menuFragment.jsp" />
+				<jsp:include page="../../views/menuFragment.jsp" />
 			</div>
 			<div class="row dashboard-counters">
 				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">

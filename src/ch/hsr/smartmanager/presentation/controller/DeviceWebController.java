@@ -42,7 +42,7 @@ public class DeviceWebController {
 	public String showDevices(Model model, Principal principal) {
 		model.addAttribute("username", principal.getName());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
-		return "devices";
+		return "devices/devices";
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -88,7 +88,7 @@ public class DeviceWebController {
 			model.addAttribute("device", device);
 			
 		}
-		return "deviceFragment";
+		return "devices/deviceFragment";
 
 	}
 	
@@ -103,7 +103,7 @@ public class DeviceWebController {
 		model.addAttribute("allGroups", groups);
 		model.addAttribute("deviceGroups", deviceGroups);
 
-		return "groupMembershipsFragment";
+		return "devices/groupMembershipsFragment";
 	}
 
 }

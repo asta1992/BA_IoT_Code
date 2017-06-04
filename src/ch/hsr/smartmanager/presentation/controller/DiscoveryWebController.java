@@ -30,7 +30,7 @@ public class DiscoveryWebController {
 		model.addAttribute("configurations", configurationService.getAllConfigurations());
 		model.addAttribute("username", principal.getName());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
-		return "discovery";
+		return "discovery/discovery";
 	}
 
 	@RequestMapping(value = "/clean")

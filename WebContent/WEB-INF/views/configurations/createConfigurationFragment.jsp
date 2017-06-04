@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/writeableResources.js" type="text/javascript"></script>
 <div class="row form-group">
 	<div class="col-lg-3 col-md-3">
 		<label for="value" class="control-label">Name</label>

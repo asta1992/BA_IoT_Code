@@ -37,15 +37,12 @@
 <script
 	src="..${pageContext.request.contextPath}/resources/js/smartmanager/discovery.js"
 	type="text/javascript"></script>
-<script
-	src="..${pageContext.request.contextPath}/resources/js/smartmanager/groupManagement.js"
-	type="text/javascript"></script>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<jsp:include page="../views/menuFragment.jsp" />
+				<jsp:include page="../../views/menuFragment.jsp" />
 			</div>
 		</div>
 		<div class="row page-heading">

@@ -47,29 +47,24 @@
 	src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap-select.min.js"
 	type="text/javascript"></script>
 <script
-	src="..${pageContext.request.contextPath}/resources/js/smartmanager/navigationdata.js"
+	src="..${pageContext.request.contextPath}/resources/js/smartmanager/devices.js"
 	type="text/javascript"></script>
 <script
-	src="..${pageContext.request.contextPath}/resources/js/smartmanager/deviceCommunication.js"
+	src="..${pageContext.request.contextPath}/resources/js/smartmanager/deviceFragment.js"
 	type="text/javascript"></script>
 <script
-	src="..${pageContext.request.contextPath}/resources/js/smartmanager/configurations.js"
+	src="..${pageContext.request.contextPath}/resources/js/smartmanager/groupFragment.js"
 	type="text/javascript"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/map.js"></script>
 <script
-	src="..${pageContext.request.contextPath}/resources/js/smartmanager/groupCommunication.js"
-	type="text/javascript"></script>
-<script
-	src="..${pageContext.request.contextPath}/resources/js/smartmanager/groupManagement.js"
-	type="text/javascript"></script>
-<script
-	src="..${pageContext.request.contextPath}/resources/js/smartmanager/deleteObject.js"
+	src="..${pageContext.request.contextPath}/resources/js/smartmanager/writeableResources.js"
 	type="text/javascript"></script>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<jsp:include page="../views/menuFragment.jsp" />
+				<jsp:include page="../../views/menuFragment.jsp" />
 			</div>
 		</div>
 

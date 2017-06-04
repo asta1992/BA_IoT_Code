@@ -36,19 +36,19 @@ public class GroupWebController {
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
 		
 		model.addAttribute("result", lwM2MHandler.executeToAllChildren(id, objectId, objectInstanceId, resourceId));
-		return "writeConfigResultFragment";
+		return "devices/writeConfigResultFragment";
 	}
 
 	@RequestMapping(value = "/executeCommandToChildsFragment", method = RequestMethod.GET)
 	public String executeCommandToChildsFragment(Model model) {
 		model.addAttribute("objectMap", lwMwMService.allExecutableObjectIDs());
-		return "executeCommandToChildsFragment";
+		return "devices/executeCommandToChildsFragment";
 	}
 
 	@RequestMapping(value = "/writeConfigToChildsFragment", method = RequestMethod.GET)
 	public String writeConfigToChildsFragment(Model model) {
 		model.addAttribute("configurations", configurationService.getAllConfigurations());
-		return "writeConfigToChildsFragment";
+		return "devices/writeConfigToChildsFragment";
 	}
 
 	
@@ -65,7 +65,7 @@ public class GroupWebController {
 		model.addAttribute("allGroups", allGroups);
 		model.addAttribute("deviceGroups", groupMembership);
 
-		return "groupMembershipsFragment";
+		return "devices/groupMembershipsFragment";
 	}
 
 	@RequestMapping(value = "/{id}/members", method = RequestMethod.GET)
@@ -78,27 +78,27 @@ public class GroupWebController {
 		model.addAttribute("allComponents", allComponents);
 		model.addAttribute("groupMembers", groupMembers);
 
-		return "groupMembersFragment";
+		return "devices/groupMembersFragment";
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String showGroupDetails(Model model, @PathVariable("id") String id) {
 		DeviceGroup group = groupService.getGroup(id);
 		model.addAttribute("group", group);
-		return "groupFragment";
+		return "devices/groupFragment";
 	}
 
 	@RequestMapping(value = "/writeCommandToChildsFragment", method = RequestMethod.GET)
 	public String writeCommandToChildsFragment(Model model) {
 		model.addAttribute("objectMap", lwMwMService.allWritableObjectIDs());
-		return "writeCommandToChildsFragment";
+		return "devices/writeCommandToChildsFragment";
 	}
 
 	@RequestMapping(value = "/{id}/writeConfiguration", method = RequestMethod.GET)
 	public String writeConfiguration(Model model, @PathVariable("id") String id,
 			@RequestParam("value") String configurationId) {
 		model.addAttribute("result", configurationService.writeConfigurationToGroup(id, configurationId));
-		return "writeConfigResultFragment";
+		return "devices/writeConfigResultFragment";
 	}
 	
 	@RequestMapping(value = "/{id}/writeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
@@ -107,7 +107,7 @@ public class GroupWebController {
 			@PathVariable("resourceId") int resourceId, @RequestParam("value") String value) {
 
 		model.addAttribute("result", lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value)));
-		return "writeConfigResultFragment";
+		return "devices/writeConfigResultFragment";
 	}
 	
 }
