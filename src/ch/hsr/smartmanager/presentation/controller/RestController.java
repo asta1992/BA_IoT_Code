@@ -76,7 +76,6 @@ public class RestController {
 		}
 		else {
 			return Boolean.toString(false);
-
 		}
 		
 	}
