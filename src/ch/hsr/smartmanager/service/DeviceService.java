@@ -9,6 +9,7 @@ import org.eclipse.leshan.ResponseCode;
 import org.eclipse.leshan.core.node.LwM2mSingleResource;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.server.registration.Registration;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,6 +176,41 @@ public class DeviceService {
 			}
 		}
 		return jsonObjects;
+	}
+
+	public void changeMembership(String id, JSONArray value) {
+		List<DeviceGroup> postGroups = new ArrayList<>();
+		for (int i = 0; i < value.length(); i++) {
+			try {
+				postGroups.add(groupService.getGroup(value.getString(i)));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Device device = getDevice(id);
+		List<DeviceGroup> preGroups = groupService.listAllGroupsForGroup(id);
+
+		for (DeviceGroup devGroups : preGroups) {
+			if (!postGroups.contains(devGroups)) {
+				groupService.removeDeviceFromGroup(devGroups.getId(), device.getId());
+			}
+		}
+		for (DeviceGroup devGroups : postGroups) {
+			if (!preGroups.contains(devGroups)) {
+				groupService.addDeviceToGroup(devGroups.getId(), device.getId());
+			}
+		}
+
+		DeviceGroup devGroup = groupService.findByName("_unassigned");
+
+		if (postGroups.size() > 1 && postGroups.contains(devGroup)) {
+			groupService.removeDeviceFromGroup(devGroup.getId(), id);
+		}
+		if (postGroups.isEmpty()) {
+			groupService.addDeviceToGroup(devGroup.getId(), id);
+		}
+		
 	}
 
 }

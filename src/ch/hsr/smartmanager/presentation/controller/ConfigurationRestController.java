@@ -2,7 +2,6 @@ package ch.hsr.smartmanager.presentation.controller;
 
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,12 +16,12 @@ public class ConfigurationRestController {
 	ConfigurationService configService;
 	
 	@RequestMapping(value = "/add")
-	public void addConfiguration(Model model, @RequestParam("value") JSONArray value) {
+	public void addConfiguration(@RequestParam("value") JSONArray value) {
 		configService.saveConfiguration(value);
 	}
 
 	@RequestMapping(value = "/delete")
-	public void deleteConfiguration(Model model, @RequestParam("value") String value) {
+	public void deleteConfiguration(@RequestParam("value") String value) {
 		configService.deleteConfiguration(value);
 	}
 

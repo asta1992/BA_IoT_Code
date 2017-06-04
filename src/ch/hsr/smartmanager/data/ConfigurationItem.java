@@ -27,11 +27,5 @@ public class ConfigurationItem {
 		this.value = value;
 	}
 	
-	@Override
-	public String toString() {
-		return "ConfigurationItem [path=" + path + ", value=" + value + "]";
-	}
-	
-	
 
 }

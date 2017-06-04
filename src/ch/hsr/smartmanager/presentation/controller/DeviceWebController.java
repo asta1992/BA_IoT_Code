@@ -86,8 +86,8 @@ public class DeviceWebController {
 			model.addAttribute("objectLinks", device.getObjectLinks().toArray());
 			model.addAttribute("registration", registration);
 			model.addAttribute("device", device);
+			
 		}
-		
 		return "deviceFragment";
 
 	}

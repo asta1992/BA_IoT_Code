@@ -106,12 +106,7 @@ public class Device implements DeviceComponent {
 		return (this.id == null);
 	}
 	
-	@Override
-	public String toString() {
-		return "Device [name=" + name + ", regId=" + regId + ", endpoint=" + endpoint + ", objectLinks=" + objectLinks + ", added=" + added + ", dataMap="
-				+ dataMap + "]";
-	}
-
+	
 	@Override
 	public List<DeviceComponent> getChildren() {
 		return null;

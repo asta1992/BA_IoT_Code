@@ -56,9 +56,4 @@ public class Configuration {
 	public void setConfigurationItems(List<ConfigurationItem> configurationItems) {
 		this.configurationItems = configurationItems;
 	}
-
-	@Override
-	public String toString() {
-		return "Configuration [id=" + id + ", name=" + name + ", description=" + description + "]";
-	}
 }

@@ -1,11 +1,17 @@
 package ch.hsr.smartmanager.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
@@ -177,6 +183,132 @@ public class GroupService {
 	
 	public List<DeviceGroup> listAllGroupsForGroup(String id) {
 		return groupRepo.findAllByChildrenId(new ObjectId(id));
+	}
+
+	public void removeDeviceFromGroups(List<String> value, String id) {
+		for (String groupId : value) {
+			removeDeviceFromGroup(groupId, id);			
+		}
+	}
+
+	public boolean addNewRootGroup(String groupName) {
+		return insertGroup(groupName) != null;
+	}
+
+	public boolean addNewChildGroup(String id, String groupName) {
+		DeviceGroup devGroup = insertGroup(groupName);
+		if (devGroup != null) {
+			addGroupToGroup(id, devGroup.getId());
+			return true;
+		} 
+		return false;
+	}
+
+	public void changeMembership(String id, JSONArray value) {
+		if (value.length() == 1) {
+			try {
+				DeviceGroup newParentGroup = getGroup(value.getString(0));
+				DeviceGroup group = getGroup(id);
+
+				List<DeviceGroup> oldParentGroups = listAllGroupsForGroup(id);
+
+				if (!oldParentGroups.isEmpty()) {
+					removeGroupFromGroup(oldParentGroups.get(0).getId(), group.getId());
+				}
+				addGroupToGroup(newParentGroup.getId(), group.getId());
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		if (value.length() == 0) {
+			DeviceGroup group = getGroup(id);
+			List<DeviceGroup> subGroups = listAllGroupsForGroup(id);
+			if (subGroups.isEmpty()) {
+				return;
+			}
+			DeviceGroup oldParentGroup = subGroups.get(0);
+			removeGroupFromGroup(oldParentGroup.getId(), group.getId());
+		}
+		
+	}
+
+	public void changeMembers(String id, JSONArray value) {
+		Set<Device> editedDevices = new HashSet<>();
+
+		List<DeviceComponent> postMembers = new ArrayList<>();
+		for (int i = 0; i < value.length(); i++) {
+			try {
+
+				DeviceComponent item = getGroup((value.getString(i)));
+				if (item == null) {
+					item = deviceService.getDevice((value.getString(i)));
+				}
+				postMembers.add(item);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		postMembers.removeAll(Collections.singleton(null));
+
+		DeviceGroup group = getGroup(id);
+		List<DeviceComponent> preMembers = group.getChildren();
+
+		for (DeviceComponent comp : preMembers) {
+			if (!postMembers.contains(comp)) {
+				if (comp instanceof Device) {
+					editedDevices.add((Device) comp);
+					removeDeviceFromGroup(group.getId(), comp.getId());
+				}
+				if (comp instanceof DeviceGroup) {
+					removeGroupFromGroup(group.getId(), comp.getId());
+				}
+			}
+		}
+
+		for (DeviceComponent comp : postMembers) {
+			if (!preMembers.contains(comp)) {
+				if (comp instanceof Device) {
+					editedDevices.add((Device) comp);
+					addDeviceToGroup(group.getId(), comp.getId());
+				}
+				if (comp instanceof DeviceGroup) {
+					addGroupToGroup(group.getId(), comp.getId());
+				}
+			}
+		}
+
+		DeviceGroup devGroup = findByName("_unassigned");
+
+		for (Device device : editedDevices) {
+			List<DeviceGroup> deviceGroups = listAllGroupsForGroup(device.getId());
+			if (deviceGroups.isEmpty()) {
+				addDeviceToGroup(devGroup.getId(), device.getId());
+			} else {
+				removeDeviceFromGroup(devGroup.getId(), device.getId());
+			}
+		}
+	}
+
+	public String getAllGroupsAsJSON() {
+		List<JSONObject> allJson = new ArrayList<>();
+
+		for (DeviceComponent item : getAllGroups()) {
+			if (!isRoot(item.getId())) {
+				JSONObject jsonObj = new JSONObject();
+				try {
+					jsonObj.put("id", "groups/" + item.getId());
+					jsonObj.put("text", item.getName());
+					jsonObj.put("children", deviceService.allChildren(item));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				allJson.add(jsonObj);
+			}
+		}
+
+		return allJson.toString();
 	}
 
 }

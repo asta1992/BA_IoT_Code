@@ -3,7 +3,6 @@ package ch.hsr.smartmanager.presentation.controller;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,13 +20,13 @@ public class UserRestController {
 	private UserService userService;
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public String deleteUser(Model model, @RequestParam("username") String username) {
+	public String deleteUser(@RequestParam("username") String username) {
 		boolean result = userService.deleteUser(username);
 		return Boolean.toString(result);
 	}
 
 	@RequestMapping(value = "/{id}/edit", method = RequestMethod.POST)
-	public JSONObject editUser(Model model, @PathVariable("id") String id, @RequestParam("oldPassword") String oldPassword,
+	public JSONObject editUser(@PathVariable("id") String id, @RequestParam("oldPassword") String oldPassword,
 			@RequestParam("firstPassword") String firstPassword,
 			@RequestParam("secondPassword") String secondPassword) {
 
@@ -41,7 +40,7 @@ public class UserRestController {
 	}
 	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public JSONObject addUser(Model model, @RequestParam("username") String username,
+	public JSONObject addUser(@RequestParam("username") String username,
 			@RequestParam("firstPassword") String firstPassword,
 			@RequestParam("secondPassword") String secondPassword) {
 		JSONObject result = new JSONObject();
@@ -54,7 +53,7 @@ public class UserRestController {
 	}
 	
 	@RequestMapping(value = "/checkUser", method = RequestMethod.POST)
-	public String checkUser(Model model, @RequestParam("username") String username) {
+	public String checkUser(@RequestParam("username") String username) {
 		boolean result = userService.checkUser(username);
 		return Boolean.toString(result);
 	}
