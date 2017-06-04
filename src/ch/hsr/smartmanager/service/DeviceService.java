@@ -2,12 +2,21 @@ package ch.hsr.smartmanager.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bson.types.ObjectId;
 import org.eclipse.leshan.ResponseCode;
+import org.eclipse.leshan.core.model.LwM2mModel;
+import org.eclipse.leshan.core.model.ObjectModel;
+import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.core.node.LwM2mSingleResource;
 import org.eclipse.leshan.core.response.ReadResponse;
+import org.eclipse.leshan.server.model.StandardModelProvider;
 import org.eclipse.leshan.server.registration.Registration;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,9 +26,11 @@ import org.springframework.stereotype.Service;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceComponent;
 import ch.hsr.smartmanager.data.DeviceGroup;
+import ch.hsr.smartmanager.data.ResourceModelAdapter;
 import ch.hsr.smartmanager.data.repository.DeviceGroupRepository;
 import ch.hsr.smartmanager.data.repository.DeviceRepository;
 import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
+import ch.hsr.smartmanager.service.lwm2m.LwM2MManagementServer;
 
 @Service
 public class DeviceService {
@@ -34,6 +45,8 @@ public class DeviceService {
 	private LwM2MHandler lwM2MHandler;
 	@Autowired
 	private GroupService groupService;
+	@Autowired
+	private LwM2MManagementServer lwM2MManagementServer;
 
 	public void addToManagement(String[] deviceIds, String groupId, String configId) {
 		DeviceGroup group;
@@ -66,6 +79,19 @@ public class DeviceService {
 		groupRepo.save(groups);
 		deviceRepo.delete(device);
 	}
+	
+	public void removeNullDevice(String id) {
+		List<DeviceGroup> groups = groupRepo.findAllByChildrenId(new ObjectId(id));
+		for(DeviceGroup group : groups) {
+			Iterator<DeviceComponent> iter = group.getChildren().iterator();
+			while(iter.hasNext()) {
+				  DeviceComponent p = iter.next();
+				  if(p.getId().equals(id)) iter.remove();
+			}
+			groupRepo.save(group);
+		}
+	}
+
 
 	public Device getDevice(String id) {
 		return deviceRepo.findOne(id);
@@ -210,6 +236,59 @@ public class DeviceService {
 		if (postGroups.isEmpty()) {
 			groupService.addDeviceToGroup(devGroup.getId(), id);
 		}
+		
+	}
+
+	public LinkedHashMap<String, ArrayList<ResourceModelAdapter>> getObjectModelList(String id) {
+		Device device = getDevice(id);
+		LinkedHashMap<String, ArrayList<ResourceModelAdapter>> objectModelList = new LinkedHashMap<String, ArrayList<ResourceModelAdapter>>();
+		ArrayList<ResourceModelAdapter> resourceModelList = new ArrayList<ResourceModelAdapter>();
+		
+		final String regex = "\\/([0-9]*)\\/";
+		final Pattern pattern = Pattern.compile(regex);
+		Matcher matcher;
+		
+		if(device == null) {
+			return objectModelList;
+		}
+		else {
+			LwM2mModel regModel;
+			
+			Registration registration = lwM2MManagementServer.getServer().getRegistrationService().getById(device.getRegId());
+			if (registration == null) {
+				regModel = new StandardModelProvider().getObjectModel(registration);
+			} else {
+				regModel = lwM2MManagementServer.getServer().getModelProvider().getObjectModel(registration);
+			}
+			
+			for (String objId : device.getObjectLinks()) {
+				matcher = pattern.matcher(objId);
+				String parseId = "1";
+				if (matcher.find()) {
+					parseId = matcher.group(1);
+				}
+
+				ObjectModel objectModel = regModel.getObjectModel(Integer.parseInt(parseId));
+				resourceModelList = new ArrayList<ResourceModelAdapter>();
+
+				for (ResourceModel entry : objectModel.resources.values()) {
+					resourceModelList.add(new ResourceModelAdapter(entry));
+				}
+				objectModelList.put(objectModel.name, resourceModelList);
+			}
+			return objectModelList;
+		}
+		
+		
+	}
+
+	public Registration getRegistration(String id) {
+		Device device = deviceRepo.findOne(id);
+		if(device == null) {
+			return null;
+		}
+		else return lwM2MManagementServer.getServer().getRegistrationService().getById(device.getRegId());
+
 		
 	}
 

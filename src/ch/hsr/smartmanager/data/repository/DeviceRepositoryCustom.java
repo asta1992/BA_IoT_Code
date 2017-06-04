@@ -8,6 +8,5 @@ public interface DeviceRepositoryCustom {
 	void removeDeviceByAddedIsFalse();
 
 	void removeDeviceByName(String name);
-	void removeDeviceFromAllGroups(String deviceId);
 
 }

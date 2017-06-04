@@ -31,6 +31,14 @@ public class GroupWebController {
 	@Autowired
 	private ConfigurationService configurationService;
 	
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public String showGroupDetails(Model model, @PathVariable("id") String id) {
+		DeviceGroup group = groupService.getGroup(id);
+		model.addAttribute("group", group);
+		return "groupFragment";
+	}
+
 	@RequestMapping(value = "/{id}/executeChildDevices/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
 	public String executeChildDevices(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
@@ -81,13 +89,6 @@ public class GroupWebController {
 		return "groupMembersFragment";
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String showGroupDetails(Model model, @PathVariable("id") String id) {
-		DeviceGroup group = groupService.getGroup(id);
-		model.addAttribute("group", group);
-		return "groupFragment";
-	}
-
 	@RequestMapping(value = "/writeCommandToChildsFragment", method = RequestMethod.GET)
 	public String writeCommandToChildsFragment(Model model) {
 		model.addAttribute("objectMap", lwMwMService.allWritableObjectIDs());

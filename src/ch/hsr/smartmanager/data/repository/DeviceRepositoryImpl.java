@@ -26,12 +26,5 @@ public class DeviceRepositoryImpl implements DeviceRepositoryCustom {
 		query.addCriteria(Criteria.where("name").is(name));
 		mongoTemplate.remove(query, Device.class);
 	}
-	
-	@Override
-	public void removeDeviceFromAllGroups(String deviceId) {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("children._id").is(deviceId));
-		mongoTemplate.remove(query, Device.class);
-	}
 
 }
