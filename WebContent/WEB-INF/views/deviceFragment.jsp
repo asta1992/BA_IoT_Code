@@ -6,42 +6,40 @@
 <div class="row page-heading">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div style="display: none;" id="componentId">${device.id}</div>
-		<h2>
-			${device.name} <span class="pull-right"><button type="button"
-					class="btn btn-danger heading-button"
-					onclick="deleteDevice('${device.id}', '${device.name}')">Delete
-					Device</button></span> <span class="pull-right"><button type="button"
-					class="btn btn-primary heading-button"
-					onclick="openDeviceMemberships('${device.id}')">Group
-					Memberships</button>
-				<button type="button" class="btn btn-primary heading-button"
-					onclick="readAll()">Read All</button></span>
-		</h2>
+		${device.name} <span class="pull-right"><button type="button"
+				class="btn btn-danger heading-button"
+				onclick="deleteDevice('${device.id}', '${device.name}')">Delete
+				Device</button></span> <span class="pull-right"><button type="button"
+				class="btn btn-primary heading-button"
+				onclick="openDeviceMemberships('${device.id}')">Group
+				Memberships</button>
+			<button type="button" class="btn btn-primary heading-button"
+				onclick="readAll()">Read All</button></span>
 	</div>
 </div>
 <div class=row>
 	<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
 		<table class="table table-hover configurations-table">
-				<tr>
-					<td><b>Device ID:</b></td>
-					<td>${device.id}</td>
-				</tr>
-				<tr>
-					<td><b>Registration ID:</b></td>
-					<td>${device.regId}</td>
-				</tr>
-				<tr>
-					<td><b>Endpoint:</b></td>
-					<td>${device.endpoint}</td>
-				</tr>
-				<tr>
-					<td><b>Last Read:</b></td>
-					<td>${device.lastUpdate}</td>
-				</tr>
-				<tr>
-					<td><b>Last Seen:</b></td>
-					<td>${device.lastRegistrationUpdate}</td>
-				</tr>
+			<tr>
+				<td><b>Device ID:</b></td>
+				<td>${device.id}</td>
+			</tr>
+			<tr>
+				<td><b>Registration ID:</b></td>
+				<td>${device.regId}</td>
+			</tr>
+			<tr>
+				<td><b>Endpoint:</b></td>
+				<td>${device.endpoint}</td>
+			</tr>
+			<tr>
+				<td><b>Last Read:</b></td>
+				<td>${device.lastUpdate}</td>
+			</tr>
+			<tr>
+				<td><b>Last Seen:</b></td>
+				<td>${device.lastRegistrationUpdate}</td>
+			</tr>
 		</table>
 	</div>
 	<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">

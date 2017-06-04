@@ -61,22 +61,25 @@
 					</button></span>
 			</div>
 		</div>
-		<div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<span class="pull-right"><select class="selectpicker"
-				id="groupSelector">
-					<option value="_unassigned" id="_unassigned">select a group</option>
-					<c:forEach var="groups" items="${groups}">
-						<option value="'${groups.name}'" id="${groups.id}">${groups.name}</option>
-					</c:forEach>
-			</select> <select class="selectpicker" id="configSelector">
-					<option value="none" id="none">select a configuration</option>
-					<c:forEach var="configurations" items="${configurations}">
-						<option value="'${configurations.name}'" id="${configurations.id}">${configurations.name}</option>
-					</c:forEach>
-			</select>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<span class="pull-right"><select class="selectpicker"
+					id="groupSelector">
+						<option value="_unassigned" id="_unassigned">select a
+							group</option>
+						<c:forEach var="groups" items="${groups}">
+							<option value="'${groups.name}'" id="${groups.id}">${groups.name}</option>
+						</c:forEach>
+				</select> <select class="selectpicker" id="configSelector">
+						<option value="none" id="none">select a configuration</option>
+						<c:forEach var="configurations" items="${configurations}">
+							<option value="'${configurations.name}'"
+								id="${configurations.id}">${configurations.name}</option>
+						</c:forEach>
+				</select>
 
-				<button class="btn btn-success btn-sm"
-					onclick="addDevice()">Add</button></span>
+					<button class="btn btn-success btn-sm" onclick="addDevice()">Add</button></span>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

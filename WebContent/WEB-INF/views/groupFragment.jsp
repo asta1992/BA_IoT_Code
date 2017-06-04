@@ -6,37 +6,45 @@
 <div class="row page-heading">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div style="display: none;" id="componentId">${group.id}</div>
-		
-			${group.name} <span class="pull-right"><button type="button"
-					class="btn btn-danger heading-button"
-					onclick="deleteGroup('${group.id}', '${group.name}')">Delete
-					Group</button></span> <span class="pull-right"></span> <span class="pull-right"></span>
-		
+
+		${group.name} <span class="pull-right"><button type="button"
+				class="btn btn-danger heading-button"
+				onclick="deleteGroup('${group.id}', '${group.name}')">Delete
+				Group</button></span> <span class="pull-right"></span> <span class="pull-right"></span>
+
 	</div>
 </div>
 <div class=row>
-	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-
-		<ul>
-			<li><button type="button" class="btn btn-sm btn-default"
-			onclick="openGroupMembers('${group.id}')">Group Members</button></li>
-			<li><button type="button" class="btn btn-sm btn-default"
-			onclick="openGroupMemberships('${group.id}')">Group
-			Memberships</button></li>
-			<li><button type="button" class="btn btn-sm btn-default"
-			onclick="addNewChildGroup('${group.id}')">Add New Child
-			Group</button></li>
-			<li><button type="button" class="btn btn-sm btn-default"
-			onclick="writeConfigToChildDevices('${group.id}', '${group.name}')">Write
-			Configuration</button></li>
-			<li><button type="button" class="btn btn-sm btn-default"
-			onclick="executeAllChildDevices('${group.id}')">Execute</button></li>
-			<li><button type="button" class="btn btn-sm btn-default"
-			onclick="writeAllChildDevices('${group.id}')">Write Command</button></li>
-		</ul>
-
+	<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<a href="#" onclick="openGroupMembers('${group.id}')">Group
+					Members</a>
+			</div>
+			<div class="panel-heading">
+				<a href="#" onclick="openGroupMemberships('${group.id}')">Group
+					Memberships</a>
+			</div>
+			<div class="panel-heading">
+				<a href="#" onclick="addNewChildGroup('${group.id}')">Add New
+					Child Group</a>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<a href="#"
+					onclick="writeConfigToChildDevices('${group.id}', '${group.name}')">Write
+					Configuration</a>
+			</div>
+			<div class="panel-heading">
+				<a href="#" onclick="executeAllChildDevices('${group.id}')">Execute</a>
+			</div>
+			<div class="panel-heading">
+				<a href="#" onclick="writeAllChildDevices('${group.id}')">Write</a>
+			</div>
+		</div>
 	</div>
-	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+	<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
 		<div class="panel panel-default dashboard">
 			<div class="panel-heading">Group Devices</div>
 			<div id="map" class="panel-body map-group"></div>

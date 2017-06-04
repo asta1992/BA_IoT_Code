@@ -10,7 +10,7 @@ body {
 .panel-heading .btn {
 	width: 110px !important;
 }
-.panel-body .btn {
+.btn-xs {
 	width: 80px !important;
 	margin: 3px !important;
 }
@@ -42,7 +42,7 @@ body {
     width: 150px;
 }
 
-.dashboard > .panel-heading {
+.panel-heading {
 	background-image: none !important;
     background-color: white !important;
     color: #337ab7 !important;
@@ -66,5 +66,15 @@ body {
 	margin-bottom: 20px;
 	 font-size: 180%;
 	 font-weight: bold;
+}
+
+.modal-footer .btn {
+	font-weight: bold !important;
+    width: 100px;
+}
+
+#treeDiv {
+	height: 80vh !important;
+	overflow-y: auto;
 }
 
