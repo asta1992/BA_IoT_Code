@@ -73,7 +73,7 @@
 			</div>
 		</div>
 
-		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+		<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
 			<div class="row page-heading">
 				Navigation <span class="pull-right">
 					<button type="button" class="btn btn-default btn-sm"
@@ -85,7 +85,7 @@
 			</div>
 
 		</div>
-		<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="main-content">
+		<div class="col-lg-9 col-md-8 col-sm-8 col-xs-12" id="main-content">
 		</div>
 	</div>
 </body>
