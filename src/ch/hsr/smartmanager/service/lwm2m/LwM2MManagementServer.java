@@ -36,7 +36,7 @@ public class LwM2MManagementServer {
 
 	public LwM2MManagementServer() {
 
-		this.address = "152.96.233.30";
+		this.address = "127.0.0.1";
 		this.port = 5683;
 	}
 

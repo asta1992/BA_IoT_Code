@@ -6,13 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.hsr.smartmanager.data.ManagementUser;
 import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.ManagementUserService;
 
 @Controller
-public class LoginWebController {
+@RequestMapping("/users")
+public class UserWebController {
 	
 	@Autowired
 	DeviceService deviceService;
@@ -20,9 +22,9 @@ public class LoginWebController {
 	@Autowired
 	ManagementUserService managementUserService;
 	
-	@RequestMapping("/users")
+	@RequestMapping(method = RequestMethod.GET)
 	public String showUsers(Model model, Principal principal) {
-		if(principal == null) return doLogout();
+		if(principal == null) return "redirect:/logout";
 		ManagementUser user = managementUserService.findUserByName(principal.getName());
 		model.addAttribute("username", user.getUsername());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
@@ -31,29 +33,19 @@ public class LoginWebController {
 		return "userSettings";
 	}
 	
-	@RequestMapping("/login")
-	public String showLogin() {
-		return "login";
-	}
-	
-	@RequestMapping("/logout")
-	public String doLogout() {
-		return "redirect:login?logout=true";
-	}
-	
-	@RequestMapping("/users/userDeleteFragment")
+	@RequestMapping("/userDeleteFragment")
 	public String userDeleteFragment(Model model) {
 		model.addAttribute("userList", managementUserService.findAll());
 		return "userDeleteFragment";
 	}
 	
-	@RequestMapping(value="/users/userAddFragment")
+	@RequestMapping(value="/userAddFragment")
 	public String userAddFragment(Model model) {
 		return "userAddFragment";
 	}
 	
 	
-	@RequestMapping("/users/userEditFragment")
+	@RequestMapping("/userEditFragment")
 	public String userEditFragment(Model model) {
 		return "userEditFragment";
 	}

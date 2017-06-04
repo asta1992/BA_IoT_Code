@@ -14,18 +14,19 @@ import org.springframework.web.util.HtmlUtils;
 import ch.hsr.smartmanager.service.ManagementUserService;
 
 @RestController
-public class LoginRestController {
+@RequestMapping("/users")
+public class UserRestController {
 
 	@Autowired
 	private ManagementUserService managementUserService;
 
-	@RequestMapping(value = "/users/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String deleteUser(Model model, @RequestParam("username") String username) {
 		boolean result = managementUserService.deleteUser(username);
 		return Boolean.toString(result);
 	}
 
-	@RequestMapping(value = "users/{id}/edit", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}/edit", method = RequestMethod.POST)
 	public JSONObject editUser(Model model, @PathVariable("id") String id, @RequestParam("oldPassword") String oldPassword,
 			@RequestParam("firstPassword") String firstPassword,
 			@RequestParam("secondPassword") String secondPassword) {
@@ -39,7 +40,7 @@ public class LoginRestController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/users/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public JSONObject addUser(Model model, @RequestParam("username") String username,
 			@RequestParam("firstPassword") String firstPassword,
 			@RequestParam("secondPassword") String secondPassword) {
@@ -52,12 +53,10 @@ public class LoginRestController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/users/checkUser", method = RequestMethod.POST)
+	@RequestMapping(value = "/checkUser", method = RequestMethod.POST)
 	public String checkUser(Model model, @RequestParam("username") String username) {
 		boolean result = managementUserService.checkUser(username);
 		return Boolean.toString(result);
 	}
-	
-
 	
 }

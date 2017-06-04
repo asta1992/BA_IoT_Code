@@ -20,6 +20,8 @@ import org.eclipse.leshan.core.model.ResourceModel;
 import org.eclipse.leshan.core.node.LwM2mSingleResource;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.server.registration.Registration;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
@@ -430,5 +432,32 @@ public class DeviceService {
 		}
 		
 	}
+	
+	public List<JSONObject> allChildren(DeviceComponent deviceComponent) throws JSONException {
+		List<JSONObject> jsonObjects = new ArrayList<>();
+		for (DeviceComponent item : deviceComponent.getChildren()) {
+			JSONObject jsonObj = new JSONObject();
+			if (item instanceof Device) {
+				jsonObj.put("id", "devices/" + item.getId());
+				jsonObj.put("text", item.getName());
+				jsonObjects.add(jsonObj);
+			} else {
+				item = getGroup(item.getId());
+
+				if (item.getChildren().isEmpty()) {
+					jsonObj.put("id", "groups/" + item.getId());
+					jsonObj.put("text", item.getName());
+					jsonObjects.add(jsonObj);
+				} else {
+					jsonObj.put("id", "groups/" + item.getId());
+					jsonObj.put("text", item.getName());
+					jsonObj.put("children", allChildren(item));
+					jsonObjects.add(jsonObj);
+				}
+			}
+		}
+		return jsonObjects;
+	}
+
 
 }
