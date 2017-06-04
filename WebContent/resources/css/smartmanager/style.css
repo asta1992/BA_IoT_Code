@@ -82,3 +82,7 @@ body {
 	height: 100% !important;
 	overflow-y: auto;
 }
+
+.valueField .btn-xs {
+	width: 48px !important;
+}
