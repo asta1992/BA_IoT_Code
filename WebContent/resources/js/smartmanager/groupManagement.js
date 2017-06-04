@@ -45,14 +45,14 @@ function addNewChildGroup(parentId) {
 						value : message
 					},
 					url : ctx + "/groups/" + parentId + "/add",
-					success : function(){
+					success : function(data){
 						if(data === 'false') {
 							bootbox.alert({
 								size : "small",
 								title : "Error",
 								message : "Please choose another Groupname. <br> Max length: 20 <br> Chars: a-z, A-z, 0-9 and _.-",
 								callback : function() {
-									addNewRootGroup()
+									addNewChildGroup()
 								}
 							});
 						}
