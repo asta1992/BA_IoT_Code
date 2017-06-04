@@ -27,7 +27,7 @@ public class DeviceWebController {
 	public String showDevices(Model model, Principal principal) {
 		model.addAttribute("username", principal.getName());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
-		return "devices";
+		return "devices/devices";
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -36,18 +36,15 @@ public class DeviceWebController {
 		
 		if (device == null) {
 			deviceService.removeNullDevice(id);
-			System.out.println("null");
-			return "deviceError";
+			return "devices/deviceError";
 		} else {
-			System.out.println("not null");
 			model.addAttribute("objectLinksDiv", device.getObjectLinksDiv().toArray());
 			model.addAttribute("objectLinks", device.getObjectLinks().toArray());
 			model.addAttribute("modelDescription", deviceService.getObjectModelList(id));
 			model.addAttribute("registration", deviceService.getRegistration(id));
 			model.addAttribute("device", device);
-			return "deviceFragment";
+			return "devices/deviceFragment";
 		}
-
 	}
 
 	@RequestMapping(value = "/{id}/memberships", method = RequestMethod.GET)
@@ -61,7 +58,7 @@ public class DeviceWebController {
 		model.addAttribute("allGroups", groups);
 		model.addAttribute("deviceGroups", deviceGroups);
 
-		return "groupMembershipsFragment";
+		return "devices/groupMembershipsFragment";
 	}
 
 }

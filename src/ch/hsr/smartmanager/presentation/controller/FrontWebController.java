@@ -29,7 +29,7 @@ public class FrontWebController {
 		model.addAttribute("unreachableDevices", deviceService.getUnreachableDevices());
 		model.addAttribute("registeredUsers", userService.findAll().size());
 		model.addAttribute("uptime", infrastructureService.getServerUptime());
-		return "index";
+		return "home/index";
 	}
     
 	@RequestMapping("/login")

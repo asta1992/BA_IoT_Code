@@ -30,24 +30,24 @@ public class UserWebController {
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		model.addAttribute("user", user);
 		model.addAttribute("managementUsers", userService.findAll());
-		return "userSettings";
+		return "users/userSettings";
 	}
 	
 	@RequestMapping("/userDeleteFragment")
 	public String userDeleteFragment(Model model) {
 		model.addAttribute("userList", userService.findAll());
-		return "userDeleteFragment";
+		return "users/userDeleteFragment";
 	}
 	
 	@RequestMapping(value="/userAddFragment")
 	public String userAddFragment(Model model) {
-		return "userAddFragment";
+		return "users/userAddFragment";
 	}
 	
 	
 	@RequestMapping("/userEditFragment")
 	public String userEditFragment(Model model) {
-		return "userEditFragment";
+		return "users/userEditFragment";
 	}
 
 }

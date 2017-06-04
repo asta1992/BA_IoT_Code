@@ -17,17 +17,14 @@
 <script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap.min.js"></script>
 <script src="..${pageContext.request.contextPath}/resources/js/lib/bootbox.min.js"></script>
 <script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap-select.min.js" type="text/javascript"></script>
-<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/deviceCommunication.js" type="text/javascript"></script>
-<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/groupCommunication.js" type="text/javascript"></script>
 <script src="..${pageContext.request.contextPath}/resources/js/smartmanager/configurations.js" type="text/javascript"></script>
-<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/groupManagement.js" type="text/javascript"></script>
-<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/deleteObject.js" type="text/javascript"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/writeableResources.js" type="text/javascript"></script>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<jsp:include page="../views/menuFragment.jsp" />
+				<jsp:include page="../../views/menuFragment.jsp" />
 			</div>
 		</div>
 		<div class="row page-heading">

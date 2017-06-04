@@ -47,7 +47,6 @@ function addConfigurationItem() {
 }
 
 function removeConfigurationItem(rowNumber) {
-	console.log(rowNumber)
 	$('#' + rowNumber + 'Row').remove();
 }
 

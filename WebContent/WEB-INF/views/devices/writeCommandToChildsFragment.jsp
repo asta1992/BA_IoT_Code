@@ -3,14 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
+<script
+	src="..${pageContext.request.contextPath}/resources/js/smartmanager/writeableResources.js"
+	type="text/javascript"></script>
 <form class="form-horizontal" id="groupWriteForm">
 	<div class="row form-group">
 		<div class="col-lg-3 col-md-3 col-sm-3">
 			<label class="control-label">Object Link</label>
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-3">
-			<select class="selectpicker" id="objectDropdown" onchange="getExecuteableResources()">
+			<select class="selectpicker" id="objectDropdown" onchange="getWriteableResources()">
             	<option value="" disabled selected>Select your option</option>
             	<c:forEach var="objectMap" items="${objectMap}">
             		<option value="'${objectMap.key}'">${objectMap.key} (${objectMap.value})</option>
@@ -31,6 +33,14 @@
 			<label class="control-label"></label>
 		</div>
 		<div class="col-lg-9 col-md-9" id="completeObjectId"></div>
+	</div>
+	<div class="row form-group">
+		<div class="col-lg-3 col-md-3">
+			<label for="value" class="control-label">Value</label>
+		</div>
+		<div class="col-lg-9 col-md-9">
+			<input type="text" class="form-control" id="writeValue">
+		</div>
 	</div>
 </form>
 <style>

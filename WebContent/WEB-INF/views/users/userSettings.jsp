@@ -18,14 +18,14 @@
 <script src="..${pageContext.request.contextPath}/resources/js/lib/bootbox.min.js"></script>
 <script src="..${pageContext.request.contextPath}/resources/js/lib/run_prettify.min.js" type="text/javascript"></script>
 <script src="..${pageContext.request.contextPath}/resources/js/lib/bootstrap-select.min.js" type="text/javascript"></script>
-<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/userManagement.js" type="text/javascript"></script>
+<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/users.js" type="text/javascript"></script>
 
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0 0 0 0;">
-				<jsp:include page="../views/menuFragment.jsp" />
+				<jsp:include page="../../views/menuFragment.jsp" />
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class=row>

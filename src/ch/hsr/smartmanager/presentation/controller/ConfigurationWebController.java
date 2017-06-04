@@ -30,20 +30,20 @@ public class ConfigurationWebController {
 		model.addAttribute("username", principal.getName());
 		model.addAttribute("configurations", configurationService.getAllConfigurations());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
-		return "configurations";
+		return "configurations/configurations";
 	}
 	
 	@RequestMapping(value = "/createConfigurationFragment", method = RequestMethod.GET)
 	public String showConfigurationFragment(Model model) {
 		model.addAttribute("objectMap", lwMwMService.allWritableObjectIDs());
-		return "createConfigurationFragment";
+		return "configurations/createConfigurationFragment";
 	}
 
 	@RequestMapping(value = "/{id}/editConfigurationFragment", method = RequestMethod.GET)
 	public String editConfigurationFragment(Model model, @PathVariable("id") String id) {
 		model.addAttribute("objectMap", lwMwMService.allWritableObjectIDs());
 		model.addAttribute("configuration", configurationService.findOne(id));
-		return "editConfigurationFragment";
+		return "configurations/editConfigurationFragment";
 	}
 
 
