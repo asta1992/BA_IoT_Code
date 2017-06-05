@@ -18,9 +18,9 @@ function createConfiguration() {
 						saveConfiguration();
 					}
 				}
-			})
+			});
 		}
-	})
+	});
 }
 
 function addConfigurationItem() {
@@ -127,7 +127,7 @@ function editConfiguration(configurationId) {
 						saveConfiguration();
 					}
 				}
-			})
+			});
 		}
-	})
+	});
 }

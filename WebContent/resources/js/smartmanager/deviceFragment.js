@@ -39,15 +39,15 @@ function cutInstanceId(url) {
 }
 
 function readMultiple(url) {
-	var url = cutInstanceId(url)
+	url = cutInstanceId(url);
 	var objectLink = "";
 	$.ajax({
 		dataType : "json",
 		url : url,
 		success : function(data) {
 			if (data.code == "CONTENT") {
-				for(i in data.content.instances) {
-					for (j in data.content.instances[i].resources) {
+				for(var i in data.content.instances) {
+					for (var j in data.content.instances[i].resources) {
 						objectLink = data.content.id + i + data.content.instances[i].resources[j].id;
 						$("#readResponse" + objectLink).text(data.content.instances[i].resources[j].value);
 					}
@@ -67,7 +67,7 @@ function readMultiple(url) {
 }
 
 function writeData(url, objectLink, type) {
-	readUrl = url.replace('write', 'read');
+	var readUrl = url.replace('write', 'read');
 	$.ajax({
 		dataType : "json",
 		url : readUrl,
@@ -225,5 +225,5 @@ function deleteDevice(id, name) {
 				});
 			}
 		}
-	})
+	});
 }
