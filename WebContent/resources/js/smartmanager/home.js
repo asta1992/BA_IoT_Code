@@ -16,7 +16,7 @@ function deleteAllUnreachableDevice() {
 				});
 			}
 		}
-	})
+	});
 }
 
 function deleteUnreachableDevice(id, name) {
@@ -37,5 +37,5 @@ function deleteUnreachableDevice(id, name) {
 				});
 			}
 		}
-	})
+	});
 }

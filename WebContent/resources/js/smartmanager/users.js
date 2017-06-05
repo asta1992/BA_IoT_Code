@@ -22,7 +22,7 @@ function showForm() {
 							} else if (data.map.passwordLength) {
 								createUserAlert("Password Length Error: Min: 8, Max: 50");
 							} else if (data.map.matchError) {
-								createUserAlert("Password doesn't match!")
+								createUserAlert("Password doesn't match!");
 							} else {
 								bootbox.alert({
 									size : "small",
@@ -31,7 +31,7 @@ function showForm() {
 									callback : function() {
 										parent.location.reload();
 									}
-								})
+								});
 							}
 						});
 					}
@@ -64,13 +64,13 @@ function editForm(id) {
 							} else if (data.map.passwordLength) {
 								createEditAlert(id, "The password is too short, The minimum length is 8");
 							} else if (data.map.matchError) {
-								createEditAlert(id, "Password doesn't match!")
+								createEditAlert(id, "Password doesn't match!");
 							} else {
 								bootbox.alert({
 									size : "small",
 									title : "Success",
 									message : "Successfully changed password"
-								})
+								});
 							}
 						});
 					}
@@ -90,7 +90,7 @@ function createUserAlert(message) {
 		title : "Error",
 		message : message,
 		callback : function() {
-			showForm()
+			showForm();
 		}
 	});
 }
@@ -101,7 +101,7 @@ function createEditAlert(id, message) {
 		title : "Error",
 		message : message,
 		callback : function() {
-			editForm(id)
+			editForm(id);
 		}
 	});
 }
@@ -172,8 +172,7 @@ function deleteUser() {
 					}
 
 				}
-			})
-
+			});
 		}
-	})
+	});
 }

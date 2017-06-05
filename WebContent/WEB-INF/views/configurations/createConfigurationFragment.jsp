@@ -3,7 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<script src="..${pageContext.request.contextPath}/resources/js/smartmanager/writeableResources.js" type="text/javascript"></script>
+<script
+	src="..${pageContext.request.contextPath}/resources/js/smartmanager/writeableResources.js"
+	type="text/javascript"></script>
 <div class="row form-group">
 	<div class="col-lg-3 col-md-3">
 		<label for="value" class="control-label">Name</label>
@@ -35,8 +37,8 @@
 		</select>
 	</div>
 	<div class="col-lg-3 col-md-3 col-sm-3">
-		<input type="number" id="instanceIdField" class="form-control" value="0"
-			disabled onkeyup="updateCompleteObjectId()">
+		<input type="number" id="instanceIdField" class="form-control"
+			value="0" disabled onkeyup="updateCompleteObjectId()">
 	</div>
 	<div class="col-lg-3 col-md-3 col-sm-3">
 		<select class="selectpicker" id="resourceDropdown"
@@ -68,17 +70,18 @@
 		</span>
 	</div>
 </div>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
-	id="configurationItemsDiv">
-	<h4>Configuration Items</h4>
-	<table class="table table-hover" id="configurationItems">
-		<tr id="0Row">
-			<th width="25%">Object Link</th>
-			<th width="75%">Value</th>
-		</tr>
-	</table>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+		id="configurationItemsDiv">
+		<h4>Configuration Items</h4>
+		<table class="table table-hover" id="configurationItems">
+			<tr id="0Row">
+				<th width="25%">Object Link</th>
+				<th width="75%">Value</th>
+			</tr>
+		</table>
+	</div>
 </div>
-
 
 
 
@@ -106,4 +109,6 @@
 		size : 10
 	});
 </script>
-<script>var ctx = "${pageContext.request.contextPath}"</script>
+<script>
+	var ctx = "${pageContext.request.contextPath}"
+</script>

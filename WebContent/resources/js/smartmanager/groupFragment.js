@@ -16,7 +16,7 @@ function addNewChildGroup(parentId) {
 								title : "Error",
 								message : "Please choose another Groupname. <br> Max length: 20 <br> Chars: a-z, A-z, 0-9 and _.-",
 								callback : function() {
-									addNewChildGroup()
+									addNewChildGroup();
 								}
 							});
 						}
@@ -102,13 +102,13 @@ function openGroupMembers(id){
 						});
 					}
 				}
-			})
+			});
 			
 		},
 		error: function(xhr, ajaxOptions, thrownError){
 			alert(thrownError);
 		}
-	})
+	});
 }
 
 function executeAllChildDevices(groupId) {
@@ -125,7 +125,7 @@ function executeAllChildDevices(groupId) {
 					if (ok) {
 						var objectId = parseInt($('#objectDropdown').find(":selected").text());
 						var objectInstanceId = $('#instanceIdField').val();
-						var resourceId = parseInt($('#resourceDropdown').find(":selected").text())
+						var resourceId = parseInt($('#resourceDropdown').find(":selected").text());
 						
 						getExecuteResult(groupId, objectId, objectInstanceId, resourceId, function(data) {
 							bootbox.alert({
@@ -135,12 +135,12 @@ function executeAllChildDevices(groupId) {
 						});
 					}
 				}
-			})
+			});
 		},
 		error: function(xhr, ajaxOptions, thrownError){
 			alert(thrownError);
 		}
-	})
+	});
 }
 
 function writeAllChildDevices(groupId) {
@@ -168,12 +168,12 @@ function writeAllChildDevices(groupId) {
 						});
 					}
 				}
-			})
+			});
 		},
 		error: function(xhr, ajaxOptions, thrownError){
 			alert(thrownError);
 		}
-	})
+	});
 }
 
 function writeConfigToChildDevices(groupId, groupName) {
@@ -214,7 +214,7 @@ function getExecuteResult(groupId, objectId, instanceId, resourceId, callback) {
 		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);
 		}
-	})
+	});
 }
 
 function getWriteResult(groupId, objectId, instanceId, resourceId, value, callback) {
@@ -231,7 +231,7 @@ function getWriteResult(groupId, objectId, instanceId, resourceId, value, callba
 		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);
 		}
-	})
+	});
 }
 
 function getConfigResult(groupId, callback) {
@@ -248,7 +248,7 @@ function getConfigResult(groupId, callback) {
 		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);
 		}
-	})
+	});
 }
 
 function getExecuteableResources() {
@@ -266,7 +266,7 @@ function getExecuteableResources() {
 			}
 			updateCompleteObjectId();
 		}
-	})
+	});
 
 	var resourceDropdown = $('#resourceDropdown');
 	$.ajax({
@@ -279,14 +279,14 @@ function getExecuteableResources() {
 						+ entry.resourceModel.id + '">'
 						+ entry.resourceModel.id + " " + "("
 						+ entry.resourceModel.name + ")" + '</option>');
-			})
+			});
 			resourceDropdown.selectpicker('refresh');
 			updateCompleteObjectId();
 		},
 		error: function(xhr, ajaxOptions, thrownError){
 			alert(thrownError);
 		}
-	})
+	});
 }
 
 function deleteGroup(id, name) {
@@ -307,5 +307,5 @@ function deleteGroup(id, name) {
 				});
 			}
 		}
-	})
+	});
 }

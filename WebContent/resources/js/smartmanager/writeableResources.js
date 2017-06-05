@@ -13,7 +13,7 @@ function getWriteableResources() {
 			}
 			updateCompleteObjectId();
 		}
-	})
+	});
 
 	var resourceDropdown = $('#resourceDropdown');
 	$.ajax({
@@ -26,18 +26,18 @@ function getWriteableResources() {
 						+ entry.resourceModel.id + '">'
 						+ entry.resourceModel.id + " " + "("
 						+ entry.resourceModel.name + ")" + '</option>');
-			})
+			});
 			resourceDropdown.selectpicker('refresh');
 			updateCompleteObjectId();
 		}
-	})
+	});
 }
 
 function updateCompleteObjectId() {
 	var objectId = parseInt($('#objectDropdown').find(":selected").text());
 	var instanceId = $('#instanceIdField').val();
-	if(instanceId == ''){
-		var instanceId = 0;
+	if(instanceId === ''){
+		instanceId = 0;
 	}
 	resourceId = parseInt($('#resourceDropdown').find(":selected").text());
 	

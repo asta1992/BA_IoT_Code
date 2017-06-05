@@ -25,10 +25,10 @@ function getLocations(map) {
 		mapType = m[1];
 	}
 	var url = "";
-	if (componentId == null) {
+	if (componentId === null) {
 		url = ctx + "/devices/locations/" + mapType;
 	} else {
-		url = ctx + "/devices/locations/" + mapType + "/" + componentId;
+		url = ctx + "/devices/"+ componentId + "/locations/" + mapType;
 	}
 	$.ajax({
 		type : "GET",
@@ -48,7 +48,7 @@ function insertLocations(map, locations) {
 
 	var marker, i;
 
-	if (locations.length != 0) {
+	if (locations.length !== 0) {
 		var newCenter = new google.maps.LatLng(locations[0][1], locations[0][2]);
 		map.setCenter(newCenter);
 
@@ -64,7 +64,7 @@ function insertLocations(map, locations) {
 						return function() {
 							infowindow.setContent(locations[i][0]);
 							infowindow.open(map, marker);
-						}
+						};
 					})(marker, i));
 		}
 	}
