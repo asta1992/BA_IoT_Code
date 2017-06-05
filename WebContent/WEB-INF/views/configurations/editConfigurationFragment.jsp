@@ -69,28 +69,30 @@
 		</span>
 	</div>
 </div>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
-	id="configurationItemsDiv">
-	<h4>Configuration Items</h4>
-	<table class="table table-hover" id="configurationItems">
-		<tr>
-			<th width="25%">Object Link</th>
-			<th width="75%">Value</th>
-		</tr>
-		<c:forEach var="configurationItem"
-			items="${configuration.configurationItems}" varStatus="loop">
-			<tr id="${loop.index}Row">
-				<td class="objectIdField">${configurationItem.path}</td>
-				<td class="valueField">
-					${configurationItem.value}
-					<span class="pull-right"><button class="btn btn-danger btn-xs" onclick="removeConfigurationItem(${loop.index})">
-					<span class="glyphicon glyphicon-minus"></span></button></span>
-				</td>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+		id="configurationItemsDiv">
+		<h4>Configuration Items</h4>
+		<table class="table table-hover" id="configurationItems">
+			<tr>
+				<th width="25%">Object Link</th>
+				<th width="75%">Value</th>
 			</tr>
-		</c:forEach>
-	</table>
+			<c:forEach var="configurationItem"
+				items="${configuration.configurationItems}" varStatus="loop">
+				<tr id="${loop.index}Row">
+					<td class="objectIdField">${configurationItem.path}</td>
+					<td class="valueField">${configurationItem.value} <span
+						class="pull-right"><button class="btn btn-danger btn-xs"
+								onclick="removeConfigurationItem(${loop.index})">
+								<span class="glyphicon glyphicon-minus"></span>
+							</button></span>
+					</td>
+				</tr>
+			</c:forEach>
+		</table>
+	</div>
 </div>
-
 <style>
 .bootbox-confirm .modal-body {
 	height: 470px;
