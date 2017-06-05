@@ -16,12 +16,12 @@ public class ConfigurationRestController {
 	@Autowired
 	ConfigurationService configService;
 	
-	@RequestMapping(value = "/add", method=RequestMethod.GET)
+	@RequestMapping(value = "/add", method=RequestMethod.POST)
 	public void addConfiguration(@RequestParam("value") JSONArray value) {
 		configService.saveConfiguration(value);
 	}
 
-	@RequestMapping(value = "/delete", method=RequestMethod.GET)
+	@RequestMapping(value = "/delete", method=RequestMethod.POST)
 	public void deleteConfiguration(@RequestParam("value") String value) {
 		configService.deleteConfiguration(value);
 	}

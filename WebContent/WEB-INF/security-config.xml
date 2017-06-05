@@ -17,30 +17,30 @@
 	</sec:authentication-manager>
 
 	<sec:http use-expressions="true">
-		<sec:intercept-url pattern="/resources/**" access="permitAll" />
+		<sec:intercept-url pattern="/resources/**" access="permitAll" requires-channel="https"/>
 
-		<sec:intercept-url pattern="/login" access="permitAll" />
-		<sec:intercept-url pattern="/logout" access="permitAll" />
+		<sec:intercept-url pattern="/login" access="permitAll" requires-channel="https"/>
+		<sec:intercept-url pattern="/logout" access="permitAll" requires-channel="https"/>
 
-		<sec:intercept-url pattern="/" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/*" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/" access="isAuthenticated()" requires-channel="https" />
+		<sec:intercept-url pattern="/*" access="isAuthenticated()" requires-channel="https" />
 
-		<sec:intercept-url pattern="/devices" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/devices/**" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/devices" access="isAuthenticated()" requires-channel="https"/>
+		<sec:intercept-url pattern="/devices/**" access="isAuthenticated()" requires-channel="https"/>
 
-		<sec:intercept-url pattern="/groups" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/groups/**" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/groups" access="isAuthenticated()" requires-channel="https"/>
+		<sec:intercept-url pattern="/groups/**" access="isAuthenticated()" requires-channel="https"/>
 
-		<sec:intercept-url pattern="/users" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/users/**" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/users" access="isAuthenticated()" requires-channel="https"/>
+		<sec:intercept-url pattern="/users/**" access="isAuthenticated()" requires-channel="https"/>
 
-		<sec:intercept-url pattern="/configurations" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/configurations/**" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/configurations" access="isAuthenticated()" requires-channel="https"/>
+		<sec:intercept-url pattern="/configurations/**" access="isAuthenticated()" requires-channel="https" />
 
-		<sec:intercept-url pattern="/discovery" access="isAuthenticated()" />
-		<sec:intercept-url pattern="/discovery/*" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/discovery" access="isAuthenticated()" requires-channel="https"/>
+		<sec:intercept-url pattern="/discovery/*" access="isAuthenticated()" requires-channel="https"/>
 
-		<sec:intercept-url pattern="/**" access="denyAll" />
+		<sec:intercept-url pattern="/**" access="denyAll" requires-channel="https"/>
 		
 		<sec:form-login login-page="/login" authentication-failure-url="/login?error=true" />
 		<sec:logout logout-success-url="/logout" />

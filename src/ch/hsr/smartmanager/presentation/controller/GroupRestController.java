@@ -41,7 +41,7 @@ public class GroupRestController {
 		return groupService.getAllGroupsAsJSON();
 	}
 
-	@RequestMapping(value = "/{id}/add", method=RequestMethod.GET)
+	@RequestMapping(value = "/{id}/add", method=RequestMethod.POST)
 	public String addNewChildGroup(@PathVariable("id") String id, @RequestParam("value") String groupName) {
 		return Boolean.toString(groupService.addNewChildGroup(id, groupName));
 	}

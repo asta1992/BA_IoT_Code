@@ -34,7 +34,7 @@ public class DiscoveryWebController {
 	}
 
 	@RequestMapping(value = "/clean", method=RequestMethod.GET)
-	public String cleanDiscovery(Model model) {
+	public String cleanDiscovery() {
 		deviceService.removeDiscoveredDevices();
 		return "redirect:/discovery";
 
