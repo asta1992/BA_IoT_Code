@@ -1,6 +1,5 @@
 package ch.hsr.smartmanager.presentation.controller;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,32 +29,24 @@ public class UserRestController {
 			@RequestParam("firstPassword") String firstPassword,
 			@RequestParam("secondPassword") String secondPassword) {
 
-			JSONObject result = new JSONObject();
-			try {
-				result = userService.updateUser(id, oldPassword, firstPassword, secondPassword);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+		JSONObject result = new JSONObject();
+		result = userService.updateUser(id, oldPassword, firstPassword, secondPassword);
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public JSONObject addUser(@RequestParam("username") String username,
 			@RequestParam("firstPassword") String firstPassword,
 			@RequestParam("secondPassword") String secondPassword) {
 		JSONObject result = new JSONObject();
-		try {
-			result = userService.addUser(HtmlUtils.htmlEscape(username.toLowerCase()), firstPassword, secondPassword);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		result = userService.addUser(HtmlUtils.htmlEscape(username.toLowerCase()), firstPassword, secondPassword);
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/checkUser", method = RequestMethod.POST)
 	public String checkUser(@RequestParam("username") String username) {
 		boolean result = userService.checkUser(username);
 		return Boolean.toString(result);
 	}
-	
+
 }

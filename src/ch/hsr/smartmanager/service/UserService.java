@@ -58,23 +58,26 @@ public class UserService implements UserDetailsService {
 			return false;
 	}
 
-	public JSONObject updateUser(String id, String oldPassword, String firstPassword, String secondPassword)
-			throws JSONException {
+	public JSONObject updateUser(String id, String oldPassword, String firstPassword, String secondPassword) {
 		JSONObject result = new JSONObject();
-
-		if (!checkOldPassword(id, oldPassword)) {
-			result.put("oldPasswordError", true);
-		} else if (firstPassword.length() < 8) {
-			result.put("passwordLength", true);
-		} else if (!firstPassword.equals(secondPassword)) {
-			result.put("matchError", true);
-		} else {
-			ManagementUser user = userRepository.findOne(id);
-			user.setPassword(passwordEncoder.encode(firstPassword));
-			userRepository.save(user);
-			result.put("Changed", true);
-			return result;
+		try {
+			if (!checkOldPassword(id, oldPassword)) {
+				result.put("oldPasswordError", true);
+			} else if (firstPassword.length() < 8) {
+				result.put("passwordLength", true);
+			} else if (!firstPassword.equals(secondPassword)) {
+				result.put("matchError", true);
+			} else {
+				ManagementUser user = userRepository.findOne(id);
+				user.setPassword(passwordEncoder.encode(firstPassword));
+				userRepository.save(user);
+				result.put("Changed", true);
+				return result;
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
+
 		return result;
 	}
 
@@ -88,25 +91,29 @@ public class UserService implements UserDetailsService {
 		return true;
 	}
 
-	public JSONObject addUser(String username, String firstPassword, String secondPassword) throws JSONException {
+	public JSONObject addUser(String username, String firstPassword, String secondPassword) {
+		
 		JSONObject result = new JSONObject();
-		if (validateUsername(username)) {
-			result.put("invalidCharError", true);
-		} 
-		else if (userRepository.existsByUsername(username)) {
-			result.put("existsError", true);
-		} 
-		else if (!firstPassword.equals(secondPassword)) {
-			result.put("matchError", true);
-		} 
-		else if (firstPassword.length() < 8 || firstPassword.length() > 50) {
-			result.put("passwordLength", true);
-		} else if (username.length() < 4 || username.length() > 20) {
-			result.put("usernameLength", true);
-		} else {
-			ManagementUser user = new ManagementUser(username, passwordEncoder.encode(firstPassword));
-			userRepository.save(user);
-			result.put("username", username);
+		
+		try {
+			if (validateUsername(username)) {
+				result.put("invalidCharError", true);
+			} else if (userRepository.existsByUsername(username)) {
+				result.put("existsError", true);
+			} else if (!firstPassword.equals(secondPassword)) {
+				result.put("matchError", true);
+			} else if (firstPassword.length() < 8 || firstPassword.length() > 50) {
+				result.put("passwordLength", true);
+			} else if (username.length() < 4 || username.length() > 20) {
+				result.put("usernameLength", true);
+			} else {
+				ManagementUser user = new ManagementUser(username, passwordEncoder.encode(firstPassword));
+				userRepository.save(user);
+				result.put("username", username);
+			}
+		}
+		catch (JSONException e) {
+			e.printStackTrace();
 		}
 		return result;
 	}
