@@ -40,7 +40,7 @@ public class GroupService {
 		groupRepo.save(group);
 	}
 	
-	public void addGroupToGroup(String parent, String child) {
+	private void addGroupToGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
 
@@ -82,11 +82,11 @@ public class GroupService {
 		return groupRepo.findAll();
 	}
 
-	public boolean isRoot(String id) {
+	private boolean isRoot(String id) {
 		return groupRepo.existsByChildrenId(new ObjectId(id));
 	}
 
-	public DeviceGroup insertGroup(String groupName) {
+	private DeviceGroup insertGroup(String groupName) {
 		if(validateGroupname(groupName)) {
 			System.out.println("Hier");
 			return null;
@@ -136,7 +136,7 @@ public class GroupService {
 		deviceRepo.save(device);
 	}
 
-	public void removeGroupFromGroup(String parent, String child) {
+	private void removeGroupFromGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
 		DeviceGroup grpChild = groupRepo.findOne(child);
 		if (grpParent == null || grpChild == null)

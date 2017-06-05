@@ -216,14 +216,14 @@ public class LwM2MHandler {
 	}
 
 	
-	public List<Map<String, ResponseCode>> executeToDevice(String deviceId, int objectId, int objectInstanceId, int resourceId) {
+	private List<Map<String, ResponseCode>> executeToDevice(String deviceId, int objectId, int objectInstanceId, int resourceId) {
 		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
 			responseList.add(execute(deviceId, objectId, objectInstanceId, resourceId));
 		return responseList;
 	}
 	
 	
-	public List<Map<String, ResponseCode>> writeConfigurationToDevice(String deviceId, int objectId, int objectInstanceId, int resourceId, String value) {
+	private List<Map<String, ResponseCode>> writeConfigurationToDevice(String deviceId, int objectId, int objectInstanceId, int resourceId, String value) {
 		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
 			responseList.add(write(deviceId, objectId, objectInstanceId, resourceId, value));
 		return responseList;
