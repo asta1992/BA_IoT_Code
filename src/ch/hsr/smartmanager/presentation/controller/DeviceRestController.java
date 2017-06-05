@@ -24,16 +24,16 @@ public class DeviceRestController {
 
 
 	@Autowired
-	LwM2MHandler lwM2MHandler;
+	private LwM2MHandler lwM2MHandler;
 	
 	@Autowired
-	DeviceService deviceService;
+	private DeviceService deviceService;
 	
 	@Autowired
-	GroupService groupService;
+	private GroupService groupService;
 	
 	@Autowired
-	LocationService locationService;
+	private LocationService locationService;
 
 
 	@RequestMapping(value = "/{id}/read/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)

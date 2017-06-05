@@ -17,8 +17,6 @@ public interface DeviceGroupRepository extends MongoRepository<DeviceGroup, Stri
 
 	List<DeviceGroup> findAllByChildrenId(ObjectId id);
 
-	List<DeviceGroup> findAllById(List<String> name);
-
 	boolean existsByChildrenId(ObjectId id);
 
 }

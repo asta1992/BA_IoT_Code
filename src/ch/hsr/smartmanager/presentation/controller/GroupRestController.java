@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.ResourceModelAdapter;
-import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.GroupService;
 import ch.hsr.smartmanager.service.LwMwMService;
 
@@ -22,9 +21,7 @@ import ch.hsr.smartmanager.service.LwMwMService;
 public class GroupRestController {
 
 	@Autowired
-	DeviceService deviceService;
-	@Autowired
-	GroupService groupService;
+	private GroupService groupService;
 	@Autowired
 	private LwMwMService lwMwMService;
 

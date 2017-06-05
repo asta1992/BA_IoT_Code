@@ -97,10 +97,6 @@ public class DeviceService {
 		return deviceRepo.findOne(id);
 	}
 
-	public void deleteDeviceByRegistration(Registration registration) {
-		deviceRepo.removeDeviceByName(registration.getEndpoint());
-	}
-
 	public List<Device> getAllDiscoveredDevice() {
 		return deviceRepo.findByAdded(false);
 	}
