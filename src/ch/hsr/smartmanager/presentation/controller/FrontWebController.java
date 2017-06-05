@@ -32,12 +32,12 @@ public class FrontWebController {
 		return "home/index";
 	}
     
-	@RequestMapping("/login")
+	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String showLogin() {
 		return "login";
 	}
 	
-	@RequestMapping("/logout")
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public String doLogout() {
 		return "redirect:login?logout=true";
 	}

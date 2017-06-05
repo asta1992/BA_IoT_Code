@@ -33,7 +33,7 @@ public class DiscoveryWebController {
 		return "discovery/discovery";
 	}
 
-	@RequestMapping(value = "/clean")
+	@RequestMapping(value = "/clean", method=RequestMethod.GET)
 	public String cleanDiscovery(Model model) {
 		deviceService.removeDiscoveredDevices();
 		return "redirect:/discovery";

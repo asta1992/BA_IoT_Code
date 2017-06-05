@@ -33,19 +33,19 @@ public class UserWebController {
 		return "users/userSettings";
 	}
 	
-	@RequestMapping("/userDeleteFragment")
+	@RequestMapping(value="/userDeleteFragment", method=RequestMethod.GET)
 	public String userDeleteFragment(Model model) {
 		model.addAttribute("userList", userService.findAll());
 		return "users/userDeleteFragment";
 	}
 	
-	@RequestMapping(value="/userAddFragment")
+	@RequestMapping(value="/userAddFragment", method=RequestMethod.GET)
 	public String userAddFragment(Model model) {
 		return "users/userAddFragment";
 	}
 	
 	
-	@RequestMapping("/userEditFragment")
+	@RequestMapping(value="/userEditFragment", method=RequestMethod.GET)
 	public String userEditFragment(Model model) {
 		return "users/userEditFragment";
 	}

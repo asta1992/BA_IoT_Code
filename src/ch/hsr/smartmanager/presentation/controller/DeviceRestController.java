@@ -95,7 +95,7 @@ public class DeviceRestController {
 		deviceService.addToManagement(deviceIds, groupId, configId);
 	}
 	
-	@RequestMapping(value = "/locations/{mapType}/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}/locations/{mapType}", method = RequestMethod.GET)
 	public List<List<String>> getAllLocation(@PathVariable("id") String id,
 			@PathVariable("mapType") String mapType) {
 		if (mapType.equals("group")) {

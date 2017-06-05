@@ -24,15 +24,31 @@ public class GroupRestController {
 	private GroupService groupService;
 	@Autowired
 	private LwMwMService lwMwMService;
-
-	@RequestMapping(value = "/{id}/add")
-	public String addNewChildGroup(@PathVariable("id") String id, @RequestParam("value") String groupName) {
-		return Boolean.toString(groupService.addNewChildGroup(id, groupName));
-	}
+	
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addNewRootGroup(@RequestParam("value") String groupName) {
 		return Boolean.toString(groupService.addNewRootGroup(groupName));
+	}
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public List<DeviceGroup> getGroupList() {
+		return groupService.getAllGroups();
+	}
+	
+	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
+	public String getAllGroups() {
+		return groupService.getAllGroupsAsJSON();
+	}
+
+	@RequestMapping(value = "/{id}/add", method=RequestMethod.GET)
+	public String addNewChildGroup(@PathVariable("id") String id, @RequestParam("value") String groupName) {
+		return Boolean.toString(groupService.addNewChildGroup(id, groupName));
+	}
+	
+	@RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+	public void removeGroup(@PathVariable("id") String id) {
+		groupService.deleteGroup(id);
 	}
 
 	@RequestMapping(value = "/{id}/changeMembership", method = RequestMethod.POST)
@@ -43,11 +59,6 @@ public class GroupRestController {
 	@RequestMapping(value = "/{id}/changeMembers", method = RequestMethod.POST)
 	public void changeMembers(@PathVariable("id") String id, @RequestParam("value") JSONArray value) {
 		groupService.changeMembers(id, value);
-	}
-
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public List<DeviceGroup> getGroupList() {
-		return groupService.getAllGroups();
 	}
 
 	@RequestMapping(value = "/{objectId}/writeToChildren", method = RequestMethod.GET)
@@ -63,15 +74,5 @@ public class GroupRestController {
 	@RequestMapping(value = "/{objectId}/multiInstance", method = RequestMethod.GET)
 	public Map<String, Boolean> multiInstance(@PathVariable("objectId") String objectId) {
 		return Collections.singletonMap("value", lwMwMService.isMultiInstance(objectId));
-	}
-
-	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
-	public String getAllGroups() {
-		return groupService.getAllGroupsAsJSON();
-	}
-
-	@RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
-	public void removeGroup(@PathVariable("id") String id) {
-		groupService.deleteGroup(id);
 	}
 }
