@@ -6,11 +6,14 @@ import java.lang.management.RuntimeMXBean;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ch.hsr.smartmanager.data.DeviceGroup;
+import ch.hsr.smartmanager.data.ManagementUser;
 import ch.hsr.smartmanager.data.repository.DeviceGroupRepository;
 import ch.hsr.smartmanager.data.repository.DeviceRepository;
+import ch.hsr.smartmanager.data.repository.ManagementUserRepository;
 
 @Service
 public class InfrastructureService {
@@ -19,6 +22,11 @@ public class InfrastructureService {
 	private DeviceRepository deviceRepo;
 	@Autowired
 	private DeviceGroupRepository groupRepo;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private ManagementUserRepository managementUserRepository;
+
 	
 	@PostConstruct
 	public void startUpClean() {
@@ -26,9 +34,14 @@ public class InfrastructureService {
 			DeviceGroup unassigned = new DeviceGroup("_unassigned");
 			groupRepo.save(unassigned);
 		}
+		if(!managementUserRepository.existsByUsername("admin")) {
+			ManagementUser admin = new ManagementUser("admin", passwordEncoder.encode("adminadmin"));
+			managementUserRepository.save(admin);
+		}
 
 		deviceRepo.removeDeviceByAddedIsFalse();
 	}
+	
 	public long getServerUptime() {
 		RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		return rb.getUptime() / 1000 / 3600;
