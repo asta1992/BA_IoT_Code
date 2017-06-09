@@ -27,13 +27,13 @@
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
 	</bean>
 
-	<mongo:repositories base-package="ch.hsr.smartmanager.data.repository" />
+	<mongo:repositories base-package="ch.hsr.smartmanager.data.repositories" />
 
 	<context:component-scan base-package="ch.hsr.smartmanager.data"></context:component-scan>
-	<context:component-scan base-package="ch.hsr.smartmanager.data.repository"></context:component-scan>
+	<context:component-scan base-package="ch.hsr.smartmanager.data.repositories"></context:component-scan>
 
 	<context:component-scan base-package="ch.hsr.smartmanager.service"></context:component-scan>
 
-	<context:component-scan base-package="ch.hsr.smartmanager.presentation.controller"></context:component-scan>
+	<context:component-scan base-package="ch.hsr.smartmanager.presentation.restcontroller"></context:component-scan>
 
 </beans>
