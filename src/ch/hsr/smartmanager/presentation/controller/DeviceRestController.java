@@ -16,16 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.hsr.smartmanager.service.DeviceService;
 import ch.hsr.smartmanager.service.GroupService;
 import ch.hsr.smartmanager.service.LocationService;
-import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 
 @RestController
 @RequestMapping("/devices")
 public class DeviceRestController {
 
 
-	@Autowired
-	private LwM2MHandler lwM2MHandler;
-	
 	@Autowired
 	private DeviceService deviceService;
 	
@@ -40,13 +36,13 @@ public class DeviceRestController {
 	public ReadResponse readResource(@PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
 
-		return lwM2MHandler.read(id, objectId, objectInstanceId, resourceId);
+		return deviceService.read(id, objectId, objectInstanceId, resourceId);
 	}
 
 	@RequestMapping(value = "/{id}/read/{objectId}", method = RequestMethod.GET)
 	public ReadResponse readObject(@PathVariable("id") String id, @PathVariable("objectId") int objectId) {
 
-		return lwM2MHandler.read(id, objectId);
+		return deviceService.read(id, objectId);
 	}
 
 	@RequestMapping(value = "/{id}/write/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
@@ -54,14 +50,14 @@ public class DeviceRestController {
 			@PathVariable("objectId") int objectId, @PathVariable("objectInstanceId") int objectInstanceId,
 			@PathVariable("resourceId") int resourceId, @RequestParam("value") String value) {
 
-		return lwM2MHandler.write(id, objectId, objectInstanceId, resourceId, value);
+		return deviceService.write(id, objectId, objectInstanceId, resourceId, value);
 	}
 
 	@RequestMapping(value = "/{id}/execute/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
 	public Map<String, ResponseCode> execute(@PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
 
-		return lwM2MHandler.execute(id, objectId, objectInstanceId, resourceId);
+		return deviceService.execute(id, objectId, objectInstanceId, resourceId);
 	}
 	
 	@RequestMapping(value = "/{id}/changeMembership", method = RequestMethod.POST)

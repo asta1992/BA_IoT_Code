@@ -18,19 +18,14 @@ import ch.hsr.smartmanager.data.Configuration;
 import ch.hsr.smartmanager.data.ConfigurationItem;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.repository.ConfigurationItemRepository;
-import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 
 @Service
 public class ConfigurationService {
 
 	@Autowired
 	private ConfigurationItemRepository configRepo;
-	
 	@Autowired
-	private GroupService groupService;
-
-	@Autowired
-	private LwM2MHandler lwM2MHandler;
+	private DeviceService deviceService;
 
 	public void saveConfiguration(JSONArray config) {
 		
@@ -72,9 +67,8 @@ public class ConfigurationService {
 		}
 	}
 	
-	public Map<String, List<Map<String, ResponseCode>>> writeConfigurationToGroup(String groupId, String configurationId) {
+	public Map<String, List<Map<String, ResponseCode>>> writeConfigurationToGroup(List<Device> devices, String configurationId) {
 		Map<String, List<Map<String, ResponseCode>>> responseMap = new HashMap<>();
-		List<Device> devices = groupService.findAllChildren(groupId);
 		for(Device device : devices) {
 			responseMap.put(device.getName(), writeConfigurationToDevice(device.getId(), configurationId));
 		}
@@ -85,7 +79,7 @@ public class ConfigurationService {
 		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
 		Configuration configuration = configRepo.findOne(configurationId);
 		for(ConfigurationItem item : configuration.getConfigurationItems()) {
-			responseList.add(lwM2MHandler.write(deviceId, getPathPart(item, 1), getPathPart(item, 2), getPathPart(item, 3), item.getValue()));
+			responseList.add(deviceService.write(deviceId, getPathPart(item, 1), getPathPart(item, 2), getPathPart(item, 3), item.getValue()));
 		}
 		return responseList;
 	}

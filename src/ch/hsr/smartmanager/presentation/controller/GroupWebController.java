@@ -16,7 +16,6 @@ import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.service.ConfigurationService;
 import ch.hsr.smartmanager.service.GroupService;
 import ch.hsr.smartmanager.service.LwMwMService;
-import ch.hsr.smartmanager.service.lwm2m.LwM2MHandler;
 
 @Controller
 @RequestMapping("/groups")
@@ -24,8 +23,6 @@ public class GroupWebController {
 	
 	@Autowired
 	private GroupService groupService;
-	@Autowired
-	private LwM2MHandler lwM2MHandler;
 	@Autowired
 	private LwMwMService lwMwMService;
 	@Autowired
@@ -43,7 +40,7 @@ public class GroupWebController {
 	public String executeChildDevices(Model model, @PathVariable("id") String id, @PathVariable("objectId") int objectId,
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
 		
-		model.addAttribute("result", lwM2MHandler.executeToAllChildren(id, objectId, objectInstanceId, resourceId));
+		model.addAttribute("result", groupService.executeToAllChildren(id, objectId, objectInstanceId, resourceId));
 		return "devices/writeConfigResultFragment";
 	}
 
@@ -98,7 +95,7 @@ public class GroupWebController {
 	@RequestMapping(value = "/{id}/writeConfiguration", method = RequestMethod.GET)
 	public String writeConfiguration(Model model, @PathVariable("id") String id,
 			@RequestParam("value") String configurationId) {
-		model.addAttribute("result", configurationService.writeConfigurationToGroup(id, configurationId));
+		model.addAttribute("result", configurationService.writeConfigurationToGroup(groupService.findAllChildren(id), configurationId));
 		return "devices/writeConfigResultFragment";
 	}
 	
@@ -107,7 +104,7 @@ public class GroupWebController {
 			@PathVariable("objectId") int objectId, @PathVariable("objectInstanceId") int objectInstanceId,
 			@PathVariable("resourceId") int resourceId, @RequestParam("value") String value) {
 
-		model.addAttribute("result", lwM2MHandler.writeToAllChildren(id, objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value)));
+		model.addAttribute("result", groupService.writeToAllChildren(id, objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value)));
 		return "devices/writeConfigResultFragment";
 	}
 	

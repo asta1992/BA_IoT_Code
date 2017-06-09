@@ -84,61 +84,62 @@ function writeData(url, objectLink, type) {
 				inputType : 'text',
 				value : defaultValue,
 				callback : function(result) {
-					switch (type) {
-					case "STRING":
+					if(result) {
+						switch (type) {
+						case "STRING":
 
-						break;
-					case "INTEGER":
-						if (!/^-?\d*\.?\d+$/.test(result)) {
-							console.log("Wrong input!");
-							return;
-						}
-						break;
-					case "FLOAT":
-						if (!/^[+-]?\d+(\.\d+)?$/.test(result)) {
-							console.log("Wrong input!");
-							return;
-						}
-						break;
-					case "BOOLEAN":
-
-						break;
-					case "OPAQUE":
-
-						break;
-					case "TIME":
-
-						break;
-					case "OBJLNK":
-
-						break;
-					default:
-
-					}
-					$.ajax({
-						type : "POST",
-						dataType : "json",
-						data : {
-							value : result
-						},
-						url : url,
-						success : function(data) {
-							if (data.code == "CHANGED") {
-								$("#readResponse" + objectLink).text(result);
-								$("#writeResponse" + objectLink).text(Object.values(data));
-								$("#writeResponse" + objectLink).fadeIn("slow").delay(2000).fadeOut('slow');
-								
-							} else {
-								bootbox.alert({
-									title : "Error",
-									message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
-								});
+							break;
+						case "INTEGER":
+							if (!/^-?\d*\.?\d+$/.test(result)) {
+								return;
 							}
-						},
-						error: function(xhr, ajaxOptions, thrownError){
-							alert(thrownError);
+							break;
+						case "FLOAT":
+							if (!/^[+-]?\d+(\.\d+)?$/.test(result)) {
+								return;
+							}
+							break;
+						case "BOOLEAN":
+
+							break;
+						case "OPAQUE":
+
+							break;
+						case "TIME":
+
+							break;
+						case "OBJLNK":
+
+							break;
+						default:
+
 						}
-					});
+						$.ajax({
+							type : "POST",
+							dataType : "json",
+							data : {
+								value : result
+							},
+							url : url,
+							success : function(data) {
+								if (Object.values(data)[0] === "CHANGED") {
+									$("#readResponse" + objectLink).text(result);
+									$("#writeResponse" + objectLink).text(Object.values(Object.values(data)));
+									$("#writeResponse" + objectLink).fadeIn("slow").delay(2000).fadeOut('slow');
+									
+								} else {
+									bootbox.alert({
+										title : "Error",
+										message : "ResponseCode: " + Object.values(data)[0] + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
+									});
+								}
+							},
+							error: function(xhr, ajaxOptions, thrownError){
+								alert(thrownError);
+							}
+						});
+					}
+		
 				}
 			});
 		},
@@ -155,14 +156,14 @@ function execute(url, objectLink) {
 		dataType : "json",
 		url : url,
 		success : function(data) {
-			if (data.code == "CHANGED") {
+			if (Object.values(data)[0] === "CHANGED") {
 				$("#writeResponse" + objectLink).text("Accomplished!");
 				$("#writeResponse" + objectLink).fadeIn("slow").delay(1000).fadeOut('slow');
 				
 			} else {
 				bootbox.alert({
 					title : "Error",
-					message : "ResponseCode: " + data.code + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
+					message : "ResponseCode: " + Object.values(data) + "<br> ErrorMessage: " + data.errorMessage + "<br> CoapResponse: " + data.coapResponse,
 					callback : function() {	}
 				});
 			}

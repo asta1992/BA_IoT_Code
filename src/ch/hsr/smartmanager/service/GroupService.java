@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
+import org.eclipse.leshan.ResponseCode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,12 +35,51 @@ public class GroupService {
 	@Autowired
 	private DeviceService deviceService;
 	
+	
+	
+	
+	
+	
+	
+	public Map<String, List<Map<String, ResponseCode>>> executeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId) {
+		List<Device> devices = findAllChildren(id);
+		return deviceService.executeToAllChildren(devices, objectId, objectInstanceId, resourceId);
+	}
+
+	public Map<String, List<Map<String, ResponseCode>>> writeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+		List<Device> devices = findAllChildren(id);
+		return deviceService.writeToAllChildren(devices, objectId, objectInstanceId, resourceId, value);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void addDeviceToGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
 		Device device = deviceRepo.findOne(deviceId);
 		group.add(device);
 		groupRepo.save(group);
 	}
+	
 	
 	private void addGroupToGroup(String parent, String child) {
 		DeviceGroup grpParent = groupRepo.findOne(parent);
