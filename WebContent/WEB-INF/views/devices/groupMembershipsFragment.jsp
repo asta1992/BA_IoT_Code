@@ -45,5 +45,6 @@
 		preserveSelectionOnMove : 'moved',
 		moveOnSelect : false,
 	});
+	
+	var ctx = "${pageContext.request.contextPath}"
 </script>
-<script>var ctx = "${pageContext.request.contextPath}"</script>

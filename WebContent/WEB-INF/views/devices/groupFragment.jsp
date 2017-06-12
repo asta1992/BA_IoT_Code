@@ -4,14 +4,15 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <div class="row page-heading">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
 		<div style="display: none;" id="componentId">${group.id}</div>
-
-		${group.name} <span class="pull-right"><button type="button"
+		${group.name}
+	</div>
+	<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+		<span class="pull-right"><button type="button"
 				class="btn btn-danger heading-button"
 				onclick="deleteGroup('${group.id}', '${group.name}')">Delete
 				Group</button></span> <span class="pull-right"></span> <span class="pull-right"></span>
-
 	</div>
 </div>
 <div class=row>

@@ -78,8 +78,11 @@ public class ConfigurationService {
 	public List<Map<String, ResponseCode>> writeConfigurationToDevice(String deviceId, String configurationId) {
 		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
 		Configuration configuration = configRepo.findOne(configurationId);
-		for(ConfigurationItem item : configuration.getConfigurationItems()) {
-			responseList.add(deviceService.write(deviceId, getPathPart(item, 1), getPathPart(item, 2), getPathPart(item, 3), item.getValue()));
+		if(configuration != null)
+		{
+			for(ConfigurationItem item : configuration.getConfigurationItems()) {
+				responseList.add(deviceService.write(deviceId, getPathPart(item, 1), getPathPart(item, 2), getPathPart(item, 3), item.getValue()));
+			}
 		}
 		return responseList;
 	}
