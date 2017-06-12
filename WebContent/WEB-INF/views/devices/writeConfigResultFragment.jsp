@@ -10,7 +10,7 @@
 </style>
 <div id="resultsWrapper">
 <c:forEach var="entry" items="${result}">
-	<h3>${entry.key}</h3>
+	<h4><b>${entry.key}</b></h4>
 	<table class="table table-hover">
 	<thead>
 		<tr>
