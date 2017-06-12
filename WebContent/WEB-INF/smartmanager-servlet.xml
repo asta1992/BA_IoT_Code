@@ -10,7 +10,6 @@
 
 	<import resource="security-config.xml" />
 
-	<mvc:annotation-driven></mvc:annotation-driven>
 
 	<bean id="jspViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -21,7 +20,7 @@
 	<mvc:resources mapping="/resources/**" location="/resources/"
 		cache-period="31556926" />
 
-	<mongo:db-factory id="mongoDbFactory" client-uri="mongodb://localhost/test" />
+	<mongo:db-factory id="mongoDbFactory" client-uri="mongodb://localhost/smartmanager" />
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
@@ -29,11 +28,11 @@
 
 	<mongo:repositories base-package="ch.hsr.smartmanager.data.repositories" />
 
+
+	<mvc:annotation-driven></mvc:annotation-driven>
+
 	<context:component-scan base-package="ch.hsr.smartmanager.data"></context:component-scan>
-	<context:component-scan base-package="ch.hsr.smartmanager.data.repositories"></context:component-scan>
-
 	<context:component-scan base-package="ch.hsr.smartmanager.service"></context:component-scan>
-
-	<context:component-scan base-package="ch.hsr.smartmanager.presentation.restcontroller"></context:component-scan>
+	<context:component-scan base-package="ch.hsr.smartmanager.presentation"></context:component-scan>
 
 </beans>

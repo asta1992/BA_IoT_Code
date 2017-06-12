@@ -6,7 +6,5 @@ import org.springframework.stereotype.Repository;
 public interface DeviceRepositoryCustom {
 
 	void removeDeviceByAddedIsFalse();
-
 	void removeDeviceByName(String name);
-
 }

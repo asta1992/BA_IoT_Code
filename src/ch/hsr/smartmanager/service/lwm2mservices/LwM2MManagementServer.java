@@ -42,9 +42,10 @@ public class LwM2MManagementServer {
 
 	@PostConstruct
 	public void createServer() {
-
 		LeshanServerBuilder builder = new LeshanServerBuilder();
+
 		builder.setLocalAddress(address, port);
+		
 		builder.setEncoder(new DefaultLwM2mNodeEncoder());
 		LwM2mNodeDecoder decoder = new DefaultLwM2mNodeDecoder();
 		builder.setDecoder(decoder);
@@ -62,6 +63,7 @@ public class LwM2MManagementServer {
 		builder.setObjectModelProvider(modelProvider);
 
 		this.server = builder.build();
+		
 		server.getRegistrationService().addListener(registrationListenerImpl.getRegistrationListener());
 		serverTaskExecutor.doIt(this.server);
 	}

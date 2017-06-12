@@ -15,7 +15,6 @@ public class ServerTaskExecutor {
 		public StartTask(LeshanServer server) {
 			this.server = server;
 		}
-
 		public void run() {
 			server.start();
 		}

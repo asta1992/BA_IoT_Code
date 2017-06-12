@@ -1,4 +1,4 @@
-package ch.hsr.smartmanager.presentation.restcontroller;
+package ch.hsr.smartmanager.presentation.webcontroller;
 
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;

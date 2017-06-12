@@ -146,7 +146,7 @@ public class DeviceService {
 
 	}
 
-	public List<Map<String, ResponseCode>> writeConfigurationToDevice(Device device, int objectId, int objectInstanceId,
+	private List<Map<String, ResponseCode>> writeConfigurationToDevice(Device device, int objectId, int objectInstanceId,
 			int resourceId, String value) {
 		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
 
@@ -298,7 +298,7 @@ public class DeviceService {
 		return deviceRepo.findAll();
 	}
 
-	public Device updateDevice(Device device) {
+	private Device updateDevice(Device device) {
 		return deviceRepo.save(device);
 	}
 
