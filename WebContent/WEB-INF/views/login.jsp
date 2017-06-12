@@ -29,7 +29,7 @@
 					<form role="form" class="form-signin" name='f' action='${pageContext.request.contextPath}/j_spring_security_check' method='POST'>
 						<fieldset>
 							<div class="form-group">
-								<input type="text" id="username" name="j_username" value='' class="form-control" placeholder="Username" type="email" required autofocus>
+								<input type="text" id="username" name="j_username" value='' class="form-control" placeholder="Username" required autofocus>
 							</div>
 							<div class="form-group">
 								<input type="password" name="j_password" id="password" class="form-control" placeholder="Password" value="">

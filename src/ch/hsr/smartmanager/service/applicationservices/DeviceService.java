@@ -21,7 +21,6 @@ import org.eclipse.leshan.core.response.WriteResponse;
 import org.eclipse.leshan.server.registration.Registration;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ch.hsr.smartmanager.data.Device;
@@ -46,17 +45,16 @@ public class DeviceService {
 	@Autowired
 	private LwM2MHandler lwM2MHandler;
 
-
 	public ReadResponse read(String id, int objectId, int objectInstanceId, int resourceId) {
 		Device device = getDevice(id);
 		ReadResponse res = lwM2MHandler.read(device, objectId, objectInstanceId, resourceId);
-		
 
 		if (res != null && res.getCode() != ResponseCode.NOT_FOUND) {
-			Device dev = saveValueToDevice(res, device, Integer.toString(objectId) + Integer.toString(objectInstanceId) + Integer.toString(resourceId));
+			Device dev = saveValueToDevice(res, device,
+					Integer.toString(objectId) + Integer.toString(objectInstanceId) + Integer.toString(resourceId));
 			updateDevice(dev);
 		}
-		
+
 		return res;
 
 	}
@@ -90,8 +88,7 @@ public class DeviceService {
 		if (res != null && res.getCode() == ResponseCode.CHANGED) {
 			read(device.getId(), objectId, objectInstanceId, resourceId);
 			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
-		}
-		else {
+		} else {
 			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, ResponseCode.NOT_FOUND);
 		}
 
@@ -112,8 +109,7 @@ public class DeviceService {
 		if (res != null) {
 			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
 			return response;
-		}
-		else {
+		} else {
 			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, ResponseCode.NOT_FOUND);
 		}
 		return response;
@@ -146,8 +142,8 @@ public class DeviceService {
 
 	}
 
-	private List<Map<String, ResponseCode>> writeConfigurationToDevice(Device device, int objectId, int objectInstanceId,
-			int resourceId, String value) {
+	private List<Map<String, ResponseCode>> writeConfigurationToDevice(Device device, int objectId,
+			int objectInstanceId, int resourceId, String value) {
 		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
 
 		responseList.add(write(device.getId(), objectId, objectInstanceId, resourceId, value));
@@ -161,8 +157,7 @@ public class DeviceService {
 		responseList.add(execute(device.getId(), objectId, objectInstanceId, resourceId));
 		return responseList;
 	}
-	
-	
+
 	private Device saveMultipleValueToDevice(ReadResponse res, Device device, int objectId) {
 
 		if (res.getContent() == null)
@@ -199,6 +194,7 @@ public class DeviceService {
 		return device;
 	}
 
+	// THIS
 	private Device saveValueToDevice(ReadResponse res, Device dev, String path) {
 
 		Map<String, String> dataMap = dev.getDataMap();
@@ -219,24 +215,8 @@ public class DeviceService {
 		dev.setDataMap(dataMap);
 		return dev;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
+	// THIS
 	public void addToManagement(String[] deviceIds, String groupId, String configId) {
 		DeviceGroup group;
 		if (groupId.equals("_unassigned")) {
@@ -259,6 +239,7 @@ public class DeviceService {
 		}
 	}
 
+	// THIS mit add
 	public void removeFromManagement(String id) {
 		Device device = deviceRepo.findOne(id);
 		List<DeviceGroup> groups = groupRepo.findAllByChildrenId(new ObjectId(id));
@@ -312,10 +293,17 @@ public class DeviceService {
 			dev = deviceRepo.insert(device);
 		}
 		dev = deviceRepo.save(dev);
+		getLocations(dev);
+	}
 
-		if (dev.getObjectLinks().contains("/6/0")) {
-			ReadResponse latitude = read(dev.getId(), 6, 0, 0);
-			ReadResponse longitude = read(dev.getId(), 6, 0, 1);
+	private void getLocations(Device dev) {
+		final String LOCATIONOBJECTLINK = "/6/0";
+		final int OBJECTID = 6;
+		final int INSTANCEID = 0;
+
+		if (dev.getObjectLinks().contains(LOCATIONOBJECTLINK)) {
+			ReadResponse latitude = read(dev.getId(), OBJECTID, INSTANCEID, 0);
+			ReadResponse longitude = read(dev.getId(), OBJECTID, INSTANCEID, 1);
 			if (latitude != null && latitude.getCode() == ResponseCode.CONTENT) {
 				LwM2mSingleResource resource = (LwM2mSingleResource) latitude.getContent();
 
@@ -363,33 +351,39 @@ public class DeviceService {
 
 	}
 
-	public List<JSONObject> allChildren(DeviceComponent deviceComponent) throws JSONException {
-		List<JSONObject> jsonObjects = new ArrayList<>();
-		for (DeviceComponent item : deviceComponent.getChildren()) {
-			JSONObject jsonObj = new JSONObject();
-			if (item instanceof Device) {
-				jsonObj.put("id", "devices/" + item.getId());
-				jsonObj.put("text", item.getName());
-				jsonObjects.add(jsonObj);
-			} else {
-				item = groupService.getGroup(item.getId());
+	// THIS
+	public void changeMembership(String id, JSONArray value) {
+		List<DeviceGroup> preGroups = groupService.listAllGroupsForGroup(id);
+		List<DeviceGroup> postGroups = convertJSONArrayToList(value);
+		Device device = getDevice(id);
 
-				if (item.getChildren().isEmpty()) {
-					jsonObj.put("id", "groups/" + item.getId());
-					jsonObj.put("text", item.getName());
-					jsonObjects.add(jsonObj);
-				} else {
-					jsonObj.put("id", "groups/" + item.getId());
-					jsonObj.put("text", item.getName());
-					jsonObj.put("children", allChildren(item));
-					jsonObjects.add(jsonObj);
-				}
-			}
+		saveGroupDifference(preGroups, postGroups, device);
+
+		DeviceGroup unassigned = groupService.findByName("_unassigned");
+		if (!postGroups.isEmpty() && postGroups.contains(unassigned)) {
+			groupService.removeDeviceFromGroup(unassigned.getId(), id);
 		}
-		return jsonObjects;
+		if (postGroups.isEmpty()) {
+			groupService.addDeviceToGroup(unassigned.getId(), id);
+		}
+
 	}
 
-	public void changeMembership(String id, JSONArray value) {
+	private void saveGroupDifference(List<DeviceGroup> preGroups, List<DeviceGroup> postGroups, Device device) {
+
+		for (DeviceGroup group : preGroups) {
+			if (!postGroups.contains(group)) {
+				groupService.removeDeviceFromGroup(group.getId(), device.getId());
+			}
+		}
+		for (DeviceGroup group : postGroups) {
+			if (!preGroups.contains(group)) {
+				groupService.addDeviceToGroup(group.getId(), device.getId());
+			}
+		}
+	}
+
+	private List<DeviceGroup> convertJSONArrayToList(JSONArray value) {
 		List<DeviceGroup> postGroups = new ArrayList<>();
 		for (int i = 0; i < value.length(); i++) {
 			try {
@@ -398,39 +392,15 @@ public class DeviceService {
 				e.printStackTrace();
 			}
 		}
-
-		Device device = getDevice(id);
-		List<DeviceGroup> preGroups = groupService.listAllGroupsForGroup(id);
-
-		for (DeviceGroup devGroups : preGroups) {
-			if (!postGroups.contains(devGroups)) {
-				groupService.removeDeviceFromGroup(devGroups.getId(), device.getId());
-			}
-		}
-		for (DeviceGroup devGroups : postGroups) {
-			if (!preGroups.contains(devGroups)) {
-				groupService.addDeviceToGroup(devGroups.getId(), device.getId());
-			}
-		}
-
-		DeviceGroup devGroup = groupService.findByName("_unassigned");
-
-		if (postGroups.size() > 1 && postGroups.contains(devGroup)) {
-			groupService.removeDeviceFromGroup(devGroup.getId(), id);
-		}
-		if (postGroups.isEmpty()) {
-			groupService.addDeviceToGroup(devGroup.getId(), id);
-		}
-
+		return postGroups;
 	}
 
 	public LinkedHashMap<String, ArrayList<ResourceModelAdapter>> getObjectModelList(String id) {
 		Device device = getDevice(id);
-		if(device == null) {
+		if (device == null) {
 			return null;
 		}
 		return lwM2MHandler.getObjectModelList(device);
 	}
-
 
 }

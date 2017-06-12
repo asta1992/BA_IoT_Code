@@ -41,7 +41,6 @@ public class DeviceRestController {
 
 	@RequestMapping(value = "/{id}/read/{objectId}", method = RequestMethod.GET)
 	public ReadResponse readObject(@PathVariable("id") String id, @PathVariable("objectId") int objectId) {
-
 		return deviceService.read(id, objectId);
 	}
 

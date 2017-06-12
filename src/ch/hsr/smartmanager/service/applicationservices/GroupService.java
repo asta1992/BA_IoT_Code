@@ -26,95 +26,60 @@ import ch.hsr.smartmanager.data.repositories.DeviceRepository;
 
 @Service
 public class GroupService {
-	
-	
+
 	@Autowired
 	private DeviceRepository deviceRepo;
 	@Autowired
 	private DeviceGroupRepository groupRepo;
 	@Autowired
 	private DeviceService deviceService;
-	
-	
-	
-	
-	
-	
-	
-	public Map<String, List<Map<String, ResponseCode>>> executeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId) {
+
+	public Map<String, List<Map<String, ResponseCode>>> executeToAllChildren(String id, int objectId,
+			int objectInstanceId, int resourceId) {
 		List<Device> devices = findAllChildren(id);
 		return deviceService.executeToAllChildren(devices, objectId, objectInstanceId, resourceId);
 	}
 
-	public Map<String, List<Map<String, ResponseCode>>> writeToAllChildren(String id, int objectId, int objectInstanceId, int resourceId, String value) {
+	public Map<String, List<Map<String, ResponseCode>>> writeToAllChildren(String id, int objectId,
+			int objectInstanceId, int resourceId, String value) {
 		List<Device> devices = findAllChildren(id);
 		return deviceService.writeToAllChildren(devices, objectId, objectInstanceId, resourceId, value);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public void addDeviceToGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
 		Device device = deviceRepo.findOne(deviceId);
 		group.add(device);
 		groupRepo.save(group);
 	}
-	
-	
+
+	// THIS
 	private void addGroupToGroup(String parent, String child) {
-		DeviceGroup grpParent = groupRepo.findOne(parent);
-		DeviceGroup grpChild = groupRepo.findOne(child);
+		DeviceGroup parentGroup = groupRepo.findOne(parent);
+		DeviceGroup childGroup = groupRepo.findOne(child);
 
-		if (grpChild.getName().equals("_unassigned") || grpParent.getName().equals("_unassigned")) {
+		if (childGroup.getName().equals("_unassigned") || parentGroup.getName().equals("_unassigned")
+				|| isAncestor(parentGroup.getName(), childGroup.getName())
+				|| isAncestor(childGroup.getName(), parentGroup.getName())) {
 			return;
 		}
 
-		if (isAncestors(grpParent.getName(), grpChild.getName())
-				|| isAncestors(grpChild.getName(), grpParent.getName())) {
-			return;
+		DeviceGroup oldParentGroup = groupRepo.findByChildrenId(new ObjectId(childGroup.getId()));
+		
+		if (oldParentGroup != null) {
+			oldParentGroup.remove(childGroup);
+			groupRepo.save(oldParentGroup);
 		}
-
-		if (!groupRepo.existsByChildrenId(new ObjectId(grpChild.getId()))) {
-			grpParent.add(grpChild);
-			groupRepo.save(grpParent);
-			groupRepo.save(grpChild);
-		} else {
-			List<DeviceGroup> group = groupRepo.findAllByChildrenId(new ObjectId(grpChild.getId()));
-			for (DeviceGroup grp : group) {
-				grp.remove(grpChild);
-				groupRepo.save(grp);
-			}
-			grpParent.add(grpChild);
-			groupRepo.save(grpParent);
-			groupRepo.save(grpChild);
-		}
+		parentGroup.add(childGroup);
+		groupRepo.save(parentGroup);
+		groupRepo.save(childGroup);
 
 	}
-	
+
 	public DeviceGroup findByName(String name) {
 		return groupRepo.findByName(name);
 	}
-	
+
 	public DeviceGroup getGroup(String id) {
 		return groupRepo.findOne(id);
 	}
@@ -128,8 +93,7 @@ public class GroupService {
 	}
 
 	private DeviceGroup insertGroup(String groupName) {
-		if(validateGroupname(groupName)) {
-			System.out.println("Hier");
+		if (validateGroupname(groupName)) {
 			return null;
 		}
 		DeviceGroup group = new DeviceGroup(HtmlUtils.htmlEscape(groupName));
@@ -140,8 +104,6 @@ public class GroupService {
 		}
 	}
 
-
-	
 	public boolean deleteGroup(String id) {
 		DeviceGroup group = groupRepo.findOne(id);
 		if (!group.getChildren().isEmpty() || group.getName().equals("_unassigned")) {
@@ -156,7 +118,7 @@ public class GroupService {
 		groupRepo.delete(id);
 		return true;
 	}
-	
+
 	private boolean validateGroupname(String groupname) {
 		final String regex = "(?=^.{1,30}$)[a-zA-Z0-9_.-]*$";
 		final Pattern pattern = Pattern.compile(regex);
@@ -166,7 +128,7 @@ public class GroupService {
 		}
 		return true;
 	}
-	
+
 	public void removeDeviceFromGroup(String groupId, String deviceId) {
 		DeviceGroup group = groupRepo.findOne(groupId);
 		Device device = deviceRepo.findOne(deviceId);
@@ -186,30 +148,34 @@ public class GroupService {
 		groupRepo.save(grpParent);
 		groupRepo.save(grpChild);
 	}
-	
-	private boolean isAncestors(String parent, String child) {
+
+	private boolean isAncestor(String parent, String child) {
 		List<String> anchestors = groupRepo.findAllAncestors(child);
 		if (anchestors.contains(parent))
 			return true;
 		return false;
 	}
-	
 
 	public List<Device> findAllChildren(String id) {
-		List<Device> allSubDevices = new ArrayList<>();
-		DeviceGroup mainGroup = groupRepo.findOne(id);
-		List<String> childrenGroup = groupRepo.findAllChildren(mainGroup.getName());
-		childrenGroup.add(mainGroup.getName());
+		List<Device> allChildrenDevices = new ArrayList<>();
+		
+		DeviceGroup parentGroup = groupRepo.findOne(id);
+		List<String> childrenGroup = groupRepo.findAllChildren(parentGroup.getName());
+
+		childrenGroup.add(parentGroup.getName());
+
 		for (String name : childrenGroup) {
 			DeviceGroup group = groupRepo.findByName(name);
-			for (DeviceComponent dev : group.getChildren()) {
-				if (dev instanceof Device)
-					allSubDevices.add((Device) dev);
+		
+			for (DeviceComponent device : group.getChildren()) {
+				if (device instanceof Device) {
+					allChildrenDevices.add((Device) device);
+				}
 			}
 		}
-		return allSubDevices;
+		return allChildrenDevices;
 	}
-	
+
 	public List<DeviceComponent> getAllComponents() {
 		List<DeviceComponent> allComponents = new ArrayList<DeviceComponent>();
 		for (DeviceComponent component : deviceService.getAllDevices()) {
@@ -221,14 +187,14 @@ public class GroupService {
 
 		return allComponents;
 	}
-	
+
 	public List<DeviceGroup> listAllGroupsForGroup(String id) {
 		return groupRepo.findAllByChildrenId(new ObjectId(id));
 	}
 
 	public void removeDeviceFromGroups(List<String> value, String id) {
 		for (String groupId : value) {
-			removeDeviceFromGroup(groupId, id);			
+			removeDeviceFromGroup(groupId, id);
 		}
 	}
 
@@ -241,20 +207,22 @@ public class GroupService {
 		if (devGroup != null) {
 			addGroupToGroup(id, devGroup.getId());
 			return true;
-		} 
+		}
 		return false;
 	}
 
 	public void changeMembership(String id, JSONArray value) {
+		final int FIRST_INDEX = 0;
+		
 		if (value.length() == 1) {
 			try {
-				DeviceGroup newParentGroup = getGroup(value.getString(0));
+				DeviceGroup newParentGroup = getGroup(value.getString(FIRST_INDEX));
 				DeviceGroup group = getGroup(id);
 
 				List<DeviceGroup> oldParentGroups = listAllGroupsForGroup(id);
 
 				if (!oldParentGroups.isEmpty()) {
-					removeGroupFromGroup(oldParentGroups.get(0).getId(), group.getId());
+					removeGroupFromGroup(oldParentGroups.get(FIRST_INDEX).getId(), group.getId());
 				}
 				addGroupToGroup(newParentGroup.getId(), group.getId());
 
@@ -268,10 +236,10 @@ public class GroupService {
 			if (subGroups.isEmpty()) {
 				return;
 			}
-			DeviceGroup oldParentGroup = subGroups.get(0);
+			DeviceGroup oldParentGroup = subGroups.get(FIRST_INDEX);
 			removeGroupFromGroup(oldParentGroup.getId(), group.getId());
 		}
-		
+
 	}
 
 	public void changeMembers(String id, JSONArray value) {
@@ -335,13 +303,13 @@ public class GroupService {
 	public String getAllGroupsAsJSON() {
 		List<JSONObject> allJson = new ArrayList<>();
 
-		for (DeviceComponent item : getAllGroups()) {
-			if (!isRoot(item.getId())) {
+		for (DeviceGroup group : getAllGroups()) {
+			if (!isRoot(group.getId())) {
 				JSONObject jsonObj = new JSONObject();
 				try {
-					jsonObj.put("id", "groups/" + item.getId());
-					jsonObj.put("text", item.getName());
-					jsonObj.put("children", deviceService.allChildren(item));
+					jsonObj.put("id", "groups/" + group.getId());
+					jsonObj.put("text", group.getName());
+					jsonObj.put("children", allChildren(group));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -350,6 +318,33 @@ public class GroupService {
 		}
 
 		return allJson.toString();
+	}
+
+	// THIS
+	private List<JSONObject> allChildren(DeviceComponent deviceComponent) throws JSONException {
+		List<JSONObject> jsonObjects = new ArrayList<>();
+		for (DeviceComponent item : deviceComponent.getChildren()) {
+			JSONObject jsonObj = new JSONObject();
+			if (item instanceof Device) {
+				jsonObj.put("id", "devices/" + item.getId());
+				jsonObj.put("text", item.getName());
+				jsonObjects.add(jsonObj);
+			} else {
+				item = getGroup(item.getId());
+
+				if (item.getChildren().isEmpty()) {
+					jsonObj.put("id", "groups/" + item.getId());
+					jsonObj.put("text", item.getName());
+					jsonObjects.add(jsonObj);
+				} else {
+					jsonObj.put("id", "groups/" + item.getId());
+					jsonObj.put("text", item.getName());
+					jsonObj.put("children", allChildren(item));
+					jsonObjects.add(jsonObj);
+				}
+			}
+		}
+		return jsonObjects;
 	}
 
 }

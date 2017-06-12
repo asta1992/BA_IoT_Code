@@ -31,8 +31,7 @@ public class GroupWebController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String showGroupDetails(Model model, @PathVariable("id") String id) {
-		DeviceGroup group = groupService.getGroup(id);
-		model.addAttribute("group", group);
+		model.addAttribute("group", groupService.getGroup(id));
 		return "devices/groupFragment";
 	}
 
