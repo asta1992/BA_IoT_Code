@@ -288,14 +288,14 @@ public class GroupService {
 			}
 		}
 
-		DeviceGroup devGroup = findByName("_unassigned");
+		DeviceGroup unassigned = findByName("_unassigned");
 
 		for (Device device : editedDevices) {
 			List<DeviceGroup> deviceGroups = listAllGroupsForGroup(device.getId());
 			if (deviceGroups.isEmpty()) {
-				addDeviceToGroup(devGroup.getId(), device.getId());
+				addDeviceToGroup(unassigned.getId(), device.getId());
 			} else {
-				removeDeviceFromGroup(devGroup.getId(), device.getId());
+				removeDeviceFromGroup(unassigned.getId(), device.getId());
 			}
 		}
 	}

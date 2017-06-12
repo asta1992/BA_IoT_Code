@@ -94,7 +94,7 @@ public class UserService implements UserDetailsService {
 	public JSONObject addUser(String username, String firstPassword, String secondPassword) {
 		
 		JSONObject result = new JSONObject();
-		
+
 		try {
 			if (validateUsername(username)) {
 				result.put("invalidCharError", true);

@@ -28,13 +28,13 @@ public class ConfigurationService {
 	private DeviceService deviceService;
 
 	public void saveConfiguration(JSONArray config) {
-		
+
 		try {
 			String configurationName = HtmlUtils.htmlEscape(config.getString(0));
 			String configurationDescription = HtmlUtils.htmlEscape(config.getString(1));
 			Configuration configuration = new Configuration(configurationName, configurationDescription);
 			for (int i = 2; i < config.length(); i++) {
-				String path = (String)config.getJSONObject(i).get("Object Link");
+				String path = (String) config.getJSONObject(i).get("Object Link");
 				String value = HtmlUtils.htmlEscape(config.getJSONObject(i).get("Value").toString());
 				ConfigurationItem configurationItem = new ConfigurationItem(path, value);
 				configuration.add(configurationItem);
@@ -51,49 +51,51 @@ public class ConfigurationService {
 			e.printStackTrace();
 		}
 	}
-	
-	public List<Configuration> getAllConfigurations(){
+
+	public List<Configuration> getAllConfigurations() {
 		return configRepo.findAll();
 	}
-	
-	public Configuration findOne(String id){
+
+	public Configuration findOne(String id) {
 		return configRepo.findOne(id);
 	}
 
 	public void deleteConfiguration(String configurationId) {
 		Configuration config = configRepo.findOne(configurationId);
-		if(config != null) {
+		if (config != null) {
 			configRepo.delete(config);
 		}
 	}
-	
-	public Map<String, List<Map<String, ResponseCode>>> writeConfigurationToGroup(List<Device> devices, String configurationId) {
+
+	public Map<String, List<Map<String, ResponseCode>>> writeConfigurationToGroup(List<Device> devices,
+			String configurationId) {
 		Map<String, List<Map<String, ResponseCode>>> responseMap = new HashMap<>();
-		for(Device device : devices) {
+		for (Device device : devices) {
 			responseMap.put(device.getName(), writeConfigurationToDevice(device.getId(), configurationId));
 		}
 		return responseMap;
 	}
-	
+
 	public List<Map<String, ResponseCode>> writeConfigurationToDevice(String deviceId, String configurationId) {
 		List<Map<String, ResponseCode>> responseList = new ArrayList<>();
 		Configuration configuration = configRepo.findOne(configurationId);
-		if(configuration != null)
-		{
-			for(ConfigurationItem item : configuration.getConfigurationItems()) {
-				responseList.add(deviceService.write(deviceId, getPathPart(item, 1), getPathPart(item, 2), getPathPart(item, 3), item.getValue()));
+
+		if (configuration != null) {
+			for (ConfigurationItem item : configuration.getConfigurationItems()) {
+				responseList.add(deviceService.write(deviceId, getPathPart(item, 1), getPathPart(item, 2),
+						getPathPart(item, 3), item.getValue()));
 			}
 		}
 		return responseList;
 	}
-	
+
 	private int getPathPart(ConfigurationItem item, int groupNumber) {
 		String regex = "([0-9]*)\\/([0-9]*)\\/([0-9]*)";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(item.getPath());
 		int objectId = 0;
 		while (matcher.find()) {
-			objectId =  Integer.parseInt(matcher.group(groupNumber));
+			objectId = Integer.parseInt(matcher.group(groupNumber));
 		}
 		return objectId;
 	}

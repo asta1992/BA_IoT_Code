@@ -9,31 +9,28 @@ import org.springframework.stereotype.Service;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceGroup;
 
-
 @Service
 public class LocationService {
-	
+
 	@Autowired
 	private DeviceService deviceService;
 	@Autowired
 	private GroupService groupService;
-	
-	
-	
+
 	public List<List<String>> getAllLocation() {
 		return getLocationMap(deviceService.getAllDevices());
 	}
-	
+
 	public List<List<String>> getDeviceLocationById(Device device) {
 		List<Device> deviceLocations = new ArrayList<Device>();
 		deviceLocations.add(deviceService.getDevice(device.getId()));
 		return getLocationMap(deviceLocations);
 	}
-	
+
 	public List<List<String>> getAllLocationByGroup(DeviceGroup group) {
 		return getLocationMap(groupService.findAllChildren(group.getId()));
 	}
-	
+
 	private List<List<String>> getLocationMap(List<Device> devices) {
 		List<List<String>> list = new ArrayList<>();
 
