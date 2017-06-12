@@ -17,7 +17,7 @@ import ch.hsr.smartmanager.data.repositories.ManagementUserRepository;
 
 @Service
 public class InfrastructureService {
-	
+
 	@Autowired
 	private DeviceRepository deviceRepo;
 	@Autowired
@@ -27,26 +27,23 @@ public class InfrastructureService {
 	@Autowired
 	private ManagementUserRepository managementUserRepository;
 
-	
 	@PostConstruct
 	public void startUpClean() {
 		if (!groupRepo.existsByName("_unassigned")) {
 			DeviceGroup unassigned = new DeviceGroup("_unassigned");
 			groupRepo.save(unassigned);
 		}
-		if(!managementUserRepository.existsByUsername("admin")) {
+		if (!managementUserRepository.existsByUsername("admin")) {
 			ManagementUser admin = new ManagementUser("admin", passwordEncoder.encode("adminadmin"));
 			managementUserRepository.save(admin);
 		}
 
 		deviceRepo.removeDeviceByAddedIsFalse();
 	}
-	
+
 	public long getServerUptime() {
 		RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		return rb.getUptime() / 1000 / 3600;
 	}
-	
-
 
 }

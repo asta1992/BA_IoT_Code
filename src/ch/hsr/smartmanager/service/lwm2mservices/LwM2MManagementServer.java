@@ -24,27 +24,23 @@ public class LwM2MManagementServer {
 
 	@Autowired
 	private RegistrationListenerImpl registrationListenerImpl;
-
 	@Autowired
 	private ServerTaskExecutor serverTaskExecutor;
+
+	private final String ADDRESS = "127.0.0.1";
+	private final int PORT = 5683;
+	
 	private LeshanServer server;
-	private String address;
-	private int port;
 	private List<ObjectModel> models = ObjectLoader.loadDefault();
-
 	private Resource resource = new ClassPathResource("ch/hsr/smartmanager/resources/models/");
-
-	public LwM2MManagementServer() {
-
-		this.address = "127.0.0.1";
-		this.port = 5683;
-	}
+	
+	public LwM2MManagementServer() {}
 
 	@PostConstruct
 	public void createServer() {
 		LeshanServerBuilder builder = new LeshanServerBuilder();
 
-		builder.setLocalAddress(address, port);
+		builder.setLocalAddress(ADDRESS, PORT);
 		
 		builder.setEncoder(new DefaultLwM2mNodeEncoder());
 		LwM2mNodeDecoder decoder = new DefaultLwM2mNodeDecoder();
