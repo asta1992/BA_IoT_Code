@@ -27,8 +27,8 @@ public class LwM2MManagementServer {
 	@Autowired
 	private ServerTaskExecutor serverTaskExecutor;
 
-	private final String ADDRESS = "127.0.0.1";
-	private final int PORT = 5683;
+	private String address;
+	private int port;
 	
 	private LeshanServer server;
 	private List<ObjectModel> models = ObjectLoader.loadDefault();
@@ -40,7 +40,7 @@ public class LwM2MManagementServer {
 	public void createServer() {
 		LeshanServerBuilder builder = new LeshanServerBuilder();
 
-		builder.setLocalAddress(ADDRESS, PORT);
+		builder.setLocalAddress(this.address, this.port);
 		
 		builder.setEncoder(new DefaultLwM2mNodeEncoder());
 		LwM2mNodeDecoder decoder = new DefaultLwM2mNodeDecoder();
@@ -62,6 +62,23 @@ public class LwM2MManagementServer {
 		
 		server.getRegistrationService().addListener(registrationListenerImpl.getRegistrationListener());
 		serverTaskExecutor.doIt(this.server);
+	}
+	
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 	public LeshanServer getServer() {
