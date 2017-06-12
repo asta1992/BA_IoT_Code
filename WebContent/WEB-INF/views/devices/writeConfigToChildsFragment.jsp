@@ -9,8 +9,8 @@
 			<label class="control-label">Choose Configuration</label>
 		</div>
 		<div class="col-lg-8 col-md-8 col-sm-8">
-			
 			<select id="configSelector" class="selectpicker">
+				<option disabled selected value="none" id="none">select a configuration</option>
 				<c:forEach var="configurations" items="${configurations}">
 					<option value="${configurations.id}">${configurations.name}</option>
 				</c:forEach>

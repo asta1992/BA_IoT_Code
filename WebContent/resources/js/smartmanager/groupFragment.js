@@ -1,16 +1,16 @@
 function addNewChildGroup(parentId) {
 	bootbox.prompt({
 		title : "Please enter a group name",
-		callback : function(message){
-			if(message){
+		callback : function(message) {
+			if (message) {
 				$.ajax({
-					type: "POST",
+					type : "POST",
 					data : {
 						value : message
 					},
 					url : ctx + "/groups/" + parentId + "/add",
-					success : function(data){
-						if(data === 'false') {
+					success : function(data) {
+						if (data === 'false') {
 							bootbox.alert({
 								size : "small",
 								title : "Error",
@@ -19,12 +19,11 @@ function addNewChildGroup(parentId) {
 									addNewChildGroup();
 								}
 							});
-						}
-						else {
+						} else {
 							parent.location.reload();
 						}
 					},
-					error: function(xhr, ajaxOptions, thrownError){
+					error : function(xhr, ajaxOptions, thrownError) {
 						parent.location.reload();
 						alert(thrownError);
 					}
@@ -42,7 +41,7 @@ function openGroupMemberships(id) {
 			bootbox.confirm({
 				message : groupMemberships,
 				callback : function(ok) {
-					if(ok){
+					if (ok) {
 						var updatedMemberships = [];
 						$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
 							updatedMemberships.push(this.id);
@@ -54,10 +53,10 @@ function openGroupMemberships(id) {
 								value : JSON.stringify(updatedMemberships)
 							},
 							url : ctx + "/groups/" + id + "/changeMembership",
-							success : function(){
+							success : function() {
 								parent.location.reload();
 							},
-							error: function(xhr, ajaxOptions, thrownError){
+							error : function(xhr, ajaxOptions, thrownError) {
 								parent.location.reload();
 								alert(thrownError);
 							}
@@ -66,21 +65,21 @@ function openGroupMemberships(id) {
 				}
 			});
 		},
-		error: function(xhr, ajaxOptions, thrownError){
+		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);
 		}
 	});
 }
 
-function openGroupMembers(id){
+function openGroupMembers(id) {
 	$.ajax({
-		dataType: "html",
+		dataType : "html",
 		url : ctx + "/groups/" + id + "/members",
 		success : function(groupMembers) {
 			bootbox.confirm({
-				message: groupMembers,
-				callback: function(ok) {
-					if(ok) {
+				message : groupMembers,
+				callback : function(ok) {
+					if (ok) {
 						var updatedMemberships = [];
 						$('#bootstrap-duallistbox-selected-list_groups-duallistbox > option').each(function() {
 							updatedMemberships.push(this.id);
@@ -92,10 +91,10 @@ function openGroupMembers(id){
 								value : JSON.stringify(updatedMemberships)
 							},
 							url : ctx + "/groups/" + id + "/changeMembers",
-							success : function(){
+							success : function() {
 								parent.location.reload();
 							},
-							error: function(xhr, ajaxOptions, thrownError){
+							error : function(xhr, ajaxOptions, thrownError) {
 								parent.location.reload();
 								alert(thrownError);
 							}
@@ -103,9 +102,9 @@ function openGroupMembers(id){
 					}
 				}
 			});
-			
+
 		},
-		error: function(xhr, ajaxOptions, thrownError){
+		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);
 		}
 	});
@@ -126,7 +125,7 @@ function executeAllChildDevices(groupId) {
 						var objectId = parseInt($('#objectDropdown').find(":selected").text());
 						var objectInstanceId = $('#instanceIdField').val();
 						var resourceId = parseInt($('#resourceDropdown').find(":selected").text());
-						
+
 						getExecuteResult(groupId, objectId, objectInstanceId, resourceId, function(data) {
 							bootbox.alert({
 								title : "Your Results",
@@ -137,7 +136,7 @@ function executeAllChildDevices(groupId) {
 				}
 			});
 		},
-		error: function(xhr, ajaxOptions, thrownError){
+		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);
 		}
 	});
@@ -159,7 +158,7 @@ function writeAllChildDevices(groupId) {
 						var objectInstanceId = $('#instanceIdField').val();
 						var resourceId = parseInt($('#resourceDropdown').find(":selected").text());
 						var value = $('#writeValue').val();
-						
+
 						getWriteResult(groupId, objectId, objectInstanceId, resourceId, value, function(data) {
 							bootbox.alert({
 								title : "Your Results",
@@ -170,7 +169,7 @@ function writeAllChildDevices(groupId) {
 				}
 			});
 		},
-		error: function(xhr, ajaxOptions, thrownError){
+		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);
 		}
 	});
@@ -187,17 +186,29 @@ function writeConfigToChildDevices(groupId, groupName) {
 				message : writeConfigToChildsFragment,
 				callback : function(ok) {
 					if (ok) {
-						getConfigResult(groupId, function(data) {
+						if ($('#configSelector option:selected').val() === "none") {
 							bootbox.alert({
-								title : "Your Results",
-								message : data,
+								size : "small",
+								title : "No Configuration selected",
+								message : "Please select a configuration",
+								callback : function() {
+									writeConfigToChildDevices(groupId, groupName);
+								}
 							});
-						});
+						} else {
+							console.log("yay");
+							getConfigResult(groupId, function(data) {
+								bootbox.alert({
+									title : "Your Results",
+									message : data
+								});
+							});
+						}
 					}
 				}
 			});
 		},
-		error : function(xhr, ajaxOptions, thrownError){
+		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);
 		}
 	});
@@ -275,15 +286,12 @@ function getExecuteableResources() {
 		success : function(resources) {
 			resourceDropdown.empty();
 			resources.forEach(function(entry) {
-				resourceDropdown.append('<option value="'
-						+ entry.resourceModel.id + '">'
-						+ entry.resourceModel.id + " " + "("
-						+ entry.resourceModel.name + ")" + '</option>');
+				resourceDropdown.append('<option value="' + entry.resourceModel.id + '">' + entry.resourceModel.id + " " + "(" + entry.resourceModel.name + ")" + '</option>');
 			});
 			resourceDropdown.selectpicker('refresh');
 			updateCompleteObjectId();
 		},
-		error: function(xhr, ajaxOptions, thrownError){
+		error : function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError);
 		}
 	});
@@ -292,15 +300,15 @@ function getExecuteableResources() {
 function deleteGroup(id, name) {
 	bootbox.confirm({
 		message : "Do you really want to delete group " + name + "?",
-		callback : function(ok){
-			if(ok){
+		callback : function(ok) {
+			if (ok) {
 				$.ajax({
-					type: "DELETE",
+					type : "DELETE",
 					url : ctx + "/groups/" + id + "/delete",
-					success : function(){
+					success : function() {
 						window.location.href = ctx + "/devices";
 					},
-					error: function(xhr, ajaxOptions, thrownError){
+					error : function(xhr, ajaxOptions, thrownError) {
 						window.location.href = ctx + "/devices";
 						alert(thrownError);
 					}
