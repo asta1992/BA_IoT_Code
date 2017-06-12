@@ -14,7 +14,6 @@ function addDevice(){
 			size : "small",
 			title : "No Device selected",
 			message : "Please select a device",
-			callback : function() {}
 		});
 	}
 	else {

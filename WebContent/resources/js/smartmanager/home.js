@@ -1,4 +1,4 @@
-function deleteAllUnreachableDevice() {
+function deleteAllUnreachableDevices() {
 	bootbox.confirm({
 		message : "Do you really want to delete all unreachable devices?",
 		callback : function(ok) {
