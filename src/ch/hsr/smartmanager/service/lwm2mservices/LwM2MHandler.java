@@ -93,9 +93,13 @@ public class LwM2MHandler {
 		ResourceModel type = server.getModelProvider().getObjectModel(registration).getResourceModel(objectId,
 				resourceId);
 
-		WriteRequest req = getWriteRequest(objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value),
-				type.type);
+		WriteRequest req = getWriteRequest(objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value), type.type);
 		WriteResponse res;
+		
+		
+		if(req.getPath().getObjectId() == 0) {
+			return new WriteResponse(ResponseCode.UNSUPPORTED_CONTENT_FORMAT, "The content format is not valid for this Resource");
+		}
 
 		try {
 			res = server.send(registration, req);
@@ -128,28 +132,33 @@ public class LwM2MHandler {
 
 	private WriteRequest getWriteRequest(int objectId, int objectInstanceId, int resourceId, String value,
 			ResourceModel.Type type) {
+		WriteRequest req;
+		
 		switch (type) {
 		case STRING:
 			return new WriteRequest(objectId, objectInstanceId, resourceId, (String) value);
-
 		case INTEGER:
 			try {
-				return new WriteRequest(objectId, objectInstanceId, resourceId, Integer.parseInt(value));
+				req =  new WriteRequest(objectId, objectInstanceId, resourceId, Integer.parseInt(value));
 			} catch (NumberFormatException e) {
-				return new WriteRequest(objectId, objectInstanceId, resourceId, Integer.parseInt("0"));
+				req =  new WriteRequest(0, 0, 0, Integer.parseInt("0"));
 			}
+			return req;
 		case FLOAT:
 			try {
-				return new WriteRequest(objectId, objectInstanceId, resourceId, Float.parseFloat(value));
-			} catch (NumberFormatException e) {
-				return new WriteRequest(objectId, objectInstanceId, resourceId, Float.parseFloat("0"));
+				req =  new WriteRequest(objectId, objectInstanceId, resourceId, Float.parseFloat(value));
+			} catch (Exception e) {
+				req =  new WriteRequest(0, 0, 0, Float.parseFloat("0"));
 			}
+			return req;
 		case OPAQUE:
+			
 			try {
-				return new WriteRequest(objectId, objectInstanceId, resourceId, Byte.parseByte(value));
+				req = new WriteRequest(objectId, objectInstanceId, resourceId, Byte.parseByte(value));
 			} catch (NumberFormatException e) {
-				return new WriteRequest(objectId, objectInstanceId, resourceId, Byte.parseByte("0"));
+				req = new WriteRequest(0, 0, 0, Byte.parseByte("0"));
 			}
+			return req;
 
 		case BOOLEAN:
 			return new WriteRequest(objectId, objectInstanceId, resourceId, Boolean.parseBoolean(value));
@@ -158,15 +167,16 @@ public class LwM2MHandler {
 			Date date;
 			try {
 				date = formatter.parse(value);
+				req = new WriteRequest(objectId, objectInstanceId, resourceId, date);
 			} catch (ParseException e) {
-				date = new Date();
+				req = new WriteRequest(0, 0, 0, new Date());
 			}
-			return new WriteRequest(objectId, objectInstanceId, resourceId, date);
+			return req;
 		}
 		case OBJLNK:
 			return new WriteRequest(objectId, objectInstanceId, resourceId, value);
 		default:
-			return new WriteRequest(objectId, objectInstanceId, resourceId, "");
+			return new WriteRequest(0, 0, 0, "");
 		}
 
 	}

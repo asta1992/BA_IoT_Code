@@ -85,11 +85,16 @@ public class DeviceService {
 
 		WriteResponse res = lwM2MHandler.write(device, objectId, objectInstanceId, resourceId, value);
 
-		if (res != null && res.getCode() == ResponseCode.CHANGED) {
-			read(device.getId(), objectId, objectInstanceId, resourceId);
-			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
+		if (res != null) {
+			if(res.getCode() == ResponseCode.CHANGED) {
+				read(device.getId(), objectId, objectInstanceId, resourceId);
+				response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
+			}
+			else {
+				response.put(objectId + "/" + objectInstanceId + "/" + resourceId, res.getCode());
+			}
 		} else {
-			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, ResponseCode.NOT_FOUND);
+			response.put(objectId + "/" + objectInstanceId + "/" + resourceId, ResponseCode.BAD_REQUEST);
 		}
 
 		return response;
