@@ -23,16 +23,23 @@
 					<warSourceDirectory>WebContent</warSourceDirectory>
 					<webResources>
 						<resource>
-							<!-- this is relative to the pom.xml directory -->
 							<directory>src/ch/hsr/smartmanager/resources/models</directory>
-							<!-- the list has a default value of ** -->
 							 <targetPath>WEB-INF/classes/ch/hsr/smartmanager/resources/models</targetPath>
 							<includes>
 								<include>*.xml</include>
 							</includes>
 						</resource>
-					</webResources>
+						<resource>
+							<directory>.</directory>
+							<targetPath>WEB-INF</targetPath>
+							<includes>
+								<include>
+									Californium.*
+								</include>
+                             </includes>
 
+					</resource>
+					</webResources>
 				</configuration>
 			</plugin>
 		</plugins>
