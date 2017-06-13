@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+
+import org.eclipse.californium.core.network.config.NetworkConfig;
 import org.eclipse.leshan.core.model.ObjectLoader;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.node.codec.DefaultLwM2mNodeDecoder;
@@ -29,19 +31,20 @@ public class LwM2MManagementServer {
 
 	private String address;
 	private int port;
-	
+
 	private LeshanServer server;
 	private List<ObjectModel> models = ObjectLoader.loadDefault();
 	private Resource resource = new ClassPathResource("ch/hsr/smartmanager/resources/models/");
-	
-	public LwM2MManagementServer() {}
+
+	public LwM2MManagementServer() {
+	}
 
 	@PostConstruct
 	public void createServer() {
 		LeshanServerBuilder builder = new LeshanServerBuilder();
 
 		builder.setLocalAddress(this.address, this.port);
-		
+
 		builder.setEncoder(new DefaultLwM2mNodeEncoder());
 		LwM2mNodeDecoder decoder = new DefaultLwM2mNodeDecoder();
 		builder.setDecoder(decoder);
@@ -54,16 +57,18 @@ public class LwM2MManagementServer {
 			e.printStackTrace();
 		}
 
+		builder.setNetworkConfig(NetworkConfig.createStandardWithoutFile());
+
 		models.addAll(ObjectLoader.load(file));
+
 		LwM2mModelProvider modelProvider = new StaticModelProvider(models);
 		builder.setObjectModelProvider(modelProvider);
 
 		this.server = builder.build();
-		
+
 		server.getRegistrationService().addListener(registrationListenerImpl.getRegistrationListener());
 		serverTaskExecutor.doIt(this.server);
 	}
-	
 
 	public String getAddress() {
 		return address;

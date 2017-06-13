@@ -23,7 +23,7 @@ import org.eclipse.leshan.core.response.ExecuteResponse;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
 import org.eclipse.leshan.server.californium.impl.LeshanServer;
-import org.eclipse.leshan.server.model.StandardModelProvider;
+import org.eclipse.leshan.server.model.StaticModelProvider;
 import org.eclipse.leshan.server.registration.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,9 +90,11 @@ public class LwM2MHandler {
 			return new WriteResponse(ResponseCode.NOT_FOUND, "Device is not reachable");
 		}
 
-		ResourceModel.Type type = server.getModelProvider().getObjectModel(registration).getResourceModel(objectId,
-				resourceId).type;
-		WriteRequest req = getWriteRequest(objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value), type);
+		ResourceModel type = server.getModelProvider().getObjectModel(registration).getResourceModel(objectId,
+				resourceId);
+
+		WriteRequest req = getWriteRequest(objectId, objectInstanceId, resourceId, HtmlUtils.htmlEscape(value),
+				type.type);
 		WriteResponse res;
 
 		try {
@@ -129,14 +131,28 @@ public class LwM2MHandler {
 		switch (type) {
 		case STRING:
 			return new WriteRequest(objectId, objectInstanceId, resourceId, (String) value);
+
 		case INTEGER:
-			return new WriteRequest(objectId, objectInstanceId, resourceId, Integer.parseInt(value));
+			try {
+				return new WriteRequest(objectId, objectInstanceId, resourceId, Integer.parseInt(value));
+			} catch (NumberFormatException e) {
+				return new WriteRequest(objectId, objectInstanceId, resourceId, Integer.parseInt("0"));
+			}
 		case FLOAT:
-			return new WriteRequest(objectId, objectInstanceId, resourceId, Float.parseFloat(value));
+			try {
+				return new WriteRequest(objectId, objectInstanceId, resourceId, Float.parseFloat(value));
+			} catch (NumberFormatException e) {
+				return new WriteRequest(objectId, objectInstanceId, resourceId, Float.parseFloat("0"));
+			}
+		case OPAQUE:
+			try {
+				return new WriteRequest(objectId, objectInstanceId, resourceId, Byte.parseByte(value));
+			} catch (NumberFormatException e) {
+				return new WriteRequest(objectId, objectInstanceId, resourceId, Byte.parseByte("0"));
+			}
+
 		case BOOLEAN:
 			return new WriteRequest(objectId, objectInstanceId, resourceId, Boolean.parseBoolean(value));
-		case OPAQUE:
-			return new WriteRequest(objectId, objectInstanceId, resourceId, Byte.parseByte(value));
 		case TIME: {
 			SimpleDateFormat formatter = new SimpleDateFormat("MMMM d, yyyy H:mm:ss a", Locale.ENGLISH);
 			Date date;
@@ -226,8 +242,7 @@ public class LwM2MHandler {
 		}
 		return false;
 	}
-	
-	
+
 	public LinkedHashMap<String, ArrayList<ResourceModelAdapter>> getObjectModelList(Device device) {
 		LinkedHashMap<String, ArrayList<ResourceModelAdapter>> objectModelList = new LinkedHashMap<String, ArrayList<ResourceModelAdapter>>();
 		ArrayList<ResourceModelAdapter> resourceModelList = new ArrayList<ResourceModelAdapter>();
@@ -244,7 +259,7 @@ public class LwM2MHandler {
 
 			Registration registration = server.getRegistrationService().getById(device.getRegId());
 			if (registration == null) {
-				regModel = new StandardModelProvider().getObjectModel(registration);
+				regModel = new StaticModelProvider(lwM2MManagementServer.getModels()).getObjectModel(null);
 			} else {
 				regModel = server.getModelProvider().getObjectModel(registration);
 			}
@@ -258,6 +273,10 @@ public class LwM2MHandler {
 
 				ObjectModel objectModel = regModel.getObjectModel(Integer.parseInt(parseId));
 				resourceModelList = new ArrayList<ResourceModelAdapter>();
+
+				if (objectModel == null) {
+					break;
+				}
 
 				for (ResourceModel entry : objectModel.resources.values()) {
 					resourceModelList.add(new ResourceModelAdapter(entry));

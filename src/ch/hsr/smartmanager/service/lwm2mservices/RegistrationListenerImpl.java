@@ -29,11 +29,12 @@ public class RegistrationListenerImpl {
 			}
 
 			@Override
-			public void unregistered(Registration registration, Collection<Observation> observerColl) {}
+		    public void unregistered(Registration registration, Collection<Observation> observations, boolean expired) { }
 
 			@Override
-			public void updated(RegistrationUpdate registrationUpdate, Registration registration) {
-				updateOrAddDevice(registration);
+			public void updated(RegistrationUpdate update, Registration updatedRegistration, Registration previousRegistration) {
+				updateOrAddDevice(updatedRegistration);
+				
 			}
 
 		};
