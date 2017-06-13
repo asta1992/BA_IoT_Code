@@ -17,7 +17,7 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 
-	<mvc:resources mapping="/resources/**" location="/resources/"
+	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"
 		cache-period="31556926" />
 
 	<mongo:db-factory id="mongoDbFactory"
