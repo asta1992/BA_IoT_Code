@@ -9,6 +9,7 @@
 	<configs>
 		<config>WebContent/WEB-INF/security-config.xml</config>
 		<config>WebContent/WEB-INF/smartmanager-servlet.xml</config>
+		<config>WebContent/WEB-INF/smartmanager-configuration.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

@@ -25,6 +25,7 @@ public class DeviceWebController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String showDevices(Model model, Principal principal) {
+		if(principal == null) return "redirect:/logout";
 		model.addAttribute("username", principal.getName());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		return "devices/devices";

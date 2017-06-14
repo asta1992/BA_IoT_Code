@@ -26,7 +26,7 @@ public class UserWebController {
 	public String showUsers(Model model, Principal principal) {
 		if(principal == null) return "redirect:/logout";
 		ManagementUser user = userService.findUserByName(principal.getName());
-		model.addAttribute("username", user.getUsername());
+		model.addAttribute("username", principal.getName());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());
 		model.addAttribute("user", user);
 		model.addAttribute("managementUsers", userService.findAll());

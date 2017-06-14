@@ -43,10 +43,4 @@ public class UserRestController {
 		return result;
 	}
 
-	@RequestMapping(value = "/checkUser", method = RequestMethod.POST)
-	public String checkUser(@RequestParam("username") String username) {
-		boolean result = userService.checkUser(username);
-		return Boolean.toString(result);
-	}
-
 }

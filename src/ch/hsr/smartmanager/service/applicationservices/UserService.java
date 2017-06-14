@@ -63,7 +63,7 @@ public class UserService implements UserDetailsService {
 		try {
 			if (!checkOldPassword(id, oldPassword)) {
 				result.put("oldPasswordError", true);
-			} else if (firstPassword.length() < 8) {
+			} else if (firstPassword.length() < 8 || firstPassword.length() > 50) {
 				result.put("passwordLength", true);
 			} else if (!firstPassword.equals(secondPassword)) {
 				result.put("matchError", true);
@@ -92,27 +92,27 @@ public class UserService implements UserDetailsService {
 	}
 
 	public JSONObject addUser(String username, String firstPassword, String secondPassword) {
-		
+
 		JSONObject result = new JSONObject();
 
 		try {
-			if (validateUsername(username)) {
+			if (username.length() < 4 || username.length() > 20) {
+				result.put("usernameLength", true);
+			} else if (validateUsername(username)) {
 				result.put("invalidCharError", true);
-			} else if (userRepository.existsByUsername(username)) {
+			} else if (checkUser(username)) {
 				result.put("existsError", true);
 			} else if (!firstPassword.equals(secondPassword)) {
 				result.put("matchError", true);
 			} else if (firstPassword.length() < 8 || firstPassword.length() > 50) {
 				result.put("passwordLength", true);
-			} else if (username.length() < 4 || username.length() > 20) {
-				result.put("usernameLength", true);
+
 			} else {
 				ManagementUser user = new ManagementUser(username, passwordEncoder.encode(firstPassword));
 				userRepository.save(user);
 				result.put("username", username);
 			}
-		}
-		catch (JSONException e) {
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return result;

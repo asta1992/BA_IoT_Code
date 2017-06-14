@@ -27,6 +27,7 @@ public class ConfigurationWebController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String showConfigurations(Model model, Principal principal) {
+		if(principal == null) return "redirect:/logout";
 		model.addAttribute("username", principal.getName());
 		model.addAttribute("configurations", configurationService.getAllConfigurations());
 		model.addAttribute("discoveredDeviceCounter", deviceService.countDiscoveredDevices());

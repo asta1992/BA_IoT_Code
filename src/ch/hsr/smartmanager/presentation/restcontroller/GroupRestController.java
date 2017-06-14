@@ -38,7 +38,6 @@ public class GroupRestController {
 	
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
 	public String getAllGroups() {
-		System.out.println(groupService.getAllGroupsAsJSON());
 		return groupService.getAllGroupsAsJSON();
 	}
 

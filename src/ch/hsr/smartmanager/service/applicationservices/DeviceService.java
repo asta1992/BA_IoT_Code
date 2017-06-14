@@ -288,7 +288,7 @@ public class DeviceService {
 		return deviceRepo.save(device);
 	}
 
-	public void createOrUpdateDevice(Device device, Registration registration) {
+	public Device createOrUpdateDevice(Device device, Registration registration) {
 		Device dev;
 		if (deviceRepo.existsByName(device.getName())) {
 			dev = deviceRepo.findByName(device.getName());
@@ -299,6 +299,7 @@ public class DeviceService {
 		}
 		dev = deviceRepo.save(dev);
 		getLocations(dev);
+		return dev;
 	}
 
 	private void getLocations(Device dev) {

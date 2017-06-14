@@ -27,7 +27,7 @@ public class ConfigurationService {
 	@Autowired
 	private DeviceService deviceService;
 
-	public void saveConfiguration(JSONArray config) {
+	public Configuration saveConfiguration(JSONArray config) {
 
 		try {
 			String configurationName = HtmlUtils.htmlEscape(config.getString(0));
@@ -43,12 +43,13 @@ public class ConfigurationService {
 				Configuration updatedConfiguration = configRepo.findByName(configurationName);
 				configuration.setId(updatedConfiguration.getId());
 				updatedConfiguration = configuration;
-				configRepo.save(updatedConfiguration);
+				return configRepo.save(updatedConfiguration);
 			} else {
-				configRepo.insert(configuration);
+				return configRepo.insert(configuration);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 

@@ -25,6 +25,7 @@ public class DiscoveryWebController {
 
     @RequestMapping(method = RequestMethod.GET)
 	public String showDiscovery(Model model, Principal principal) {
+    	if(principal == null) return "redirect:/logout";
 		model.addAttribute("groups", groupService.getAllGroups());
 		model.addAttribute("devices", deviceService.getAllDiscoveredDevice());
 		model.addAttribute("configurations", configurationService.getAllConfigurations());

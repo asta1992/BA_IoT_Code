@@ -53,15 +53,16 @@ public class GroupService {
 		groupRepo.save(group);
 	}
 
-	// THIS
 	private void addGroupToGroup(String parent, String child) {
 		DeviceGroup parentGroup = groupRepo.findOne(parent);
 		DeviceGroup childGroup = groupRepo.findOne(child);
+		List<String> anchestorsParent = groupRepo.findAllAncestors(parent);
+		List<String> anchestorsChild = groupRepo.findAllAncestors(child);
 
 		if (childGroup.getName().equals("_unassigned") || parentGroup.getName().equals("_unassigned")
-				|| isAncestor(parentGroup.getName(), childGroup.getName())
-				|| isAncestor(childGroup.getName(), parentGroup.getName())) {
-			return;
+				|| isAncestor(anchestorsParent, childGroup.getName())
+				|| isAncestor(anchestorsChild, parentGroup.getName())) {
+			return; 
 		}
 
 		DeviceGroup oldParentGroup = groupRepo.findByChildrenId(new ObjectId(childGroup.getId()));
@@ -149,11 +150,8 @@ public class GroupService {
 		groupRepo.save(grpChild);
 	}
 
-	private boolean isAncestor(String parent, String child) {
-		List<String> anchestors = groupRepo.findAllAncestors(child);
-		if (anchestors.contains(parent))
-			return true;
-		return false;
+	private boolean isAncestor(List<String> anchestors, String parent) {
+		return anchestors.contains(parent);
 	}
 
 	public List<Device> findAllChildren(String id) {
