@@ -21,16 +21,49 @@ import ch.hsr.smartmanager.service.applicationservices.LocationService;
 @RequestMapping("/devices")
 public class DeviceRestController {
 
-
 	@Autowired
 	private DeviceService deviceService;
-	
+
 	@Autowired
 	private GroupService groupService;
-	
+
 	@Autowired
 	private LocationService locationService;
 
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public void addDevice(@RequestParam("groupId") String groupId, @RequestParam("configId") String configId,
+			@RequestParam(value = "deviceIds[]") String[] deviceIds) {
+		deviceService.addToManagement(deviceIds, groupId, configId);
+	}
+
+	@RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+	public void removeDevice(@PathVariable("id") String id) {
+		deviceService.removeFromManagement(id);
+	}
+
+	@RequestMapping(value = "/deleteAll", method = RequestMethod.DELETE)
+	public void removeDevice() {
+		deviceService.deleteUnreachableDevices();
+	}
+
+	@RequestMapping(value = "/{id}/changeMembership", method = RequestMethod.POST)
+	public void addToGroups(@PathVariable("id") String id, @RequestParam("value") JSONArray value) {
+		deviceService.changeMembership(id, value);
+	}
+
+	@RequestMapping(value = "/locations/dashboard", method = RequestMethod.GET)
+	public List<List<String>> getAllLocation() {
+		return locationService.getAllLocation();
+	}
+
+	@RequestMapping(value = "/{id}/locations/{mapType}", method = RequestMethod.GET)
+	public List<List<String>> getAllLocation(@PathVariable("id") String id, @PathVariable("mapType") String mapType) {
+		if (mapType.equals("group")) {
+			return locationService.getAllLocationByGroup(groupService.getGroup(id));
+		} else {
+			return locationService.getDeviceLocationById(deviceService.getDevice(id));
+		}
+	}
 
 	@RequestMapping(value = "/{id}/read/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.GET)
 	public ReadResponse readResource(@PathVariable("id") String id, @PathVariable("objectId") int objectId,
@@ -45,9 +78,9 @@ public class DeviceRestController {
 	}
 
 	@RequestMapping(value = "/{id}/write/{objectId}/{objectInstanceId}/{resourceId}", method = RequestMethod.POST)
-	public Map<String, ResponseCode> write(@PathVariable("id") String id,
-			@PathVariable("objectId") int objectId, @PathVariable("objectInstanceId") int objectInstanceId,
-			@PathVariable("resourceId") int resourceId, @RequestParam("value") String value) {
+	public Map<String, ResponseCode> write(@PathVariable("id") String id, @PathVariable("objectId") int objectId,
+			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId,
+			@RequestParam("value") String value) {
 
 		return deviceService.write(id, objectId, objectInstanceId, resourceId, value);
 	}
@@ -57,46 +90,5 @@ public class DeviceRestController {
 			@PathVariable("objectInstanceId") int objectInstanceId, @PathVariable("resourceId") int resourceId) {
 
 		return deviceService.execute(id, objectId, objectInstanceId, resourceId);
-	}
-	
-	@RequestMapping(value = "/{id}/changeMembership", method = RequestMethod.POST)
-	public void addToGroups(@PathVariable("id") String id, @RequestParam("value") JSONArray value) {
-		deviceService.changeMembership(id, value);
-	}
-	
-	@RequestMapping(value = "/locations/dashboard", method = RequestMethod.GET)
-	public List<List<String>> getAllLocation() {
-		return locationService.getAllLocation();
-	}
-
-	@RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
-	public void removeDevice(@PathVariable("id") String id) {
-		deviceService.removeFromManagement(id);
-	}
-	
-	@RequestMapping(value = "/deleteAll", method = RequestMethod.DELETE)
-	public void removeDevice() {
-		deviceService.deleteUnreachableDevices();
-	}
-	
-
-	@RequestMapping(value = "/{id}/removeFromGroups", method = RequestMethod.POST)
-	public void removeFromGroups(@PathVariable("id") String id, @RequestParam("value") List<String> value) {
-		groupService.removeDeviceFromGroups(value, id);
-	}
-
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public void addDevice(@RequestParam("groupId") String groupId, @RequestParam("configId") String configId, @RequestParam(value = "deviceIds[]") String[] deviceIds) {
-		deviceService.addToManagement(deviceIds, groupId, configId);
-	}
-	
-	@RequestMapping(value = "/{id}/locations/{mapType}", method = RequestMethod.GET)
-	public List<List<String>> getAllLocation(@PathVariable("id") String id,
-			@PathVariable("mapType") String mapType) {
-		if (mapType.equals("group")) {
-			return locationService.getAllLocationByGroup(groupService.getGroup(id));
-		} else {
-			return locationService.getDeviceLocationById(deviceService.getDevice(id));
-		}
 	}
 }

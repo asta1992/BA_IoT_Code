@@ -18,7 +18,7 @@ function deleteAllUnreachableDevices() {
 		}
 	});
 }
-
+         
 function deleteUnreachableDevice(id, name) {
 	bootbox.confirm({
 		message : "Do you really want to delete device " + name + "?",

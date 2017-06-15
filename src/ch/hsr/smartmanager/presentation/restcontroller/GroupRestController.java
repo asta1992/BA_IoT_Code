@@ -24,7 +24,6 @@ public class GroupRestController {
 	private GroupService groupService;
 	@Autowired
 	private LwM2MHandler lwM2MHandler;
-	
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addNewRootGroup(@RequestParam("value") String groupName) {
@@ -35,17 +34,17 @@ public class GroupRestController {
 	public List<DeviceGroup> getGroupList() {
 		return groupService.getAllGroups();
 	}
-	
+
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
 	public String getAllGroups() {
 		return groupService.getAllGroupsAsJSON();
 	}
 
-	@RequestMapping(value = "/{id}/add", method=RequestMethod.POST)
+	@RequestMapping(value = "/{id}/add", method = RequestMethod.POST)
 	public String addNewChildGroup(@PathVariable("id") String id, @RequestParam("value") String groupName) {
 		return Boolean.toString(groupService.addNewChildGroup(id, groupName));
 	}
-	
+
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
 	public void removeGroup(@PathVariable("id") String id) {
 		groupService.deleteGroup(id);

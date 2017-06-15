@@ -148,7 +148,7 @@
 											<td>${unreachableDevices.lastRegistrationUpdate}</td>
 											<td><span class="pull-right">
 													<button type="button" class="btn btn-danger btn-xs"
-														onclick="deleteUnreachableDevices('${unreachableDevices.id}', '${unreachableDevices.name}')">Delete</button>
+														onclick="deleteUnreachableDevice('${unreachableDevices.id}', '${unreachableDevices.name}')">Delete</button>
 											</span></td>
 										</tr>
 									</c:forEach>

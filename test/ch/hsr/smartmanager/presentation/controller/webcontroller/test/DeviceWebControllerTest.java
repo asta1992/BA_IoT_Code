@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ch.hsr.smartmanager.data.Device;
 import ch.hsr.smartmanager.data.DeviceGroup;
 import ch.hsr.smartmanager.data.repositories.DeviceGroupRepository;
+import ch.hsr.smartmanager.data.repositories.DeviceRepository;
 import ch.hsr.smartmanager.presentation.webcontroller.DeviceWebController;
 import ch.hsr.smartmanager.service.applicationservices.DeviceService;
 import ch.hsr.smartmanager.service.applicationservices.GroupService;
@@ -46,6 +47,8 @@ public class DeviceWebControllerTest {
 	private DeviceService deviceService;
 	@Autowired
 	private DeviceGroupRepository deviceGroupRepository;
+	@Autowired
+	private DeviceRepository deviceRepository;
 
 	private DeviceGroup group;
 	private Device device;
@@ -78,11 +81,19 @@ public class DeviceWebControllerTest {
 
 	@After
 	public void tearDown() {
+		deviceRepository.deleteAll();
 	}
 
 	@Test
 	public void devices() throws Exception {
 		mockMvc.perform(get("/devices").principal(principal)).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void removeNullDevices() throws Exception {
+		groupService.addDeviceToGroup(group.getId(), device.getId());
+		deviceRepository.delete(device);
+		mockMvc.perform(get("/devices/" + device.getId()).principal(principal)).andExpect(status().isOk());
 	}
 
 	@Test

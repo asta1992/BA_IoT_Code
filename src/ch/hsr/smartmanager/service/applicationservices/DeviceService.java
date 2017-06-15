@@ -221,7 +221,6 @@ public class DeviceService {
 		return dev;
 	}
 
-	// THIS
 	public void addToManagement(String[] deviceIds, String groupId, String configId) {
 		DeviceGroup group;
 		if (groupId.equals("_unassigned")) {
